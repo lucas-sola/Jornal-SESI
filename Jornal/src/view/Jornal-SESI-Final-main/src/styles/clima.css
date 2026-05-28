@@ -1,0 +1,531 @@
+@import url(root.css);
+
+.clima-section {
+    margin-top: 2rem;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--weather-gap);
+    align-items: stretch;
+    padding: 1.2rem;
+}
+
+.direita-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap)
+}
+
+.cidades-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: var(--weather-gap);
+    flex: 1;
+}
+
+/* ─── Card Main ──────────────────────────────────────────────────────────*/
+
+.main-card {
+    background: var(--surface);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--weather-r-lg);
+    padding: 30px 34px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 520px;
+}
+
+.main-card::after {
+    content: '';
+    position: absolute;
+    top: -90px;
+    right: -90px;
+
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(232, 200, 73, 0.09) 0%, transparent 70%);
+}
+
+.mc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.mc-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.mc-icon {
+    font-size: 60px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 14px rgb(204, 157, 29));
+}
+
+.mc-temp {
+    font-family: var(--weather-font-primary);
+    font-size: 76px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--weather-accent);
+    letter-spacing: -3px;
+}
+
+.mc-temp sup {
+    font-size: 28px;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(232, 200, 73, 0.6);
+    vertical-align: super;
+}
+
+.mc-desc {
+    font-size: 13px;
+    color: var(--weather-muted);
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.mc-right {
+    text-align: right;
+}
+
+.mc-city {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -.4px;
+    color: var(--weather-text)
+}
+
+.mc-time {
+    font-size: 12px;
+    color: var(--weather-muted);
+    margin-top: 5px;
+}
+
+/* ─── Metadados ──────────────────────────────────────────────────────────*/
+
+.mc-meta {
+    display: flex;
+    gap: 22px;
+    margin-top: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.mc-meta__item {
+    font-size: 12px;
+    color: var(--weather-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.mc-meta__item em {
+    font-style: normal;
+    font-size: 14px;
+}
+
+/* ─── Gráficos ──────────────────────────────────────────────────────────*/
+
+.mc-chart {
+    position: relative;
+    min-height: 110px;
+}
+
+.mc-chart-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.mc-chart-labels span {
+    font-family: var(--font-primary);
+    font-size: 10px;
+    color: var(--muted)
+}
+
+/* ─── Previsão Semana ───────────────────────────────────────────────────*/
+
+.mc-week {
+    display: flex;
+    gap: 7px;
+    margin-top: 18px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.mc-week::-webkit-scrollbar {
+    height: 10px;
+    
+}
+
+.mc-week::-webkit-scrollbar-thumb {
+    background: var(--weather-border);
+    border-radius: 12px;
+    
+}
+
+.day-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: var(--weather-surface2);
+    border: 1px solid var(--weather-border);
+    border-radius: var(--weather-r-sm);
+    padding: 9px 12px;
+    min-width: 62px;
+    flex-shrink: 0;
+}
+
+.day-pill.is-today {
+    border-color: var(--weather-accent);
+    background-color: rgba(232, 200, 73, 0.09);
+}
+
+.day-pill__name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--weather-muted);
+}
+
+.day-pill.is-today.day-pill__name {
+    color: var(--weather-accent)
+}
+
+.day-pill__icon {
+    font-size: 18px;
+}
+
+.day-pill__temps {
+    font-family: var(--font-primary);
+    font-size: 11px
+}
+
+.day-pill__hi {
+    color: var(--weather-text)
+}
+
+.day-pill__lo {
+    color: var(--weather-muted)
+}
+
+/* ──────────────────────── MINI CARDS ──────────────────────── */
+
+.mini-card {
+    border-radius: var(--weather-r-md);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 150px;
+    transition: .2s ease;
+    cursor: default;
+}
+
+.mini-card:hover {
+    transform: scale(1.05);
+}
+
+.mini-card--blue {
+    background-image:
+        linear-gradient(145deg,
+            rgba(15, 52, 96, 0.75),
+            rgba(21, 101, 192, 0.65),
+            rgba(66, 165, 245, 0.55)),
+    url("../images/cidades/sao-paulo.jpeg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mini-card--teal {
+    background-image: linear-gradient(145deg,
+        rgba(0, 77, 64, 0.75),
+        rgba(0, 121, 107, 0.65),
+        rgba(38, 198, 218, 0.55)),
+    url('../images/cidades/rio-de-janeiro.webp');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mini-card--amber {
+    background-image: linear-gradient(145deg,
+        rgba(122, 59, 0, 0.75),
+        rgba(230, 81, 0, 0.65),
+        rgba(255, 167, 38, 0.55)),
+    url('../images/cidades/belo-horizonte.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mini-card--violet {
+    background-image: linear-gradient(145deg,
+        rgba(45, 0, 115, 0.75),
+        rgba(106, 27, 154, 0.65),
+        rgba(206, 147, 216, 0.55)),
+    url('../images/cidades/brasilia.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.mini-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.30);
+    pointer-events: none;
+}
+
+.mini-card > * {
+    position: relative;
+    z-index: 1
+}
+
+.mc2-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.mc2-meta {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.8;
+}
+
+.mc2-right {
+    text-align: right;
+}
+
+.mc2-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+}
+
+.mc2-time {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 3px
+}
+
+.mc2-bottom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.mc2-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))
+}
+
+.mc2-temp {
+    font-family: var(--font-primary);
+    font-size: 38px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.mc2-temp sup {
+    font-size: 16px;
+    letter-spacing: 0;
+    font-weight: 400;
+    vertical-align: super;
+    opacity: 0.75;
+}
+
+/* ──────────────────────── BUSCA ──────────────────────── */
+
+.box-pesquisa {
+    margin-top: 1rem;
+    background: var(--weather-surface);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--weather-r-md);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.box-pesquisa__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--weather-text)
+}
+
+.box-pesquisa__hint {
+    font-size: 12px;
+    color: var(--weather-muted);
+    margin-bottom: 8px;
+}
+
+.box-pesquisa__row {
+    display: flex;
+    gap: 8px
+}
+
+.box-pesquisa__input {
+    flex: 1;
+    background-color: var(--weather-surface2);
+    border: 1px solid var(--weather-border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: var(--weather-text);
+    font-family: var(--weather-font-primary);
+    font-size: 14px;
+    outline: none;
+    transition: .2s ease;
+}
+
+.box-pesquisa__input::placeholder {
+    color: var(--weather-muted)
+}
+
+.box-pesquisa__input:focus {
+    border-color: rgba(232, 200, 73, 0.5)
+}
+
+.box-pesquisa__btn {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: var(--weather-r-sm);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--white);
+    flex-shrink: 0;
+    transition: .2s ease;
+}
+
+.box-pesquisa__btn:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+.box-pesquisa__btn:active {
+    transform: scale(0.96);
+}
+
+
+/* ──────────────────────── LOADING ──────────────────────── */
+
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--weather-muted);
+    font-size: 13px;
+    flex: 1;
+    min-height: 300px;
+}
+
+.loading-state--sm {
+    min-height: 60px;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+
+    border: 3px solid var(--weather-border);
+    border-top-color: rgba(232, 200, 74, 0.70);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    flex-shrink: 0;
+}
+
+.spinner--sm {
+    width: 18px;
+    height: 18px;
+
+    border-width: 2px;
+    border-top-color: rgba(255, 255, 255, 0.60);
+}
+
+/* ──────────────────────── ANIMAÇÕES ──────────────────────── */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    40% {
+        transform: rotate(180deg);
+    }
+
+    55% {
+        transform: rotate(210deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeUp .3s ease forwards
+}
+
+/* ─── Responsivo ─────────────────────────────────────────────────────────*/
+@media screen and (max-width: 960px) {
+    .dashboard {
+        padding: 0 1rem;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .cidades-grid {
+        grid-template-rows: repeat(2, auto);
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .cidades-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .mc-temp {
+        font-size: 56px;
+        ;
+    }
+}

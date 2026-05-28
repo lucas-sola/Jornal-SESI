@@ -1,0 +1,127 @@
+@font-face {
+    font-family: 'Neue Montreal';
+    src: url(../fonts/NeueMontreal-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Collegiate';
+    src: url(../fonts/CollegiateFLF.ttf) format('truetype');
+}
+
+:root{
+    --bg: #FAF9F6;
+
+    --primary-color: #00897B;
+    --secondary-color: #FAEBD7;
+
+    --white: #FAF8F5;
+    --grey: #22282A;
+
+    --font-primary: 'Neue Montreal';
+    --font-secondary: 'Collegiate';
+
+    /* ────── WEATHER ────── */
+
+    --weather-bg: #efefef;
+    --weather-surface: #f8f8f8;
+    --weather-surface2: #ececec;
+    --weather-text: #3b3131;
+    --weather-muted: rgba(60, 60, 60, .6);
+    --weather-border: rgba(0,0,0,.04);
+    --weather-accent: #e4b23f;
+    --weather-r-lg: 26px;
+    --weather-r-md: 18px;
+    --weather-r-sm: 12px;
+    --weather-gap: 14px;
+
+    /* ────── POSTAGEM ────── */
+
+    --post-border: #e4e0d8;
+    --post-border-focus: #00897B;
+    --post-text-muted: #8a8a8a;
+    --post-card-bg: #fff;
+    --post-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06);
+    --post-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --post-radius: 10px;
+    --post-radius-sm: 6px;
+    --transition: .2s ease;
+}
+
+body.dark-theme{
+    --bg: #0b0d12;
+
+    --primary-color: #00a693;
+    --secondary-color: #2a241d;
+
+    --white: #dde1ed;
+    --grey: #11141c;
+
+    /* ────── WEATHER ────── */
+    --weather-bg: #0f1117;
+    --weather-surface: #151922;
+    --weather-surface2: #1c2130;
+    --weather-text: #dde1ed;
+    --weather-muted: rgba(221, 225, 237, .55);
+    --weather-border: rgba(255,255,255,.06);
+    --weather-accent: #e8c84a;
+    --weather-r-lg: 26px;
+    --weather-r-md: 18px;
+    --weather-r-sm: 12px;
+    --weather-gap: 14px;
+    color: var(--white);
+
+    /* ────── POSTAGEM ────── */
+
+    --post-border: #2a2a2a;
+    --post-border-focus: #26a69a;
+    --post-text-muted: #a0a0a0;
+    --post-card-bg: #181818;
+    --post-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.35);
+    --post-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --post-radius: 10px;
+    --post-radius-sm: 6px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--bg);
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.theme-btn{
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    width: 46px;
+    height: 46px;
+    border: 1px solid black;
+    border-radius: 50%;
+    background: var(--weather-surface);
+    color: var(--weather-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: .25s ease;
+    z-index: 9999;
+}
+
+.theme-btn:hover{
+    transform: translateY(-2px);
+    background: var(--weather-surface2);
+}
+
+body.dark-theme .theme-btn{
+    border: 1px solid white;
+}

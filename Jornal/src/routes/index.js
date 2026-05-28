@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const autorRoutes = require("./Autor.js");
-const generoRoutes = require("./Genero.js");
-const temaPrincipalRoutes = require("./TemaPrincipal.js");
-const categoriaRoutes = require("./Categoria.js");
-const statusEdicaoRoutes = require("./StatusEdicao.js");
-const statusComentarioRoutes = require("./StatusComentario.js");
-const edicaoRoutes = require("./Edicao.js");
-const publicacaoRoutes = require("./Publicacao.js");
-const comentarioRoutes = require("./Comentario.js");
-const publicacaoCategoriaRoutes = require("./PublicacaoCategoria.js");
+const autorRoutes = require("./AutorRoutes.js");
+const generoRoutes = require("./GeneroRoutes.js");
+const temaPrincipalRoutes = require("./TemaPrincipalRoutes.js");
+const categoriaRoutes = require("./CategoriaRoutes.js");
+const statusEdicaoRoutes = require("./StatusEdicaoRoutes.js");
+const statusComentarioRoutes = require("./StatusComentarioRoutes.js");
+const edicaoRoutes = require("./EdicaoRoutes.js");
+const publicacaoRoutes = require("./PublicacaoRoutes.js");
+const comentarioRoutes = require("./ComentarioRoutes.js");
+const publicacaoCategoriaRoutes = require("./PublicacaoCategoriaRoutes.js");
 
 router.use("/autores", autorRoutes);
 router.use("/generos", generoRoutes);

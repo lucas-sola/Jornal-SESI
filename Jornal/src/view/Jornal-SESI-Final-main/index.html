@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="src/styles/header.css" />
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/footer.css">
+    <link rel="stylesheet" href="src/styles/clima.css">
+    <title>Site SESI</title>
+</head>
+
+<body>
+    <header class="header">
+        <button class="menu-hamburguer" id="hamburguer">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo-header">
+            <img src="src/images/logo-revista.png" class="logo" />
+        </div>
+        <div class="links-header">
+            <ul class="lista-links-header">
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Notícias</a></li>
+                <li><a href="#">Esportes</a></li>
+                <li><a href="#">Cultura</a></li>
+                <li><a href="#">Ciências</a></li>
+                <li><a href="#">Opinião</a></li>
+            </ul>
+        </div>
+        <div class="pesquisa">
+            <button class="btn-pesquisa">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <div class="container-pesquisa">
+                <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
+            </div>
+
+            <div class="container-pesquisa-desktop">
+                <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
+            </div>
+        </div>
+    </header>
+
+    <nav class="menu-mobile">
+        <ul>
+            <li><a href="#">Início</a></li>
+            <li><a href="#">Notícias</a></li>
+            <li><a href="#">Esportes</a></li>
+            <li><a href="#">Cultura</a></li>
+            <li><a href="#">Ciências</a></li>
+            <li><a href="#">Opinião</a></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <button id="themeToggle" class="theme-btn">
+            🌙
+        </button>
+
+        <section class="hero-section">
+            <div class="hero-content container">
+                <span class="tag">Destaque</span>
+                <h2 class="titulo">Lorem ipsum dolot sit amet</h2>
+                <p class="subtitulo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit.</p>
+                <p class="autor">Por: <strong id="aluno-hero">Aluno</strong> &bull; <span id="ano-hero">XX de MÊS,
+                        ANO</span></p>
+            </div>
+        </section>
+
+        <section class="noticias-destaques container">
+            <div class="noticia-principal">
+                <span class="tag">Destaque</span>
+                <h2 class="titulo">Consequência de usos da IA</h2>
+                <div class="imagem-wrap">
+                    <img src="src/images/noticias/noticia-1.png" class="noticia-destaque-imagem"
+                        alt="Consequências do Uso de IA, Imagem." loading="lazy">
+                </div>
+                <p class="autor-noticia">Por: <strong id="aluno-noticia-destaque">Adrian Clark</strong> &bull; <span
+                        id="noticia-destaque-data">17 de maio, 2026</span></p>
+                <p class="noticia-destaque-descricao">A inteligência artificial saiu dos laboratórios e entrou no
+                    cotidiano quase sem cerimônia. Ela escolhe o que vemos nas redes sociais, recomenda músicas, auxilia
+                    médicos em diagnósticos, dirige carros em testes e até escreve textos inteiros em segundos. O
+                    problema é que, enquanto a tecnologia evolui em velocidade absurda, as consequências desse avanço
+                    crescem como rachaduras silenciosas embaixo de uma cidade futurista brilhando neon.</p>
+                <div class="tags-noticia-destaque">
+                    <span class="tag">Tag 1</span>
+                    <span class="tag">Tag 2</span>
+                    <span class="tag">Tag 3</span>
+                </div>
+            </div>
+
+
+            <aside class="noticia-principal-sidebar">
+                <div class="noticia-sidebar">
+                    <span class="tag">Editorial</span>
+                    <h3 class="titulo">Combate ao Racismo</h3>
+                    <p class="autor-noticia">Por: <strong>João Miguel</strong> &bull; 27 de Março, 2026</p>
+                    <p class="descricao-sidebar">
+                        Hoje, 03 de julho, é o Dia Nacional de Combate à Discriminação Racial. Essa é uma data
+                        importante que reforça a luta diária contra o preconceito racial em todo o mundo. Todas as
+                        pessoas nascem livres e iguais em dignidade e direitos. Racismo não se tolera, se combate.
+                    </p>
+                    <div class="sidebar-imagem-wrap">
+                        <img src="src/images/noticias/noticia-2.jpg" class="sidebar-imagem">
+                    </div>
+                </div>
+
+                <div class="noticia-sidebar divider-top">
+                    <span class="tag">Editorial</span>
+                    <h3 class="titulo">Título Matéria da SideBar</h3>
+                    <p class="autor-noticia">Por: Escritor &bull; 27 de Março, 2026</p>
+                    <p class="descricao-sidebar">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates velit repellendus inventore
+                        tempore fugit illum neque hic laudantium, dolor mollitia ea ex, architecto similique qui ipsa
+                        voluptas quas omnis totam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
+                        nostrum quos doloribus fugit aspernatur corrupti, odit odio aperiam quod. Nesciunt optio unde
+                        porro, nostrum autem dicta beatae quas in perspiciatis.
+                    </p>
+                </div>
+
+                <div class="noticia-sidebar divider-top">
+                    <span class="tag">Editorial</span>
+                    <h3 class="titulo">Título Matéria da SideBar</h3>
+                    <p class="autor-noticia">Por: Escritor &bull; 27 de Março, 2026</p>
+                    <p class="descricao-sidebar">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates velit repellendus inventore
+                        tempore fugit illum neque hic laudantium, dolor mollitia ea ex, architecto similique qui ipsa
+                        voluptas quas omnis totam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
+                        nostrum quos doloribus fugit aspernatur corrupti, odit odio aperiam quod. Nesciunt optio unde
+                        porro, nostrum autem dicta beatae quas in perspiciatis.
+                    </p>
+                </div>
+            </aside>
+        </section>
+        <div class="container separador"></div>
+
+        <section class="clima-section">
+            <div class="container">
+                <div class="dashboard">
+                    <div class="main-card">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <span>Carregando...</span>
+                        </div>
+                    </div>
+                    <div class="direita-col">
+                        <div class="cidades-grid">
+                            <div class="mini-card mini-card--blue" id="cardSP">
+                                <div class="loading-state loading-state--sm">
+                                    <div class="spinner spinner--sm"></div>
+                                </div>
+                            </div>
+                            <div class="mini-card mini-card--teal" id="cardRJ">
+                                <div class="loading-state loading-state--sm">
+                                    <div class="spinner spinner--sm"></div>
+                                </div>
+                            </div>
+                            <div class="mini-card mini-card--amber" id="cardBH">
+                                <div class="loading-state loading-state--sm">
+                                    <div class="spinner spinner--sm"></div>
+                                </div>
+                            </div>
+                            <div class="mini-card mini-card--violet" id="cardBSB">
+                                <div class="loading-state loading-state--sm">
+                                    <div class="spinner spinner--sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-pesquisa">
+                            <p class="box-pesquisa__label">Pesquisar cidade</p>
+                            <p class="box-pesquisa__hint">Isto irá pesquisar a cidade para você, apenas digite abaixo:
+                            </p>
+                            <div class="box-pesquisa__row">
+                                <input type="text" id="pesquisaInput" class="box-pesquisa__input"
+                                    placeholder="Ex: Salto">
+                                <button class="box-pesquisa__btn" id="pesquisaBtn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__top">
+            <div class="container footer__grid">
+                <div class="footer__brand">
+                    <img src="src/images/logo-revista.png" class="footer__logo" alt="Logo Revista SESI" />
+                    <p class="footer__tagline">Informação que conecta, inspira e transforma.</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social-btn" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="Twitter / X">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="footer__links">
+                    <h4 class="footer__heading">Navegação</h4>
+                    <ul class="footer__list">
+                        <li><a href="#">Início</a></li>
+                        <li><a href="#">Notícias</a></li>
+                        <li><a href="#">Esportes</a></li>
+                        <li><a href="#">Cultura</a></li>
+                        <li><a href="#">Ciências</a></li>
+                        <li><a href="#">Opinião</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__newsletter">
+                    <h4 class="footer__heading">Envie seus textos</h4>
+                    <p class="footer__newsletter-desc">
+                        Tem uma história para contar? Envie seu texto e faça parte da nossa revista!
+                    </p>
+                    <form class="footer__form" id="formEnvioTexto">
+                        <div class="footer__form-group">
+                            <label for="footerNome" class="footer__label">Seu nome</label>
+                            <input type="text" id="footerNome" class="footer__input" placeholder="Ex: João Silva"
+                                required />
+                        </div>
+                        <div class="footer__form-group">
+                            <label for="footerEmail" class="footer__label">Seu e-mail</label>
+                            <input type="email" id="footerEmail" class="footer__input" placeholder="email@exemplo.com"
+                                required />
+                        </div>
+                        <div class="footer__form-group">
+                            <label for="footerCategoria" class="footer__label">Categoria</label>
+                            <select id="footerCategoria" class="footer__input footer__select">
+                                <option value="">Selecione uma categoria…</option>
+                                <option value="noticias">Notícias</option>
+                                <option value="esportes">Esportes</option>
+                                <option value="cultura">Cultura</option>
+                                <option value="ciencias">Ciências</option>
+                                <option value="opiniao">Opinião</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="footer__btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Enviar texto
+                        </button>
+                        <p class="footer__success" id="footerSuccess">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Recebemos seu texto! Entraremos em contato em breve.
+                        </p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer__bottom">
+            <div class="container footer__bottom-inner">
+                <span>© 2026 Revista SESI · Todos os direitos reservados</span>
+                <span class="footer__bottom-links">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="src/scripts/main.js"></script>
+    <script src="src/scripts/clima.js"></script>
+    <script src="src/scripts/global.js"></script>
+</body>
+
+</html>

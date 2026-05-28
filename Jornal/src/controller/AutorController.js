@@ -1,0 +1,150 @@
+const autorService = require("../services/AutorService.js");
+const { erroCatch, criarErro } = require("../utils/errorJornal.js");
+const path = require("path");
+const fs = require("fs");
+
+class AutorController {
+  async listarAutores(req, res) {
+    try {
+      const result = await autorService.listarAutores();
+      res.json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async buscarAutor(req, res) {
+    try {
+      const result = await autorService.buscarAutor(req.params.id);
+      res.json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async cadastrarAutor(req, res) {
+    try {
+      const result = await autorService.cadastrarAutor(req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async atualizarAutor(req, res) {
+    try {
+      const result = await autorService.atualizarAutor(req.body, req.params.id);
+      res.json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async deletarAutor(req, res) {
+    try {
+      const result = await autorService.deletarAutor(req.params.id);
+      res.json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async atualizarFotoPerfil(req, res) {
+    try {
+      const { id } = req.params;
+
+      if (!req.file) {
+        return res.status(400).json({ mensagem: "Nenhum arquivo enviado" });
+      }
+
+      const usuario = await autorService.buscarAutor(id);
+
+      if (!usuario) {
+        if (req.file.path) fs.unlinkSync(req.file.path);
+        return res.status(404).json({ error: "Usuário não encontrado!" });
+      }
+
+      // Deleta a imagem antiga se existir
+      if (usuario.dados && usuario.dados.foto) {
+        const caminhoAntigo = path.join(__dirname, "../../", usuario.dados.foto);
+        if (fs.existsSync(caminhoAntigo)) {
+          fs.unlinkSync(caminhoAntigo);
+        }
+      }
+
+      // Salva o novo caminho no banco de dados e busca o autor atualizado
+      const novoCaminho = `uploads/${id}/${req.file.filename}`;
+      await autorService.atualizarAutor({ foto: novoCaminho }, id);
+      const usuarioAtualizado = await autorService.buscarAutor(id);
+
+      return res.status(200).json({
+        sucesso: true,
+        message: "Imagem de perfil atualizada com sucesso",
+        imagePath: novoCaminho,
+        dados: usuarioAtualizado.dados,
+      });
+
+    } catch (error) {
+      if (req.file && req.file.path) fs.unlinkSync(req.file.path);
+      erroCatch(req, res, error);
+    }
+  }
+
+  async deletarFotoPerfil(req, res) {
+    try {
+      const { id } = req.params;
+      const usuario = await autorService.buscarAutor(id);
+
+      if (!usuario) {
+        return res.status(404).json({ error: "Usuário não encontrado!" });
+      }
+
+      if (usuario.dados.foto) { // O service retorna { sucesso: true, dados: autor }
+        const caminhoAntigo = path.join(__dirname, "../../", usuario.dados.foto);
+        if (fs.existsSync(caminhoAntigo)) {
+          fs.unlinkSync(caminhoAntigo);
+        }
+        
+        // Atualiza no banco removendo a foto (setando como null)
+        await autorService.atualizarAutor({ foto: null }, id);
+        return res.status(200).json({ message: "Foto de perfil deletada com sucesso!" });
+      }
+
+      return res.status(400).json({ message: "O usuário não possui uma foto de perfil." });
+
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async buscarFotoPerfil(req, res) {
+    try {
+      const { id } = req.params;
+      const usuario = await autorService.buscarAutor(id);
+
+      if (!usuario || !usuario.dados) {
+        return res.status(404).json({ error: "Usuário não encontrado!" });
+      }
+
+      if (usuario.dados.foto) {
+        // Resolve o caminho a partir da raiz do projeto para evitar erros no Windows
+        const caminhoAbsoluto = path.resolve(process.cwd(), usuario.dados.foto);
+        
+        console.log("Tentando carregar foto de:", caminhoAbsoluto);
+
+        if (fs.existsSync(caminhoAbsoluto)) {
+          return res.sendFile(caminhoAbsoluto);
+        } else {
+          console.log("ARQUIVO NÃO LOCALIZADO NO DISCO:", caminhoAbsoluto);
+        }
+      }
+
+      return res.status(404).json({ message: "Foto de perfil não encontrada no registro." });
+
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+}
+
+module.exports = new AutorController();

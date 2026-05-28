@@ -1,0 +1,374 @@
+@import url(root.css);
+
+.header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    height: 100px;
+    background-color: var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    z-index: 100;
+}
+
+.logo-header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo {
+    height: 100px;
+    width: auto;
+    display: block;
+}
+
+/* ─── Links header ─────────────────────────────────────────────────────────── */
+
+.links-header {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    transition: flex .4s ease;
+    overflow: visible;
+    padding-bottom: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+.lista-links-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+}
+
+.lista-links-header li a {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #333;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: .2s ease;
+}
+
+.lista-links-header li:first-child a{
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color)
+}
+
+.lista-links-header li a:hover {
+    border-bottom: 3px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* ─── Pesquisa ──────────────────────────────────────────────────────────────*/
+
+.pesquisa {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.container-pesquisa {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s ease, transform .3s ease;
+    z-index: 9999;
+}
+
+.container-pesquisa.ativo {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.container-pesquisa-desktop {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: width .4s ease, opacity .3s ease;
+    position: relative;
+    top: unset;
+    right: unset;
+    transform: none;
+    display: flex;
+    align-items: center;
+}
+
+.container-pesquisa-desktop.ativo {
+    width: 300px;
+    opacity: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+.input-pesquisa {
+    width: 300px;
+    padding: .5rem;
+    font-family: var(--font-primary);
+    outline: none;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 8px;
+}
+
+.input-pesquisa::placeholder {
+    color: #d9f5f2;
+}
+
+.btn-pesquisa {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 1.1rem;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.btn-pesquisa:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* ─── Menu hambúrguer ───────────────────────────────────────────────────────*/
+
+.menu-hamburguer {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: 0.2s ease;
+    flex-shrink: 0;
+}
+
+.menu-hamburguer:hover {
+    background-color: var(--primary-color);
+}
+
+.menu-hamburguer:hover span {
+    border-color: var(--white);
+    background: var(--white);
+}
+
+.menu-hamburguer span {
+    display: block;
+    width: 24px;
+    border: 2px solid var(--grey);
+    border-radius: 9999px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: .3s ease;
+    transform-origin: center;
+}
+
+.menu-hamburguer.ativo span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.menu-hamburguer.ativo span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-hamburguer.ativo span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+/* ─── Menu mobile ───────────────────────────────────────────────────────────*/
+
+.menu-mobile {
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+    overflow: hidden;
+    max-height: 0;
+    transition: .3s ease;
+}
+
+.menu-mobile.ativo {
+    max-height: 400px;
+    padding: 8px 0;
+}
+
+.menu-mobile ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-mobile ul li a {
+    display: block;
+    text-decoration: none;
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 900;
+    background-color: var(--white);
+    padding: 14px 28px;
+    border-bottom: 1px solid #8b8b8b;
+    transition: .2s ease;
+    
+    position: relative; 
+    z-index: 1;
+    overflow: hidden;
+    text-shadow: 0px 0px 8px black;
+}
+
+.menu-mobile ul li:last-child a {
+    border-bottom: none;
+}
+
+.menu-mobile ul li a:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* ─── Imagens Mobile ────────────────────────────────────────────────────────────*/
+.menu-mobile ul li a::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(2px);
+    transform: scale(1.2);
+    opacity: 0.4;
+}
+
+.menu-mobile ul li:nth-child(1) a::before {
+    background: url('../images/foto-sesi.jpg') center/cover no-repeat;
+}
+
+.menu-mobile ul li:nth-child(2) a::before {
+    background: url('../images/imagens-links/jornal-vintage.webp') center/cover no-repeat;
+}
+
+.menu-mobile ul li:nth-child(3) a::before{
+    background: url('../images/imagens-links/pacaembu.jpg') bottom/cover no-repeat;
+}
+
+.menu-mobile ul li:nth-child(4) a::before{
+    background: url('../images/imagens-links/praça-da-se.jpg') center/cover no-repeat;
+}
+
+.menu-mobile ul li:nth-child(5) a::before{
+    background: url('../images//imagens-links/ministerio-da-ciencia-e-tecnologia.jpg') center/cover no-repeat;
+}
+
+.menu-mobile ul li:nth-child(6) a::before{
+    background: url('../images/imagens-links/megafone.jpg') center/cover no-repeat;
+}
+
+/* ─── Responsivo ────────────────────────────────────────────────────────────*/
+@media (max-width: 780px) {
+    .pesquisa {
+        position: static;
+    }
+}
+
+@media (max-width: 900px) {
+    .header {
+        justify-content: space-between;
+        padding: 0 16px;
+    }
+
+    .menu-hamburguer {
+        display: flex;
+        order: 1;
+    }
+
+    .logo-header {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        order: 2;
+    }
+
+    .pesquisa {
+        order: 3;
+        margin-left: auto;
+    }
+
+    .links-header {
+        display: none;
+    }
+
+    .menu-mobile {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1240px){
+    .container-pesquisa-desktop {
+        display: none !important;
+    }
+
+    .container-pesquisa {
+        position: absolute;
+        top: 100px;
+        left: 0;
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: none;
+    }
+
+    .input-pesquisa {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 0;
+        font-size: 1.3rem;
+        pointer-events: fill;
+        box-shadow: 0px 6px 9px 4px #00000048;
+    }
+}
+
+/* ─── DARK THEME ───────────────────────────────────────────────────*/
+
+
+body.dark-theme .header{
+    background-color: #002b25;
+}
+
+body.dark-theme .menu-hamburguer span{
+    background-color: var(--white);
+    border-color: var(--white)
+}
+
+body.dark-theme .btn-pesquisa{
+    color: var(--white);
+}
+
+body.dark-theme .lista-links-header li a {
+    color: var(--white)
+}
