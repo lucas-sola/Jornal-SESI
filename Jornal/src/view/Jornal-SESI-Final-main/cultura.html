@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="src/styles/header.css" />
+    <link rel="stylesheet" href="src/styles/footer.css" />
+    <link rel="stylesheet" href="src/styles/categoria.css" />
+    <title>Jornal SESI | Cultura</title>
+</head>
+
+<body>
+    <header class="header">
+        <button class="menu-hamburguer" id="hamburguer">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo-header">
+            <img src="src/images/logo-revista.png" class="logo" />
+        </div>
+        <div class="links-header">
+            <ul class="lista-links-header">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="noticias.html">Notícias</a></li>
+                <li><a href="esportes.html">Esportes</a></li>
+                <li><a href="cultura.html" class="active">Cultura</a></li>
+                <li><a href="ciencias.html">Ciências</a></li>
+                <li><a href="opiniao.html">Opinião</a></li>
+            </ul>
+        </div>
+        <div class="header-right">
+            <div class="pesquisa">
+                <button class="btn-pesquisa">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+                <div class="container-pesquisa">
+                    <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
+                </div>
+
+                <div class="container-pesquisa-desktop">
+                    <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
+                </div>
+            </div>
+
+            <a href="perfil.html" class="btn-perfil" title="Perfil" aria-label="Perfil">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div>
+    </header>
+
+    <nav class="menu-mobile">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="noticias.html">Notícias</a></li>
+            <li><a href="esportes.html">Esportes</a></li>
+            <li><a href="cultura.html">Cultura</a></li>
+            <li><a href="ciencias.html">Ciências</a></li>
+            <li><a href="opiniao.html">Opinião</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <button id="themeToggle" class="theme-btn">
+            🌙
+        </button>
+
+        <section class="categoria-hero">
+            <div class="container">
+                <h1>Cultura</h1>
+                <p>Explore as produções artísticas, música, peças teatrais, resenhas literárias e eventos culturais criados pelos estudantes.</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="categoria-grid">
+                
+                <!-- Card 1 -->
+                <article class="post-card">
+                    <div class="post-card-img-wrap">
+                        <img src="src/images/imagens-links/praça-da-se.jpg" class="post-card-img" alt="Teatro na Escola" />
+                    </div>
+                    <div class="post-card-content">
+                        <span class="post-card-tag">Artes Cênicas</span>
+                        <h2 class="post-card-title"><a href="#">Teatro na Escola: A força das artes cênicas na formação</a></h2>
+                        <p class="post-card-excerpt">
+                            O grupo de teatro da nossa escola apresentou a peça clássica adaptada para o contexto atual. A encenação contou com figurinos recicláveis produzidos pelos próprios alunos e abordou discussões éticas e sociais.
+                        </p>
+                        <div class="post-card-footer">
+                            <span class="post-card-author">Por: Beatriz Lima</span>
+                            <span class="post-card-date">28 de maio, 2026</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="post-card">
+                    <div class="post-card-img-wrap">
+                        <img src="src/images/foto-sesi.jpg" class="post-card-img" alt="Feira de Ciências e Artes" />
+                    </div>
+                    <div class="post-card-content">
+                        <span class="post-card-tag">Exposição</span>
+                        <h2 class="post-card-title"><a href="#">Feira de Ciências e Arte atrai centenas de visitantes</a></h2>
+                        <p class="post-card-excerpt">
+                            Com galerias de pinturas, esculturas de argila e demonstrações práticas de física e química, os alunos mostraram que a ciência e a arte caminham lado a lado no desenvolvimento do pensamento crítico.
+                        </p>
+                        <div class="post-card-footer">
+                            <span class="post-card-author">Por: Mariana Mendes</span>
+                            <span class="post-card-date">15 de maio, 2026</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="post-card">
+                    <div class="post-card-img-wrap">
+                        <img src="src/images/imagens-links/jornal-vintage.webp" class="post-card-img" alt="Oficina de Literatura" />
+                    </div>
+                    <div class="post-card-content">
+                        <span class="post-card-tag">Literatura</span>
+                        <h2 class="post-card-title"><a href="#">Oficina de literatura regional divulga poemas e contos</a></h2>
+                        <p class="post-card-excerpt">
+                            O varal literário montado no pátio expôs os trabalhos dos alunos do ensino médio que criaram releituras da literatura cordelista e contos baseados no folclore paulista.
+                        </p>
+                        <div class="post-card-footer">
+                            <span class="post-card-author">Por: Lucas Albuquerque</span>
+                            <span class="post-card-date">05 de maio, 2026</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__top">
+            <div class="container footer__grid">
+                <div class="footer__brand">
+                    <img src="src/images/logo-revista.png" class="footer__logo" alt="Logo Revista SESI" />
+                    <p class="footer__tagline">Informação que conecta, inspira e transforma.</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social-btn" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="Twitter / X">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer__links">
+                    <h4 class="footer__heading">Navegação</h4>
+                    <ul class="footer__list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="noticias.html">Notícias</a></li>
+                        <li><a href="esportes.html">Esportes</a></li>
+                        <li><a href="cultura.html">Cultura</a></li>
+                        <li><a href="ciencias.html">Ciências</a></li>
+                        <li><a href="opiniao.html">Opinião</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__newsletter">
+                    <h4 class="footer__heading">Envie seus textos</h4>
+                    <p class="footer__newsletter-desc">
+                        Tem uma história para contar? Envie seu texto e faça parte da nossa revista!
+                    </p>
+                    <form class="footer__form" id="formEnvioTexto">
+                        <div class="footer__form-group">
+                            <label for="footerNome" class="footer__label">Seu nome</label>
+                            <input type="text" id="footerNome" class="footer__input" placeholder="Ex: João Silva"
+                                required />
+                        </div>
+                        <div class="footer__form-group">
+                            <label for="footerEmail" class="footer__label">Seu e-mail</label>
+                            <input type="email" id="footerEmail" class="footer__input" placeholder="email@exemplo.com"
+                                required />
+                        </div>
+                        <div class="footer__form-group">
+                            <label for="footerCategoria" class="footer__label">Categoria</label>
+                            <select id="footerCategoria" class="footer__input footer__select">
+                                <option value="">Selecione uma categoria…</option>
+                                <option value="noticias">Notícias</option>
+                                <option value="esportes">Esportes</option>
+                                <option value="cultura">Cultura</option>
+                                <option value="ciencias">Ciências</option>
+                                <option value="opiniao">Opinião</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="footer__btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Enviar texto
+                        </button>
+                        <p class="footer__success" id="footerSuccess">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Recebemos seu texto! Entraremos em contato em breve.
+                        </p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer__bottom">
+            <div class="container footer__bottom-inner">
+                <span>© 2026 Revista SESI · Todos os direitos reservados</span>
+                <span class="footer__bottom-links">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="src/scripts/global.js"></script>
+    <script src="src/scripts/cultura.js"></script>
+</body>
+
+</html>

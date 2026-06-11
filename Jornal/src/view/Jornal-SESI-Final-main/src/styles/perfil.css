@@ -1,0 +1,110 @@
+/* Fundo da seção principal */
+.main {
+    background: linear-gradient(135deg, #00796B 0%, #004D40 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+/* Título e Subtítulo */
+h1 {
+    font-family: 'Hanken Grotesk', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* Container do Formulário (Efeito de Vidro/Sombra sutil) */
+.lg\:col-span-8 {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 24px;
+    backdrop-filter: blur(5px);
+}
+
+/* Estilização dos Campos de Entrada (Inputs e Textarea) */
+.custom-input, 
+.bio-textarea, 
+select.bio-textarea {
+    background-color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: #333333 !important;
+    padding: 1rem 1.5rem !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.custom-input::placeholder,
+.bio-textarea::placeholder {
+    color: #94A3B8;
+}
+
+/* Labels (Seu Nome, E-mail, etc) */
+label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 8px;
+}
+
+/* Avatar e Círculo de Foto */
+[data-purpose="avatar-upload"] .w-48 {
+    background: rgba(255, 255, 255, 0.2);
+    border: 8px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Botão de Alterar Foto (Link sublinhado) */
+.cursor-pointer.hover\:border-white {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.cursor-pointer.hover\:border-white:hover {
+    border-bottom-color: #ffffff;
+    opacity: 1;
+}
+
+/* Botão Salvar Alterações */
+[data-purpose="save-button"] {
+    background-color: #FFFFFF !important;
+    color: #00796B !important;
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+[data-purpose="save-button"]:hover {
+    background-color: #F8FAFC !important;
+    transform: scale(1.02);
+}
+
+[data-purpose="save-button"] span {
+    letter-spacing: 0.05em;
+}
+
+/* Ícone da Câmera (Botão Flutuante) */
+[data-purpose="avatar-upload"] button {
+    background-color: white !important;
+    color: #00796B !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Botão Sair ao lado de Salvar Alterações */
+.btn-sair-perfil {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-sair-perfil:hover {
+    background-color: #EF4444 !important; /* Vermelho vibrante */
+    border-color: #EF4444 !important;
+    color: #FFFFFF !important;
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+}

@@ -8,15 +8,12 @@
     src: url(../fonts/CollegiateFLF.ttf) format('truetype');
 }
 
-:root{
+:root {
     --bg: #FAF9F6;
-
     --primary-color: #00897B;
     --secondary-color: #FAEBD7;
-
     --white: #FAF8F5;
     --grey: #22282A;
-
     --font-primary: 'Neue Montreal';
     --font-secondary: 'Collegiate';
 
@@ -27,7 +24,7 @@
     --weather-surface2: #ececec;
     --weather-text: #3b3131;
     --weather-muted: rgba(60, 60, 60, .6);
-    --weather-border: rgba(0,0,0,.04);
+    --weather-border: rgba(0, 0, 0, .04);
     --weather-accent: #e4b23f;
     --weather-r-lg: 26px;
     --weather-r-md: 18px;
@@ -45,9 +42,22 @@
     --post-radius: 10px;
     --post-radius-sm: 6px;
     --transition: .2s ease;
+
+    /* ────── LOGIN/CADASTRO ────── */
+
+    --card: #ffffff;
+    --card-accent: #00897B;
+    --card-accent-dark: #00524a;
+    --card-accent-light: #e8f0f8;
+    --card-text: #1a1a1a;
+    --card-text-muted: #6b7280;
+    --card-border: #e2e0da;
+    --card-input-bg: #fafaf8;
+    --card-radius: 10px;
+    --card-radius-lg: 16px;
 }
 
-body.dark-theme{
+body.dark-theme {
     --bg: #0b0d12;
 
     --primary-color: #00a693;
@@ -62,7 +72,7 @@ body.dark-theme{
     --weather-surface2: #1c2130;
     --weather-text: #dde1ed;
     --weather-muted: rgba(221, 225, 237, .55);
-    --weather-border: rgba(255,255,255,.06);
+    --weather-border: rgba(255, 255, 255, .06);
     --weather-accent: #e8c84a;
     --weather-r-lg: 26px;
     --weather-r-md: 18px;
@@ -80,6 +90,22 @@ body.dark-theme{
     --post-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
     --post-radius: 10px;
     --post-radius-sm: 6px;
+
+    /* ────── LOGIN/CADASTRO ────── */
+
+    --card: #16181d;
+    --card-accent: #00bfa5;
+    --card-accent-dark: #009688;
+    --card-accent-light: rgba(0, 191, 165, 0.12);
+
+    --card-text: #f5f7fa;
+    --card-text-muted: #9ca3af;
+
+    --card-border: #2a2f38;
+    --card-input-bg: #1e2229;
+
+    --card-radius: 10px;
+    --card-radius-lg: 16px;
 }
 
 * {
@@ -93,12 +119,12 @@ body {
     background-color: var(--bg);
 }
 
-.container{
+.container {
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.theme-btn{
+.theme-btn {
     position: fixed;
     top: 50%;
     left: 20px;
@@ -117,11 +143,11 @@ body {
     z-index: 9999;
 }
 
-.theme-btn:hover{
+.theme-btn:hover {
     transform: translateY(-2px);
     background: var(--weather-surface2);
 }
 
-body.dark-theme .theme-btn{
+body.dark-theme .theme-btn {
     border: 1px solid white;
 }

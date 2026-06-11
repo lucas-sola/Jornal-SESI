@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="src/styles/perfil.css">
+    <link rel="stylesheet" href="src/styles/footer.css">
+    <link rel="stylesheet" href="src/styles/header.css">
+
+
+    <title>Edição de Perfil - Revista SESI</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sesi-teal': '#00796B',
+                        'sesi-teal-dark': '#005b53',
+                        'sesi-input-bg': '#ffffff',
+                        'sesi-footer-bg': '#005b53',
+                    },
+                    fontFamily: {
+                        sans: ['Hanken Grotesk', 'Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <button class="menu-hamburguer" id="hamburguer">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo-header">
+            <img src="src/images/logo-revista.png" class="logo" />
+        </div>
+        <div class="links-header">
+            <ul class="lista-links-header">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="noticias.html">Notícias</a></li>
+                <li><a href="esportes.html">Esportes</a></li>
+                <li><a href="cultura.html">Cultura</a></li>
+                <li><a href="ciencias.html">Ciências</a></li>
+                <li><a href="opiniao.html">Opinião</a></li>
+            </ul>
+        </div>
+        <div class="header-right">
+            <div class="pesquisa">
+                <button class="btn-pesquisa">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+                <div class="container-pesquisa">
+                    <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
+                </div>
+
+                <div class="container-pesquisa-desktop">
+                    <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
+                </div>
+            </div>
+
+            <a href="perfil.html" class="btn-perfil" title="Perfil" aria-label="Perfil">
+                <i class="fa-solid fa-user"></i>
+            </a>
+        </div>
+    </header>
+
+    <nav class="menu-mobile">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="noticias.html">Notícias</a></li>
+            <li><a href="esportes.html">Esportes</a></li>
+            <li><a href="cultura.html">Cultura</a></li>
+            <li><a href="ciencias.html">Ciências</a></li>
+            <li><a href="opiniao.html">Opinião</a></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <button id="themeToggle" class="theme-btn">
+            🌙
+        </button>
+        <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+            <!-- Left Column: Title, Subtitle & Avatar -->
+            <div class="lg:col-span-4 space-y-4">
+
+                <h1 class="text-white text-5xl font-extrabold uppercase tracking-tight leading-tight">
+                    Editar Perfil
+                </h1>
+
+                <p class="text-white/80 text-lg max-w-sm">
+                    Mantenha suas informações atualizadas para melhor visibilidade na revista.
+                </p>
+
+
+
+                <!-- Desktop Avatar -->
+                <div class="pt-12 hidden lg:flex flex-col items-start items-center" data-purpose="avatar-upload">
+                    <div class="relative">
+                        <div
+                            class="w-48 h-48 rounded-full border-8 border-white/10 overflow-hidden bg-white/20 flex items-center justify-center">
+                            <img id="avatar-image-desktop" class="w-full h-full object-cover hidden" />
+                            <svg id="avatar-placeholder-desktop" class="h-32 w-32 text-white/30" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <input type="file" id="avatar-input" accept="image/png, image/jpeg, image/jpg" style="display: none;" />
+
+                        <button id="btn-upload-desktop"
+                            class="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-2xl text-sesi-teal hover:scale-110 transition-transform"
+                            type="button">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                <path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <span id="txt-upload-desktop"
+                        class="text-white text-sm mt-6 font-bold uppercase tracking-widest border-b-2 border-white/30 pb-1 cursor-pointer hover:border-white transition-colors text-center">
+                        Alterar foto de perfil
+                    </span>
+                </div>
+
+            </div>
+            <!-- /Left Column -->
+
+
+            <!-- Right Column: Form -->
+            <div class="lg:col-span-8 bg-black/5 p-8 lg:p-12 rounded-3xl">
+
+                <!-- Mobile Avatar (Hidden on Desktop) -->
+                <div class="flex flex-col items-center mb-10 lg:hidden" data-purpose="avatar-upload-mobile">
+                    <div class="relative">
+                        <div
+                            class="w-32 h-32 rounded-full border-4 border-white/20 overflow-hidden bg-white/10 flex items-center justify-center">
+                            <img id="avatar-image-mobile" class="w-full h-full object-cover hidden" />
+                            <svg id="avatar-placeholder-mobile" class="h-20 w-20 text-white/40" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <button id="btn-upload-mobile" class="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-lg text-sesi-teal"
+                            type="button">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <span id="txt-upload-mobile" class="text-white text-xs mt-3 font-medium uppercase tracking-widest cursor-pointer">
+                        Alterar foto de perfil
+                    </span>
+                </div>
+                <!-- /Mobile Avatar -->
+
+                <form action="#" class="space-y-8">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        <!-- Name Input -->
+                        <div class="flex flex-col space-y-3">
+                            <label class="text-white text-xs font-bold uppercase tracking-widest" for="full_name">
+                                Seu Nome
+                            </label>
+                            <input class="custom-input w-full px-6 py-4 rounded-xl text-base font-medium shadow-sm"
+                                id="full_name" placeholder="Ex: João Silva" type="text">
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="flex flex-col space-y-3">
+                            <label class="text-white text-xs font-bold uppercase tracking-widest" for="email">
+                                Seu E-mail
+                            </label>
+                            <input class="custom-input w-full px-6 py-4 rounded-xl text-base font-medium shadow-sm"
+                                id="email" placeholder="email@exemplo.com" type="email">
+                        </div>
+
+                    </div>
+
+                    <!-- Bio Textarea -->
+                    <div class="flex flex-col space-y-3">
+                        <label class="text-white text-xs font-bold uppercase tracking-widest" for="bio">
+                            Bio (Resumo Profissional)
+                        </label>
+                        <textarea
+                            class="bio-textarea w-full px-6 py-4 rounded-xl text-base focus:ring-1 focus:ring-white/50 focus:border-white/50 transition-all"
+                            id="bio" placeholder="Conte um pouco sobre você..." rows="4"></textarea>
+                    </div>
+
+                    <!-- Category Select -->
+                    <div class="flex flex-col space-y-3">
+                        <label class="text-white text-xs font-bold uppercase tracking-widest" for="category">
+                            Categoria de Atuação
+                        </label>
+                        <div class="relative">
+                            <select
+                                class="bio-textarea w-full px-6 py-4 rounded-xl text-base appearance-none pr-12 cursor-pointer focus:ring-1 focus:ring-white/50"
+                                id="category">
+                                <option disabled selected value="">Selecione uma categoria...</option>
+                                <option value="noticias">Notícias</option>
+                                <option value="esportes">Esportes</option>
+                                <option value="cultura">Cultura</option>
+                                <option value="ciencias">Ciências</option>
+                                <option value="opiniao">Opinião</option>
+                            </select>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-white">
+                                <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                                    <path
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions Buttons -->
+                    <div class="pt-4 flex flex-col sm:flex-row justify-end items-center gap-4">
+                        <button id="btn-sair-perfil" onclick="window.location.href='login.html'"
+                            class="btn-sair-perfil w-full sm:w-auto min-w-[200px] py-5 px-10 flex items-center justify-center space-x-3 active:scale-[0.98]"
+                            type="button">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            <span class="text-base uppercase tracking-widest">Sair</span>
+                        </button>
+                        
+                        <button
+                            class="w-full sm:w-auto min-w-[280px] bg-white text-sesi-teal py-5 px-10 rounded-xl font-bold flex items-center justify-center space-x-3 transition-all hover:bg-gray-50 hover:shadow-xl active:scale-[0.98]"
+                            data-purpose="save-button" type="submit">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                            </svg>
+                            <span class="text-base uppercase tracking-widest">Salvar Alterações</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /Right Column -->
+
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer__top">
+            <div class="container footer__grid">
+                <div class="footer__brand">
+                    <img src="src/images/logo-revista.png" class="footer__logo" alt="Logo Revista SESI" />
+                    <p class="footer__tagline">Informação que conecta, inspira e transforma.</p>
+                    <div class="footer__socials">
+                        <a href="#" class="footer__social-btn" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="Twitter / X">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#" class="footer__social-btn" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="footer__links">
+                    <h4 class="footer__heading">Navegação</h4>
+                    <ul class="footer__list">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="noticias.html">Notícias</a></li>
+                        <li><a href="esportes.html">Esportes</a></li>
+                        <li><a href="cultura.html">Cultura</a></li>
+                        <li><a href="ciencias.html">Ciências</a></li>
+                        <li><a href="opiniao.html">Opinião</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__newsletter">
+                    <h4 class="footer__heading">Envie seus textos</h4>
+                    <p class="footer__newsletter-desc">
+                        Tem uma história para contar? Envie seu texto e faça parte da nossa revista!
+                    </p>
+                    <form class="footer__form" id="formEnvioTexto">
+                        <div class="footer__form-group">
+                            <label for="footerNome" class="footer__label">Seu nome</label>
+                            <input type="text" id="footerNome" class="footer__input" placeholder="Ex: João Silva"
+                                required />
+                        </div>
+                        <div class="footer__form-group">
+                            <label for="footerEmail" class="footer__label">Seu e-mail</label>
+                            <input type="email" id="footerEmail" class="footer__input" placeholder="email@exemplo.com"
+                                required />
+                        </div>
+                        <div class="footer__form-group">
+                            <label for="footerCategoria" class="footer__label">Categoria</label>
+                            <select id="footerCategoria" class="footer__input footer__select">
+                                <option value="">Selecione uma categoria…</option>
+                                <option value="noticias">Notícias</option>
+                                <option value="esportes">Esportes</option>
+                                <option value="cultura">Cultura</option>
+                                <option value="ciencias">Ciências</option>
+                                <option value="opiniao">Opinião</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="footer__btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Enviar texto
+                        </button>
+                        <p class="footer__success" id="footerSuccess">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Recebemos seu texto! Entraremos em contato em breve.
+                        </p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer__bottom">
+            <div class="container footer__bottom-inner">
+                <span>© 2026 Revista SESI · Todos os direitos reservados</span>
+                <span class="footer__bottom-links">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="src/scripts/global.js"></script>
+    <script src="src/scripts/perfil.js"></script>
+</body>
+
+</html>

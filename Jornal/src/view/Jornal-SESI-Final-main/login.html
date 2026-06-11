@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles/login-cadastro.css">
+    <link rel="stylesheet" href="src/styles/root.css">
+    <title>Jornal SESI | Login</title>
+</head>
+
+<body>
+    <main class="main">
+
+        <button id="themeToggle" class="theme-btn">
+            🌙
+        </button>
+
+        <div class="card">
+            <div class="header-card">
+                <div class="logo-mark">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <h1>Login</h1>
+                <p>Preencha os dados para acessar o sistema</p>
+            </div>
+
+            <form id="formulario" novalidate>
+                <div class="field">
+                    <label for="nome">Nome Completo</label>
+                    <input id="nome" type="text" placeholder="Seu nome" autocomplete="name" />
+                </div>
+
+                <div class="field">
+                    <label for="senha">Senha</label>
+                    <input id="senha" type="password" placeholder="Sua senha">
+                </div>
+
+                <button type="submit" class="btn-registro">Login</button>
+
+            </form>
+
+            <div class="footer-card">
+                <span>Não tem uma conta?</span>
+                <a href="cadastro.html">Registre-se</a>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="src/scripts/global.js"></script>
+    <script src="src/scripts/scripts login/login.js"></script>
+</body>
+
+</html>

@@ -301,59 +301,21 @@ function iniciarUploadVideo() {
     })
 }
 
-async function iniciarBotoesAcao() {
-    document.querySelector('.btn-draft').addEventListener('click', () => showToast('Rascunho salvo!'));
+function iniciarBotoesAcao() {
+    document.querySelector('.btn-draft').addEventListener('click', () => showToast('Rascunho salvo!'))
 
-    document.querySelector('.btn-review').addEventListener('click', () => showToast('Abrindo prévia...'));
+    document.querySelector('.btn-review').addEventListener('click', () => showToast('Abrindo prévia...'))
 
-    const btnPublish = document.querySelector('.btn-publish');
-    btnPublish.addEventListener('click', async () => {
-        const titulo = document.querySelector('.field-input').value.trim();
-        const conteudo = document.querySelector('.editor-body').innerHTML.trim();
-        const tags = [...document.querySelectorAll('.tag-chip span')].map(s => s.textContent);
+    document.querySelector('.btn-publish').addEventListener('click', () => {
+        const titulo = document.querySelector('.campo-input').value.trim()
 
-        if (!titulo || !conteudo) {
-            showToast('Por favor, preencha o título e o conteúdo!', 'error');
-            return;
+        if (!titulo){
+            showToast('Por favor, adicione um título antes de publicar', 'error')
+            return
         }
 
-        btnPublish.disabled = true;
-        btnPublish.textContent = 'Publicando...';
-
-        try {
-            const dados = {
-                titulo: titulo,
-                conteudo: conteudo,
-                resumo: document.querySelector('.editor-body').textContent.substring(0, 150) + '...',
-                data_publicacao: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                autor_id: 1 // TODO: Pegar ID do usuário logado
-            };
-
-            const response = await fetch('/api/publicacoes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dados)
-            });
-
-            if (response.ok) {
-                showToast('Publicado com sucesso!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            } else {
-                const erro = await response.json();
-                showToast(`Erro: ${erro.message || 'Falha ao publicar'}`, 'error');
-            }
-        } catch (error) {
-            console.error('Erro na requisição:', error);
-            showToast('Erro de conexão com o servidor', 'error');
-        } finally {
-            btnPublish.disabled = false;
-            btnPublish.textContent = 'Publicar';
-        }
-    });
+        showToast('Publicado com sucesso!', 'success')
+    })
 }
 
 /* ─── Auxiliadores ───────────────────────────────────────────────────── */

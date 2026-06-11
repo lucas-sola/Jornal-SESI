@@ -4,16 +4,32 @@ const { criarErro } = require("../utils/errorJornal.js");
 class PublicacaoRepository {
   async listarPublicacoes() {
     try {
-      const [rows] = await pool.query("SELECT * FROM publicacao");
+      const query = `
+        SELECT p.*, a.nome as autor_nome, g.nome as genero_nome 
+        FROM publicacao p
+        INNER JOIN autor a ON p.autor_id = a.id
+        INNER JOIN generos g ON p.genero_id = g.id
+        ORDER BY p.id ASC
+      `;
+      const [rows] = await pool.query(query);
       return rows;
     } catch (error) {
+      console.error("Erro real ao listar publicações:", error.message || error);
       throw criarErro("Erro ao listar publicações", 500);
     }
   }
 
   async buscarPublicacao(id) {
     try {
-      const [rows] = await pool.query("SELECT * FROM publicacao WHERE id = ?", [id]);
+      const query = `
+        SELECT p.*, a.nome as autor_nome, g.nome as genero_nome, t.nome as tema_principal_nome 
+        FROM publicacao p
+        INNER JOIN autor a ON p.autor_id = a.id
+        INNER JOIN generos g ON p.genero_id = g.id
+        INNER JOIN temas_principais t ON p.tema_principal_id = t.id
+        WHERE p.id = ?
+      `;
+      const [rows] = await pool.query(query, [id]);
       return rows[0];
     } catch (error) {
       throw criarErro("Erro ao buscar publicação", 500);
