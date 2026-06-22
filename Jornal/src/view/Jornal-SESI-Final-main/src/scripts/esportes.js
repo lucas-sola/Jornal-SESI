@@ -68,7 +68,9 @@ function criarCardElement(noticia) {
     // Determinar imagem
     let imgSrc = 'src/images/foto-sesi.jpg';
     if (noticia.imagem_destaque) {
-        imgSrc = noticia.imagem_destaque.startsWith('http') ? noticia.imagem_destaque : `/uploads/${noticia.imagem_destaque}`;
+        imgSrc = noticia.imagem_destaque.startsWith('http') || noticia.imagem_destaque.startsWith('src/')
+            ? noticia.imagem_destaque 
+            : `/uploads/${noticia.imagem_destaque}`;
     }
 
     // Como é a página de Esportes, marcamos como "Esportes" ou mantemos o tema original
@@ -136,7 +138,7 @@ function iniciarAnimacaoECurtidas() {
         containerLikes.style.transition = 'all 0.2s ease';
 
         const key = `likes-pub-${postId}`;
-        let count = parseInt(localStorage.getItem(key) || Math.floor(Math.random() * 40) + 10);
+        let count = parseInt(localStorage.getItem(key) || 0);
         let curtido = localStorage.getItem(`curtido-pub-${postId}`) === 'true';
 
         containerLikes.innerHTML = `

@@ -1,4 +1,4 @@
-﻿const publicacaoRepository = require("../repositories/PublicacaoRepositoryu.js");
+const publicacaoRepository = require("../repositories/PublicacaoRepositoryu.js");
 const { criarErro } = require("../utils/errorJornal.js");
 
 function validarNumero(id) {
@@ -60,6 +60,7 @@ class PublicacaoService {
         edicao_id: dados.edicao_id != null && dados.edicao_id !== "" ? Number(dados.edicao_id) : null,
         genero_id: Number(genero_id),
         tema_principal_id: Number(tema_principal_id),
+        tags: dados.tags != null ? String(dados.tags).trim() : null,
       };
       const id = await publicacaoRepository.cadastrarPublicacao(novo);
       return {

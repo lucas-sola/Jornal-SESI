@@ -1,327 +1,344 @@
-document.addEventListener('DOMContentLoaded', () => {
-    iniciarTabs()
-    iniciarTags()
-    iniciarToolbar()
-    iniciarPreviewConteudo()
-    iniciarGaleria()
-    iniciarUploadVideo()
-    iniciarBotoesAcao()
+const STORAGE_KEY = 'sesiUsuario'
+
+let imagemSelecionada = null
+let autorLogado = null
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await verificarAcessoAutor()
 })
 
-function iniciarTabs(){
-    const tabs = document.querySelectorAll('.tab')
-
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'))
-
-            tab.classList.add('active')
-
-            showToast(`Aba "${tab.textContent.trim()}" selecionada`)
-        })
-    })
+function obterUsuarioLogado() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY))
+    } catch {
+        return null
+    }
 }
 
-function iniciarTags(){
-    const tagInput = document.querySelector('#tagInput')
-    const addTagBtn = document.querySelector('#addTagBtn')
-    const tagList = document.querySelector('#tagsList')
+function headersAutor(autorId) {
+    return { 'X-Usuario-Id': String(autorId) }
+}
 
-    function criarTag(valor){
-        const texto = valor.trim()
+async function verificarAcessoAutor() {
+    const usuario = obterUsuarioLogado()
+    const acessoNegado = document.getElementById('acesso-negado')
+    const publicacaoApp = document.getElementById('publicacao-app')
 
-        if (!texto) return
+    if (!usuario?.id) {
+        acessoNegado.classList.remove('hidden')
+        return
+    }
 
-        const existente = [...tagList.querySelectorAll('.tag-chip span')].map(span => span.textContent.toLocaleLowerCase());
-        
-        if (existente.includes(texto.toLowerCase())) {
-            showToast('Tag já adicionada', 'error')
+    try {
+        const response = await fetch(`/api/autores/${usuario.id}`)
+        const json = await response.json()
+
+        if (!response.ok || !json.sucesso || !json.dados?.email) {
+            acessoNegado.classList.remove('hidden')
             return
         }
 
-        const chip = document.createElement('span')
-
-        chip.className = 'tag-chip'
-
-        chip.innerHTML=`
-            <span>${texto}</span>
-            <button title="Remover tag">&times;</button>
-        `
-
-        chip.querySelector('button').addEventListener('click', () => {
-            chip.style.transform = 'scale(0.8)'
-            chip.style.opacity = '0'
-            chip.style.transition = 'all 0.15s ease'
-
-            setTimeout(() => chip.remove(), 150)
-        })
-
-        tagList.appendChild(chip)
-        tagInput.value = ''
-        tagInput.focus()
+        autorLogado = json.dados
+        publicacaoApp.classList.remove('hidden')
+        preencherDadosAutor(autorLogado)
+        await carregarOpcoesFormulario()
+        iniciarFormulario()
+        iniciarImagemDestaque()
+        iniciarPreview()
+    } catch {
+        acessoNegado.classList.remove('hidden')
     }
-
-    addTagBtn.addEventListener('click', () => {criarTag(tagInput.value)})
-
-    tagInput.addEventListener('keydown', event => {
-        if (event.key === 'Enter'){
-            event.preventDefault()
-            criarTag(tagInput.value)
-        }
-    })
 }
 
-function iniciarToolbar(){
-    const btns = document.querySelectorAll('.toolbar-btn')
+function preencherDadosAutor(autor) {
+    document.getElementById('autor-nome').textContent = autor.nome
+    document.getElementById('autor-email').textContent = autor.email
 
-    btns.forEach(botao => {
-        botao.addEventListener('click', () => {
-            btns.forEach(btn => btn.classList.remove('active'))
-            botao.classList.add('active')
-
-            setTimeout(() => {
-                botao.classList.remove('active')
-            }, 1200);
-        })
-    })
+    const avatarEl = document.getElementById('autor-avatar')
+    if (autor.foto) {
+        const fotoUrl = autor.foto.startsWith('http') ? autor.foto : `/${autor.foto}`
+        avatarEl.innerHTML = `<img src="${fotoUrl}" alt="${autor.nome}" class="avatar-img" />`
+    }
 }
 
-function iniciarPreviewConteudo(){
-    const tituloInput = document.querySelector('input[placeholder="Digite o título do seu vídeo..."]')
-    const editorCorpo = document.querySelector('.editor-body')
-    const previewBody = document.querySelector('#contentPreviewBody')
-    const previewBadge = document.querySelector('#previewBadge')
+async function carregarOpcoesFormulario() {
+    const [generosRes, temasRes, categoriasRes] = await Promise.all([
+        fetch('/api/generos'),
+        fetch('/api/temas-principais'),
+        fetch('/api/categorias'),
+    ])
 
-    function atualizarPreview(){
-        const titulo = tituloInput ? tituloInput.value.trim() : ''
-        const texto = editorCorpo.innerHTML.trim()
+    const generosJson = await generosRes.json()
+    const temasJson = await temasRes.json()
+    const categoriasJson = await categoriasRes.json()
 
-        const possuiConteudo = titulo.length > 0 || texto.length > 0
+    const generoSelect = document.getElementById('genero')
+    const temaSelect = document.getElementById('tema')
+    const categoriasContainer = document.getElementById('categorias-container')
 
-        if (possuiConteudo){
-            previewBody.innerHTML = ''
+    ;(generosJson.dados || []).forEach((genero) => {
+        const option = document.createElement('option')
+        option.value = genero.id
+        option.textContent = genero.nome
+        generoSelect.appendChild(option)
+    })
 
-            if (titulo) {
-                const tituloEl = document.createElement('h4')
-                tituloEl.className = 'content-preview-title'
-                tituloEl.textContent = titulo
+    ;(temasJson.dados || []).forEach((tema) => {
+        const option = document.createElement('option')
+        option.value = tema.id
+        option.textContent = tema.nome
+        temaSelect.appendChild(option)
+    })
 
-                previewBody.appendChild(tituloEl)
-            }
+    ;(categoriasJson.dados || []).forEach((cat) => {
+        const wrapper = document.createElement('label')
+        wrapper.style.display = 'flex'
+        wrapper.style.alignItems = 'center'
+        wrapper.style.gap = '6px'
+        wrapper.style.cursor = 'pointer'
+        wrapper.style.fontSize = '13px'
+        wrapper.style.color = 'var(--text-color)'
+        wrapper.style.background = 'var(--post-bg)'
+        wrapper.style.padding = '4px 10px'
+        wrapper.style.borderRadius = '20px'
+        wrapper.style.border = '1px solid var(--post-border)'
 
-            if (texto) {
-                const textoEl = document.createElement('div')
-                textoEl.className = 'content-preview-text'
-                textoEl.innerHTML = editorCorpo.innerHTML
+        const checkbox = document.createElement('input')
+        checkbox.type = 'checkbox'
+        checkbox.name = 'categorias'
+        checkbox.value = cat.nome
+        checkbox.style.cursor = 'pointer'
 
-                previewBody.appendChild(textoEl)
-            }
+        checkbox.addEventListener('change', atualizarPreview)
 
-            previewBadge.textContent = `${titulo.length + texto.length} car.`
-            previewBadge.classList.add('has-content')
-            previewBody.scrollTop = previewBody.scrollHeight
-        } else {
-            previewBody.innerHTML = ''
-            const vazio = document.createElement('p')
+        wrapper.appendChild(checkbox)
+        wrapper.appendChild(document.createTextNode(cat.nome))
+        categoriasContainer.appendChild(wrapper)
+    })
 
-            vazio.className = 'content-preview-empty'
-            vazio.textContent = 'Comece a digitar o título ou a matéria para ver a prévia!'
-
-            previewBody.appendChild(vazio)
-            previewBadge.textContent = 'Vazio'
-            previewBadge.classList.remove('has-content')
+    if (autorLogado?.area_interesse) {
+        const mapaTema = {
+            noticias: 'Conflitos Bélicos',
+            esportes: 'Avanço Tecnológico',
+            cultura: 'Meio Ambiente',
+            ciencias: 'Ciência',
+            opiniao: 'Legislações Atuais',
+        }
+        const temaPreferido = mapaTema[autorLogado.area_interesse]
+        if (temaPreferido) {
+            const option = Array.from(temaSelect.options).find((opt) => opt.textContent === temaPreferido)
+            if (option) temaSelect.value = option.value
         }
     }
+}
 
-    editorCorpo.addEventListener('input', atualizarPreview)
+function iniciarFormulario() {
+    const form = document.getElementById('form-publicacao')
+    const btnLimpar = document.getElementById('btnLimpar')
 
-    if (tituloInput) tituloInput.addEventListener('input', atualizarPreview)
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault()
+        await publicarTexto()
+    })
 
+    btnLimpar.addEventListener('click', limparFormulario)
+}
+
+function iniciarImagemDestaque() {
+    const input = document.getElementById('imagemInput')
+    const zone = document.getElementById('imagemDestaqueZone')
+    const preview = document.getElementById('imagemDestaquePreview')
+    const previewImg = document.getElementById('imagemDestaqueImg')
+    const btnRemover = document.getElementById('btnRemoverImagem')
+
+    input.addEventListener('change', () => {
+        if (input.files[0]) definirImagem(input.files[0])
+    })
+
+    btnRemover.addEventListener('click', () => {
+        imagemSelecionada = null
+        input.value = ''
+        preview.classList.add('hidden')
+        zone.classList.remove('hidden')
+        atualizarPreview()
+    })
+
+    setupDragDrop(zone, (arquivos) => {
+        const imagem = arquivos.find((arquivo) => arquivo.type.startsWith('image/'))
+        if (imagem) definirImagem(imagem)
+    })
+
+    function definirImagem(arquivo) {
+        if (!/^image\/(jpeg|jpg|png|webp)$/.test(arquivo.type)) {
+            showToast('Apenas imagens JPG, PNG ou WEBP são permitidas.', 'error')
+            return
+        }
+
+        if (arquivo.size > 8 * 1024 * 1024) {
+            showToast('A imagem deve ter no máximo 8MB.', 'error')
+            return
+        }
+
+        imagemSelecionada = arquivo
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            previewImg.src = e.target.result
+            preview.classList.remove('hidden')
+            zone.classList.add('hidden')
+            atualizarPreview()
+        }
+        reader.readAsDataURL(arquivo)
+    }
+}
+
+function iniciarPreview() {
+    ;['titulo', 'subtitulo', 'conteudo'].forEach((id) => {
+        const el = document.getElementById(id)
+        el.addEventListener('input', atualizarPreview)
+    })
     atualizarPreview()
 }
 
-function iniciarGaleria() {
-    const imgInput = document.querySelector('#imgInput')
-    const imgUpload = document.querySelector('#imgUploadZone')
-    const galeriaGrid = document.querySelector('#galleryGrid')
+function atualizarPreview() {
+    const titulo = document.getElementById('titulo').value.trim()
+    const subtitulo = document.getElementById('subtitulo').value.trim()
+    const conteudo = document.getElementById('conteudo').value.trim()
+    const previewBody = document.getElementById('contentPreviewBody')
+    const previewBadge = document.getElementById('previewBadge')
 
-    const maximo = 10
+    const possuiConteudo = titulo || subtitulo || conteudo || imagemSelecionada
 
-    construirSlots(maximo)
-
-    function construirSlots(quantidade) {
-        galeriaGrid.innerHTML = ''
-
-        for (let i = 0; i < quantidade; i++){
-            const slot = document.createElement('div')
-
-            slot.className = 'gallery-item'
-
-            slot.innerHTML = `
-                <svg viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="4" width="20" height="16" rx="2"
-                        stroke="currentColor" stroke-width="1.5"/>
-
-                    <circle cx="8" cy="9" r="2"
-                        stroke="currentColor" stroke-width="1.2"/>
-
-                    <path d="M2 17l5-5 4 4 3-3 7 5"
-                        stroke="currentColor"
-                        stroke-width="1.2"
-                        stroke-linejoin="round"/>
-                </svg>
-                `
-            
-            galeriaGrid.appendChild(slot)
-        }
+    if (!possuiConteudo) {
+        previewBody.innerHTML = '<p class="content-preview-empty">Preencha título, subtítulo e texto para ver a prévia.</p>'
+        previewBadge.textContent = 'Vazio'
+        previewBadge.classList.remove('has-content')
+        return
     }
 
-    function pegarSlotsVazios() {
-        return [...galeriaGrid.querySelectorAll('.gallery-item:not(.has-image)')]
+    previewBody.innerHTML = ''
+
+    if (imagemSelecionada) {
+        const imgWrap = document.createElement('div')
+        imgWrap.className = 'content-preview-image'
+        const img = document.createElement('img')
+        img.src = document.getElementById('imagemDestaqueImg').src
+        img.alt = 'Prévia da imagem'
+        imgWrap.appendChild(img)
+        previewBody.appendChild(imgWrap)
     }
 
-    function adicionarImagens(arquivos){
-        const vazio = pegarSlotsVazios()
-
-        if (vazio.length === 0){ 
-            showToast('Galeria cheia (máx. 10 imagens)', 'error')
-            return
-        }
-
-        const total = Math.min(arquivos.length, vazio.length)
-
-        for (let i = 0; i < total; i++) {
-            const arquivo = arquivos[i]
-
-            if (!arquivo.type.startsWith('image/')) continue
-
-            const leitor = new FileReader()
-            const slot = vazio[i]
-
-            leitor.onload = event => {
-                slot.innerHTML = `
-                    <img src="${event.target.result}" alt="${arquivo.name}" />
-
-                    <div class="gallery-item-overlay">
-                        <button title="Remover imagem">
-                            <svg viewBox="0 0 16 16" fill="none">
-                                <path d="M5 3h6M3 5h10l-1 8H4L3 5z"
-                                    stroke="currentColor"
-                                    stroke-width="1.2"
-                                    stroke-linejoin="round"/>
-
-                                <path d="M7 7v4M9 7v4"
-                                    stroke="currentColor"
-                                    stroke-width="1.2"
-                                    stroke-linecap="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                `
-                slot.classList.add('has-image')
-                slot.querySelector('button').addEventListener('click', () => removerImagem(slot))
-            }
-
-            leitor.readAsDataURL(arquivo)
-        }
+    if (titulo) {
+        const h4 = document.createElement('h4')
+        h4.className = 'content-preview-title'
+        h4.textContent = titulo
+        previewBody.appendChild(h4)
     }
 
-    function removerImagem(slot){
-        slot.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="4" width="20" height="16" rx="2"
-                    stroke="currentColor" stroke-width="1.5"/>
-
-                <circle cx="8" cy="9" r="2"
-                    stroke="currentColor" stroke-width="1.2"/>
-
-                <path d="M2 17l5-5 4 4 3-3 7 5"
-                    stroke="currentColor"
-                    stroke-width="1.2"
-                    stroke-linejoin="round"/>
-            </svg>
-        `
-
-        slot.classList.remove('has-image')
+    if (subtitulo) {
+        const p = document.createElement('p')
+        p.className = 'content-preview-subtitle'
+        p.textContent = subtitulo
+        previewBody.appendChild(p)
     }
 
-    imgInput.addEventListener('change', event => {
-        adicionarImagens([...event.target.files])
-    })
+    if (conteudo) {
+        const div = document.createElement('div')
+        div.className = 'content-preview-text'
+        div.textContent = conteudo
+        previewBody.appendChild(div)
+    }
 
-    setupDragDrop(imgUpload, arquivos => adicionarImagens(arquivos))
+    previewBadge.textContent = `${conteudo.length} car.`
+    previewBadge.classList.add('has-content')
 }
 
-function iniciarUploadVideo() {
-    const videoInput = document.querySelector('#videoInput')
-    const videoUploadZone = document.querySelector('#videoUploadZone')
-    const videoPreview = document.querySelector('#videoPreview')
-    const videoPlayer = document.querySelector('#videoPlayer')
-    const removeVideoBtn = document.querySelector('#removeVideo')
+function validarFormulario() {
+    const titulo = document.getElementById('titulo').value.trim()
+    const conteudo = document.getElementById('conteudo').value.trim()
+    const genero = document.getElementById('genero').value
+    const tema = document.getElementById('tema').value
 
-    function carregarVideo(arquivo){
-        if (!arquivo || !arquivo.type.startsWith('video/')){
-            showToast('Por favor, selecione um arquivo de vídeo.', 'error')
-            return
-        }
-
-        const url = URL.createObjectURL(arquivo)
-
-        videoPlayer.src = url
-        videoUploadZone.classList.add('hidden')
-        videoPreview.classList.remove('hidden')
-
-        showToast('Vídeo carregado com sucesso!', 'success')
+    if (!titulo) {
+        showToast('Preencha o título da matéria.', 'error')
+        return false
     }
 
-    videoInput.addEventListener('change', event => {
-        if (event.target.files[0]) carregarVideo(event.target.files[0]) 
-    })
+    if (!conteudo) {
+        showToast('Preencha o texto principal.', 'error')
+        return false
+    }
 
-    removeVideoBtn.addEventListener('click', () => {
-        videoPlayer.pause()
-        videoPlayer.src = ''
+    if (!genero || !tema) {
+        showToast('Selecione o gênero e o tema principal.', 'error')
+        return false
+    }
 
-        videoPreview.classList.add('hidden')
-        videoUploadZone.classList.remove('hidden')
-
-        videoInput.value = ''
-
-        showToast('Vídeo removido')
-    })
-
-    setupDragDrop(videoUploadZone, arquivos => {
-        const video = [...arquivos].find(arquivo => arquivo.type.startsWith('video/'))
-
-        if (video) {
-            carregarVideo(video)
-        } else{
-            showToast ('Por favor, solte um arquivo de vídeo', 'error')
-        }
-    })
+    return true
 }
 
-function iniciarBotoesAcao() {
-    document.querySelector('.btn-draft').addEventListener('click', () => showToast('Rascunho salvo!'))
+async function publicarTexto() {
+    if (!validarFormulario() || !autorLogado) return
 
-    document.querySelector('.btn-review').addEventListener('click', () => showToast('Abrindo prévia...'))
+    const btn = document.getElementById('btnPublicar')
+    const textoOriginal = btn.innerHTML
+    btn.disabled = true
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publicando...'
 
-    document.querySelector('.btn-publish').addEventListener('click', () => {
-        const titulo = document.querySelector('.campo-input').value.trim()
+    try {
+        const formData = new FormData()
+        formData.append('titulo', document.getElementById('titulo').value.trim())
+        formData.append('subtitulo', document.getElementById('subtitulo').value.trim())
+        formData.append('conteudo', document.getElementById('conteudo').value.trim())
+        formData.append('genero_id', document.getElementById('genero').value)
+        formData.append('tema_principal_id', document.getElementById('tema').value)
+        
+        const checkboxes = document.querySelectorAll('#categorias-container input[type="checkbox"]:checked')
+        const tags = Array.from(checkboxes).map(cb => cb.value).join(', ')
+        formData.append('tags', tags)
+        formData.append('destaque', document.getElementById('destaque').checked)
 
-        if (!titulo){
-            showToast('Por favor, adicione um título antes de publicar', 'error')
-            return
+        if (imagemSelecionada) {
+            formData.append('imagem_destaque', imagemSelecionada)
         }
 
-        showToast('Publicado com sucesso!', 'success')
-    })
+        const response = await fetch('/api/publicacoes/autor', {
+            method: 'POST',
+            headers: headersAutor(autorLogado.id),
+            body: formData,
+        })
+
+        const json = await response.json()
+
+        if (!response.ok || !json.sucesso) {
+            throw new Error(json.erro || 'Erro ao publicar a matéria.')
+        }
+
+        showToast('Texto publicado com sucesso!', 'success')
+        limparFormulario()
+
+        setTimeout(() => {
+            window.location.href = `materia.html?id=${json.id}`
+        }, 1200)
+    } catch (err) {
+        showToast(err.message || 'Erro ao publicar.', 'error')
+    } finally {
+        btn.disabled = false
+        btn.innerHTML = textoOriginal
+    }
 }
 
-/* ─── Auxiliadores ───────────────────────────────────────────────────── */
+function limparFormulario() {
+    document.getElementById('form-publicacao').reset()
+    imagemSelecionada = null
+    document.getElementById('imagemInput').value = ''
+    document.getElementById('imagemDestaquePreview').classList.add('hidden')
+    document.getElementById('imagemDestaqueZone').classList.remove('hidden')
+    atualizarPreview()
+    showToast('Formulário limpo.')
+}
 
-function setupDragDrop(zone, callback){
-    zone.addEventListener('dragover', event => {
+function setupDragDrop(zone, callback) {
+    zone.addEventListener('dragover', (event) => {
         event.preventDefault()
         zone.classList.add('drag-over')
     })
@@ -330,12 +347,10 @@ function setupDragDrop(zone, callback){
         zone.classList.remove('drag-over')
     })
 
-    zone.addEventListener('drop', event => {
+    zone.addEventListener('drop', (event) => {
         event.preventDefault()
-
         zone.classList.remove('drag-over')
-
-        if (event.dataTransfer.files.length){
+        if (event.dataTransfer.files.length) {
             callback([...event.dataTransfer.files])
         }
     })
@@ -343,15 +358,15 @@ function setupDragDrop(zone, callback){
 
 let toastTimer = null
 
-function showToast(message, type = ''){
-    const toast = document.querySelector('#toast')
+function showToast(message, type = '') {
+    const toast = document.getElementById('toast')
     toast.textContent = message
     toast.className = 'toast' + (type ? ` ${type}` : '')
     toast.classList.remove('hidden')
 
     if (toastTimer) clearTimeout(toastTimer)
-    
+
     toastTimer = setTimeout(() => {
         toast.classList.add('hidden')
-    }, 2800)
+    }, 3200)
 }

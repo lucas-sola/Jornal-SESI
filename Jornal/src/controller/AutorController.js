@@ -117,6 +117,24 @@ class AutorController {
     }
   }
 
+  async buscarDadosPessoais(req, res) {
+    try {
+      const result = await autorService.buscarDadosPessoais(req.params.id);
+      res.json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
+  async atualizarDadosPessoais(req, res) {
+    try {
+      const result = await autorService.atualizarDadosPessoais(req.body, req.params.id);
+      res.json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
+
   async buscarFotoPerfil(req, res) {
     try {
       const { id } = req.params;

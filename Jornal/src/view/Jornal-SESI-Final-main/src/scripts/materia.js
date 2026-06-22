@@ -38,6 +38,17 @@ function formatarData(dataStr) {
     });
 }
 
+function obterTagsPublicacao(noticia) {
+    const tags = [];
+    const categoriaInfo = obterCategoriaInfo(noticia);
+
+    if (categoriaInfo?.nome) tags.push(categoriaInfo.nome);
+    if (noticia.tema_principal_nome) tags.push(noticia.tema_principal_nome);
+    if (noticia.genero_nome) tags.push(noticia.genero_nome);
+
+    return [...new Set(tags.filter(Boolean))];
+}
+
 function obterCategoriaInfo(noticia) {
     // Esportes: Tema principal 'Esportes'
     if (noticia.tema_principal_nome === 'Esportes') {
@@ -147,14 +158,10 @@ function preencherMateria(noticia) {
     const tagsContainer = document.getElementById('materia-tags');
     if (tagsContainer) {
         tagsContainer.innerHTML = '';
-        const tags = [];
-        if (noticia.tema_principal_nome) tags.push(noticia.tema_principal_nome);
-        if (noticia.genero_nome) tags.push(noticia.genero_nome);
-        
-        tags.forEach(tagText => {
+        obterTagsPublicacao(noticia).forEach((tagText) => {
             const span = document.createElement('span');
-            span.className = 'materia-tag-item';
-            span.textContent = tagText;
+            span.className = 'materia-tag-chip';
+            span.innerHTML = `<i class="fa-solid fa-tag" aria-hidden="true"></i>${tagText}`;
             tagsContainer.appendChild(span);
         });
     }
@@ -176,7 +183,7 @@ function configurarCurtidas(postId) {
     const key = `likes-pub-${postId}`;
     const keyCurtido = `curtido-pub-${postId}`;
 
-    let count = parseInt(localStorage.getItem(key) || Math.floor(Math.random() * 40) + 15);
+    let count = parseInt(localStorage.getItem(key) || 0);
     let curtido = localStorage.getItem(keyCurtido) === 'true';
 
     likesCount.textContent = count;
@@ -304,7 +311,7 @@ async function carregarRelacionadas(materiaAtual) {
 
 function criarCardRelacionada(noticia) {
     const card = document.createElement('article');
-    card.className = 'relacionada-card';
+    card.className = 'post-card';
 
     let imgSrc = 'src/images/foto-sesi.jpg';
     if (noticia.imagem_destaque) {
@@ -314,17 +321,25 @@ function criarCardRelacionada(noticia) {
     }
 
     const categoriaInfo = obterCategoriaInfo(noticia);
+    const tag = noticia.tema_principal_nome || noticia.genero_nome || categoriaInfo.nome;
+    const resumo = noticia.resumo || (noticia.conteudo ? noticia.conteudo.substring(0, 120) + '...' : '');
+    const autor = noticia.autor_nome || 'Equipe SESI';
+    const dataFormatada = formatarData(noticia.data_publicacao || noticia.data_criacao);
 
     card.innerHTML = `
-        <div class="relacionada-img-wrap">
-            <img src="${imgSrc}" alt="${noticia.titulo}" class="relacionada-img" />
+        <div class="post-card-img-wrap">
+            <img src="${imgSrc}" alt="${noticia.titulo}" class="post-card-img" />
         </div>
-        <div class="relacionada-content">
-            <span class="relacionada-tag">${noticia.tema_principal_nome || noticia.genero_nome || categoriaInfo.nome}</span>
-            <h3 class="relacionada-card-titulo">
+        <div class="post-card-content">
+            <span class="post-card-tag">${tag}</span>
+            <h3 class="post-card-title">
                 <a href="materia.html?id=${noticia.id}">${noticia.titulo}</a>
             </h3>
-            <span class="relacionada-date">${formatarData(noticia.data_publicacao || noticia.data_criacao)}</span>
+            <p class="post-card-excerpt">${resumo}</p>
+            <div class="post-card-footer">
+                <span class="post-card-author">Por: ${autor}</span>
+                <span>${dataFormatada}</span>
+            </div>
         </div>
     `;
 

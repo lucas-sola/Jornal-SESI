@@ -55,6 +55,12 @@
     --card-input-bg: #fafaf8;
     --card-radius: 10px;
     --card-radius-lg: 16px;
+
+    --text-color: #1a1a1a;
+    --text-muted: #6b7280;
+    --surface: var(--weather-surface);
+    --gap: var(--weather-gap);
+    --muted: var(--weather-muted);
 }
 
 body.dark-theme {
@@ -106,6 +112,12 @@ body.dark-theme {
 
     --card-radius: 10px;
     --card-radius-lg: 16px;
+
+    --text-color: #e8eaed;
+    --text-muted: #9ca3af;
+    --surface: var(--weather-surface);
+    --gap: var(--weather-gap);
+    --muted: var(--weather-muted);
 }
 
 * {
@@ -149,5 +161,56 @@ body {
 }
 
 body.dark-theme .theme-btn {
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: var(--weather-surface2);
+    color: var(--text-color);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MODO ESCURO — ajustes globais do site
+   ═══════════════════════════════════════════════════════ */
+
+body.dark-theme {
+    color: var(--text-color);
+}
+
+body.dark-theme main {
+    color: var(--text-color);
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4 {
+    color: var(--text-color);
+}
+
+body.dark-theme p {
+    color: inherit;
+}
+
+body.dark-theme a:not(.btn-acesso):not(.btn-editar-perfil):not(.footer__list a):not(.footer__social-btn) {
+    color: var(--primary-color);
+}
+
+body.dark-theme .menu-mobile {
+    background: var(--weather-surface);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-theme .menu-mobile ul li a {
+    background-color: var(--weather-surface2);
+    color: var(--text-color);
+    border-bottom-color: var(--post-border);
+    text-shadow: none;
+}
+
+body.dark-theme .input-pesquisa {
+    background-color: var(--weather-surface2);
+    color: var(--text-color);
+    border: 1px solid var(--post-border);
+}
+
+body.dark-theme .input-pesquisa::placeholder {
+    color: var(--text-muted);
 }

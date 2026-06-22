@@ -1,3 +1,5 @@
+@import url(root.css);
+
 .profile-header {
   width: 100%;
   position: relative;
@@ -786,7 +788,216 @@ section.container{
   }
 }
 
-/* ─── Utilitários ───────────────────────────────────────────────────────*/
+/* ─── Publicação de textos (autores) ─────────────────────────────────── */
+
+.profile-email {
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-editar-perfil {
+  text-decoration: none;
+}
+
+.publicar-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.publicar-header {
+  margin-bottom: 1.5rem;
+}
+
+.publicar-titulo-pagina {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--post-grey);
+  margin-bottom: 0.35rem;
+}
+
+.publicar-subtitulo-pagina {
+  color: var(--post-text-muted);
+  font-size: 0.95rem;
+}
+
+.publicar-grid {
+  grid-template-columns: 1fr 320px;
+}
+
+.field-textarea {
+  width: 100%;
+  min-height: 280px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--post-border);
+  border-radius: var(--post-radius-sm);
+  background: var(--post-card-bg);
+  color: var(--post-grey);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field-textarea:focus {
+  border-color: var(--post-border-focus);
+  box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.10);
+}
+
+.grid-dupla {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.imagem-destaque-zone {
+  border: 2px dashed var(--post-border);
+  border-radius: var(--post-radius-sm);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--post-text-muted);
+  background: var(--post-card-bg);
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.imagem-destaque-zone.drag-over {
+  border-color: var(--primary-color);
+  background: rgba(0, 137, 123, 0.05);
+}
+
+.imagem-destaque-zone svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.imagem-destaque-zone p {
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.imagem-destaque-preview {
+  position: relative;
+  border-radius: var(--post-radius-sm);
+  overflow: hidden;
+  border: 1.5px solid var(--post-border);
+}
+
+.imagem-destaque-preview img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.btn-remove-imagem {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-preview-subtitle {
+  font-size: 0.9rem;
+  color: var(--post-text-muted);
+  font-style: italic;
+  margin: 0.35rem 0 0.75rem;
+}
+
+.content-preview-image img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.publicar-acoes {
+  margin-top: 1rem;
+}
+
+.acesso-negado {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.acesso-negado-card {
+  max-width: 420px;
+  text-align: center;
+  background: var(--post-card-bg);
+  border: 1px solid var(--post-border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: var(--post-shadow-sm);
+}
+
+.acesso-negado-card i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.acesso-negado-card h1 {
+  font-size: 1.35rem;
+  margin-bottom: 0.75rem;
+  color: var(--post-grey);
+}
+
+.acesso-negado-card p {
+  color: var(--post-text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.acesso-negado-acoes {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-acesso {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--post-radius-sm);
+  background: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.btn-acesso-outline {
+  background: transparent;
+  border: 1.5px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* ─── Utilitários ─────────────────────────────────────────────────────── */
 
 .hidden {
   display: none !important;
@@ -795,7 +1006,12 @@ section.container{
 /* ─── Responsivel ───────────────────────────────────────────────────────*/
 
 @media (max-width: 840px) {
-  .form-grid {
+  .form-grid,
+  .publicar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-dupla {
     grid-template-columns: 1fr;
   }
 
@@ -870,4 +1086,72 @@ body.dark-theme .content-preview-badge{
 
 body.dark-theme .content-preview-icon {
   color: var(--white);
+}
+
+body.dark-theme .publicar-titulo-pagina {
+  color: var(--text-color);
+}
+
+body.dark-theme .publicar-subtitulo-pagina {
+  color: var(--text-muted);
+}
+
+body.dark-theme .field-label {
+  color: var(--text-muted);
+}
+
+body.dark-theme .field-input,
+body.dark-theme .field-textarea {
+  background: var(--post-card-bg);
+  color: var(--text-color);
+  border-color: var(--post-border);
+}
+
+body.dark-theme .field-input::placeholder,
+body.dark-theme .field-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+body.dark-theme .imagem-destaque-zone {
+  background: var(--post-card-bg);
+  border-color: var(--post-border);
+  color: var(--text-muted);
+}
+
+body.dark-theme .content-preview-card {
+  background: var(--post-card-bg);
+  border-color: var(--post-border);
+}
+
+body.dark-theme .content-preview-body {
+  color: var(--text-color);
+}
+
+body.dark-theme .content-preview-empty {
+  color: var(--text-muted);
+}
+
+body.dark-theme .acesso-negado-card {
+  background: var(--post-card-bg);
+  border-color: var(--post-border);
+}
+
+body.dark-theme .acesso-negado-card h1 {
+  color: var(--text-color);
+}
+
+body.dark-theme .acesso-negado-card p {
+  color: var(--text-muted);
+}
+
+body.dark-theme .btn-action {
+  background: var(--post-card-bg);
+  border-color: var(--post-border);
+  color: var(--text-color);
+}
+
+body.dark-theme .btn-draft:hover,
+body.dark-theme .btn-preview:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }

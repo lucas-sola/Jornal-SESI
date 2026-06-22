@@ -1,5 +1,11 @@
 @import url(root.css);
 
+:root {
+    --surface: var(--weather-surface);
+    --gap: var(--weather-gap);
+    --muted: var(--weather-muted);
+}
+
 .clima-section {
     margin-top: 2rem;
 }
@@ -526,6 +532,35 @@
 
     .mc-temp {
         font-size: 56px;
-        ;
     }
+}
+
+/* ─── DARK THEME ─────────────────────────────────────────────────────── */
+
+body.dark-theme .main-card {
+    background: var(--weather-surface);
+    border-color: var(--post-border);
+}
+
+body.dark-theme .mc-city,
+body.dark-theme .day-pill__hi {
+    color: var(--text-color);
+}
+
+body.dark-theme .mc-desc,
+body.dark-theme .mc-time,
+body.dark-theme .mc-meta__item,
+body.dark-theme .day-pill__name,
+body.dark-theme .day-pill__lo,
+body.dark-theme .mc-chart-labels span {
+    color: var(--text-muted);
+}
+
+body.dark-theme .day-pill {
+    background: var(--weather-surface2);
+    border-color: var(--post-border);
+}
+
+body.dark-theme .loading-state {
+    color: var(--text-muted);
 }

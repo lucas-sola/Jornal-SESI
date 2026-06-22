@@ -5,26 +5,54 @@ function validarNumero(id) {
   return id && !isNaN(id) && Number(id) > 0;
 }
 
+function sanitizarAutorPublico(autor) {
+  if (!autor) return autor;
+  const { cpf, telefone, ...publico } = autor;
+  return publico;
+}
+
 class AutorService {
   async listarAutores() {
     try {
       const autores = await autorRepository.listarAutores();
-      return { sucesso: true, dados: autores, total: autores.length };
+      return {
+        sucesso: true,
+        dados: autores.map(sanitizarAutorPublico),
+        total: autores.length,
+      };
     } catch (error) { throw error; }
   }
 
-  async buscarAutor(id) {
+  async buscarAutor(id, incluirPrivado = false) {
     try {
       if (!validarNumero(id)) throw criarErro("ID inválido", 400);
       const autor = await autorRepository.buscarAutor(id);
       if (!autor) throw criarErro("Autor não encontrado", 404);
-      return { sucesso: true, dados: autor };
+      return {
+        sucesso: true,
+        dados: incluirPrivado ? autor : sanitizarAutorPublico(autor),
+      };
+    } catch (error) { throw error; }
+  }
+
+  async buscarDadosPessoais(id) {
+    try {
+      if (!validarNumero(id)) throw criarErro("ID inválido", 400);
+      const autor = await autorRepository.buscarAutor(id);
+      if (!autor) throw criarErro("Autor não encontrado", 404);
+      return {
+        sucesso: true,
+        dados: {
+          cpf: autor.cpf || "",
+          telefone: autor.telefone || "",
+        },
+      };
     } catch (error) { throw error; }
   }
 
   async cadastrarAutor(dados) {
     try {
-      const { nome, serie_escolar, email, descricao, area_interesse } = dados;
+      const { nome, serie_escolar, email, descricao, area_interesse, cpf, telefone } = dados;
       if (!nome || !serie_escolar || !email) {
         throw criarErro("Nome, série escolar e email são obrigatórios", 400);
       }
@@ -34,6 +62,8 @@ class AutorService {
         email: email.trim(),
         descricao: descricao ? descricao.trim() : null,
         area_interesse: area_interesse ? area_interesse.trim() : null,
+        cpf: cpf ? cpf.trim() : null,
+        telefone: telefone ? telefone.trim() : null,
       };
       const id = await autorRepository.cadastrarAutor(novoAutor);
       return { sucesso: true, mensagem: "Autor cadastrado com sucesso!", id };
@@ -55,6 +85,25 @@ class AutorService {
       if (Object.keys(autorAtualizado).length === 0) throw criarErro("Nenhuma alteração fornecida", 400);
       await autorRepository.atualizarAutor(autorAtualizado, id);
       return { sucesso: true, mensagem: "Autor atualizado com sucesso!" };
+    } catch (error) { throw error; }
+  }
+
+  async atualizarDadosPessoais(dados, id) {
+    try {
+      if (!validarNumero(id)) throw criarErro("ID inválido", 400);
+      const autorExistente = await autorRepository.buscarAutor(id);
+      if (!autorExistente) throw criarErro("Autor não encontrado", 404);
+
+      const atualizado = {};
+      if (dados.cpf !== undefined) atualizado.cpf = dados.cpf ? dados.cpf.trim() : null;
+      if (dados.telefone !== undefined) atualizado.telefone = dados.telefone ? dados.telefone.trim() : null;
+
+      if (Object.keys(atualizado).length === 0) {
+        throw criarErro("Nenhuma alteração fornecida", 400);
+      }
+
+      await autorRepository.atualizarAutor(atualizado, id);
+      return { sucesso: true, mensagem: "Informações pessoais atualizadas com sucesso!" };
     } catch (error) { throw error; }
   }
 

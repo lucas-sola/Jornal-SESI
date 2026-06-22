@@ -1,8 +1,102 @@
+const STORAGE_KEY = 'sesiUsuario'
+
 document.addEventListener('DOMContentLoaded', function () {
     mascararCPF('#cpf')
     mascararTelefone('#tel')
+    iniciarUploadFoto()
     cadastroEfetuado()
 })
+
+function iniciarUploadFoto() {
+    const input = document.querySelector('#foto-perfil')
+    const btnSelecionar = document.querySelector('#btn-selecionar-foto')
+    const btnRemover = document.querySelector('#btn-remover-foto')
+    const previewImg = document.querySelector('#foto-preview-img')
+    const placeholder = document.querySelector('.foto-placeholder')
+
+    if (!input || !btnSelecionar) return
+
+    btnSelecionar.addEventListener('click', () => input.click())
+
+    input.addEventListener('change', () => {
+        const file = input.files[0]
+        if (!file) return
+
+        if (!/^image\/(jpeg|jpg|png)$/.test(file.type)) {
+            alert('Apenas imagens JPG ou PNG são permitidas.')
+            input.value = ''
+            return
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert('A imagem deve ter no máximo 5MB.')
+            input.value = ''
+            return
+        }
+
+        const reader = new FileReader()
+        reader.onload = (e) => {
+            previewImg.src = e.target.result
+            previewImg.classList.remove('hidden')
+            placeholder.classList.add('hidden')
+            btnRemover.classList.remove('hidden')
+        }
+        reader.readAsDataURL(file)
+    })
+
+    btnRemover.addEventListener('click', () => {
+        input.value = ''
+        previewImg.src = ''
+        previewImg.classList.add('hidden')
+        placeholder.classList.remove('hidden')
+        btnRemover.classList.add('hidden')
+    })
+}
+
+async function registrarUsuario() {
+    const nome = document.querySelector('#nome').value.trim()
+    const cpf = document.querySelector('#cpf').value.trim()
+    const email = document.querySelector('#email').value.trim()
+    const tel = document.querySelector('#tel').value.trim()
+    const fotoInput = document.querySelector('#foto-perfil')
+
+    const response = await fetch('/api/autores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nome,
+            email,
+            serie_escolar: 'Não informado',
+            cpf,
+            telefone: tel,
+        }),
+    })
+
+    const json = await response.json()
+
+    if (!response.ok || !json.sucesso) {
+        throw new Error(json.mensagem || json.erro || 'Erro ao criar conta. Verifique se o e-mail já está cadastrado.')
+    }
+
+    const autorId = json.id
+
+    if (fotoInput?.files?.[0]) {
+        const formData = new FormData()
+        formData.append('profileImage', fotoInput.files[0])
+
+        const fotoRes = await fetch(`/api/autores/${autorId}/profile-image`, {
+            method: 'POST',
+            body: formData,
+        })
+
+        if (!fotoRes.ok) {
+            const fotoJson = await fotoRes.json()
+            console.warn('Foto não enviada:', fotoJson.mensagem || fotoJson.erro)
+        }
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ id: autorId, nome, email }))
+}
 
 function verificarCampos(){
     const nome = document.querySelector('#nome')
@@ -82,19 +176,30 @@ function cadastroEfetuado(){
     const cards = document.querySelectorAll('.card')
     const btnRegistro = document.querySelector('.btn-registro')
 
-    btnRegistro.addEventListener('click', (event) =>{
+    btnRegistro.addEventListener('click', async (event) =>{
         event.preventDefault()
 
         if (!verificarCampos()) return
 
-        // Cadastro válido — prosseguir
-        cards.forEach(card => {
-            card.classList.toggle('hidden')
-        })
+        const textoOriginal = btnRegistro.innerHTML
+        btnRegistro.disabled = true
+        btnRegistro.textContent = 'Registrando...'
 
-        setTimeout(() =>{
-            window.location.href = 'index.html'
-        }, 1500)
+        try {
+            await registrarUsuario()
+
+            cards.forEach(card => {
+                card.classList.toggle('hidden')
+            })
+
+            setTimeout(() => {
+                window.location.href = 'index.html'
+            }, 1500)
+        } catch (err) {
+            alert(err.message || 'Erro ao registrar. Tente novamente.')
+            btnRegistro.disabled = false
+            btnRegistro.innerHTML = textoOriginal
+        }
     })
 
 }

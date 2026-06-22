@@ -1,7 +1,7 @@
 const app = require('./app');
 const pool = require('./config/database');
 
-const PORT = 3000;
+const PORT = 3001;
 
 async function inicializarEsportes() {
     try {

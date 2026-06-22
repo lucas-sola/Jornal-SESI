@@ -5,10 +5,11 @@ class PublicacaoRepository {
   async listarPublicacoes() {
     try {
       const query = `
-        SELECT p.*, a.nome as autor_nome, g.nome as genero_nome 
+        SELECT p.*, a.nome as autor_nome, g.nome as genero_nome, t.nome as tema_principal_nome
         FROM publicacao p
         INNER JOIN autor a ON p.autor_id = a.id
         INNER JOIN generos g ON p.genero_id = g.id
+        INNER JOIN temas_principais t ON p.tema_principal_id = t.id
         ORDER BY p.id ASC
       `;
       const [rows] = await pool.query(query);

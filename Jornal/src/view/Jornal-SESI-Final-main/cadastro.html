@@ -49,6 +49,23 @@
             </div>
 
             <form id="formulario" novalidate>
+                <div class="field field-foto">
+                    <label for="foto-perfil">Foto de perfil <span class="label-opcional">(opcional)</span></label>
+                    <div class="foto-upload">
+                        <div class="foto-preview" id="foto-preview">
+                            <svg class="foto-placeholder" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                            </svg>
+                            <img id="foto-preview-img" class="hidden" alt="Prévia da foto de perfil" />
+                        </div>
+                        <div class="foto-acoes">
+                            <input type="file" id="foto-perfil" accept="image/png,image/jpeg,image/jpg" hidden />
+                            <button type="button" class="btn-foto" id="btn-selecionar-foto">Selecionar foto</button>
+                            <button type="button" class="btn-foto-remover hidden" id="btn-remover-foto">Remover</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="formulario-grid">
                     <div class="field">
                         <label for="nome">Nome Completo</label>

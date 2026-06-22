@@ -38,6 +38,43 @@ select.bio-textarea {
     color: #94A3B8;
 }
 
+/* Seção de informações pessoais (privada) */
+.info-pessoal-section {
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.info-pessoal-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.info-pessoal-header i {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+    margin-top: 0.2rem;
+}
+
+.info-pessoal-titulo {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.25rem;
+}
+
+.info-pessoal-descricao {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
 /* Labels (Seu Nome, E-mail, etc) */
 label {
     color: rgba(255, 255, 255, 0.9) !important;
@@ -107,4 +144,32 @@ label {
     color: #FFFFFF !important;
     transform: scale(1.02);
     box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+}
+
+/* ─── DARK THEME ─────────────────────────────────────────────────────── */
+
+body.dark-theme .main {
+    background: linear-gradient(135deg, #004D40 0%, #001a17 100%);
+}
+
+body.dark-theme .lg\:col-span-8 {
+    background-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-theme .custom-input,
+body.dark-theme .bio-textarea,
+body.dark-theme select.bio-textarea {
+    background-color: var(--card-input-bg) !important;
+    color: var(--card-text) !important;
+    border: 1px solid var(--card-border) !important;
+}
+
+body.dark-theme .custom-input::placeholder,
+body.dark-theme .bio-textarea::placeholder {
+    color: var(--card-text-muted) !important;
+}
+
+body.dark-theme .info-pessoal-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.15);
 }

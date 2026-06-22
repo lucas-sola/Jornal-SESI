@@ -200,6 +200,7 @@
     margin-bottom: 2rem;
     background: var(--weather-surface2);
     position: relative;
+    aspect-ratio: 16 / 9;
 }
 
 .materia-imagem-wrap.hidden {
@@ -208,8 +209,7 @@
 
 .materia-imagem-destaque {
     width: 100%;
-    height: auto;
-    max-height: 500px;
+    height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.5s ease;
@@ -351,24 +351,27 @@
     display: none;
 }
 
-.materia-tag-chip {
+.materia-tag-chip,
+.materia-tag-item {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     padding: 6px 14px;
-    border-radius: 20px;
-    background: var(--weather-surface2);
-    color: var(--weather-text);
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: 1px solid var(--post-border);
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: none;
     transition: all 0.2s ease;
 }
 
-.materia-tag-chip:hover {
-    background: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-color);
+.materia-tag-chip:hover,
+.materia-tag-item:hover {
+    background: #00796B;
+    transform: translateY(-1px);
 }
 
 .materia-tag-chip i {
@@ -572,16 +575,54 @@
 }
 
 /* ─── DARK THEME ─── */
+body.dark-theme .materia-breadcrumb {
+    color: var(--text-muted);
+}
+
+body.dark-theme .breadcrumb-atual {
+    color: var(--text-color);
+}
+
 body.dark-theme .materia-hero {
     background: linear-gradient(135deg, #004D40 0%, #002B25 100%);
 }
 
 body.dark-theme .materia-imagem-wrap {
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-theme .materia-imagem-legenda {
+    background: var(--post-card-bg);
+    color: var(--text-muted);
+}
+
+body.dark-theme .materia-resumo,
+body.dark-theme .materia-corpo {
+    color: var(--text-color);
+}
+
+body.dark-theme .materia-corpo h2,
+body.dark-theme .materia-corpo h3 {
+    color: var(--text-color);
 }
 
 body.dark-theme .materia-corpo blockquote {
-    background: rgba(0, 166, 147, 0.08);
+    background: rgba(0, 166, 147, 0.12);
+    color: var(--text-muted);
+}
+
+body.dark-theme .materia-loading {
+    color: var(--text-muted);
+}
+
+body.dark-theme .relacionadas-titulo {
+    color: var(--text-color);
+}
+
+body.dark-theme .materia-tag-chip,
+body.dark-theme .materia-tag-item {
+    background: var(--primary-color);
+    color: #fff;
 }
 
 /* ─── Responsivo ─── */

@@ -73,6 +73,91 @@ body {
     color: var(--card-text-muted);
 }
 
+.field-foto {
+    margin-bottom: 1.25rem;
+    animation: fadeUp .4s ease both;
+}
+
+.label-opcional {
+    font-size: 0.55rem;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+.foto-upload {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.foto-preview {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 2px solid var(--card-border);
+    background: var(--card-input-bg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.foto-placeholder {
+    width: 48px;
+    height: 48px;
+    color: var(--card-text-muted);
+    opacity: 0.4;
+}
+
+.foto-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.btn-foto,
+.btn-foto-remover {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: var(--card-radius);
+    font-family: 'Neue Montreal';
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s ease;
+}
+
+.btn-foto {
+    background: var(--card-input-bg);
+    border: 1px solid var(--card-border);
+    color: var(--card-text);
+}
+
+.btn-foto:hover {
+    border-color: var(--card-accent);
+    color: var(--card-accent);
+}
+
+.btn-foto-remover {
+    background: transparent;
+    border: 1px solid #e53935;
+    color: #e53935;
+}
+
+.btn-foto-remover:hover {
+    background: rgba(229, 57, 53, 0.08);
+}
+
 .formulario-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -239,16 +324,62 @@ input:focus {
 
 /* ─── DARK THEME ───────────────────────────────────────────────────────*/
 
-body.dark-theme input:focus{
-    background-color: var(--card-accent-dark);
+body.dark-theme .card {
+    background: var(--card);
+    border-color: var(--card-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
-body.dark-theme input::placeholder{
-    color: var(--black);
+body.dark-theme .header-card h1 {
+    color: var(--card-text);
 }
 
-body.dark-theme #mensagem-login svg{
-    color: white;
+body.dark-theme .header-card p {
+    color: var(--card-text-muted);
+}
+
+body.dark-theme input {
+    background-color: var(--card-input-bg);
+    color: var(--card-text);
+    border-color: var(--card-border);
+}
+
+body.dark-theme input:focus {
+    background-color: var(--card-input-bg);
+    border-color: var(--card-accent);
+    box-shadow: 0 0 10px 3px rgba(0, 191, 165, 0.15);
+}
+
+body.dark-theme input::placeholder {
+    color: var(--card-text-muted);
+}
+
+body.dark-theme label {
+    color: var(--card-text-muted);
+}
+
+body.dark-theme .footer-card {
+    color: var(--card-text-muted);
+    border-top-color: var(--card-border);
+}
+
+body.dark-theme .foto-preview {
+    background: var(--card-input-bg);
+    border-color: var(--card-border);
+}
+
+body.dark-theme .btn-foto {
+    background: var(--card-input-bg);
+    color: var(--card-text);
+    border-color: var(--card-border);
+}
+
+body.dark-theme #mensagem-login h1 {
+    color: var(--card-text);
+}
+
+body.dark-theme #mensagem-login svg path {
+    fill: var(--card-accent);
 }
 
 /* ─── VALIDAÇÃO DE CAMPOS ─────────────────────────────────────────────*/

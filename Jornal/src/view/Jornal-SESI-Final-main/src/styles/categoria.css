@@ -131,3 +131,24 @@
 body.dark-theme .categoria-hero {
     background: linear-gradient(135deg, #004D40 0%, #002B25 100%);
 }
+
+body.dark-theme .post-card {
+    background: var(--post-card-bg);
+    border-color: var(--post-border);
+}
+
+body.dark-theme .post-card-title,
+body.dark-theme .post-card-author {
+    color: var(--text-color);
+}
+
+body.dark-theme .post-card-excerpt,
+body.dark-theme .post-card-footer {
+    color: var(--text-muted);
+    border-top-color: var(--post-border);
+}
+
+body.dark-theme .post-card-tag {
+    background-color: var(--primary-color);
+    color: #fff;
+}

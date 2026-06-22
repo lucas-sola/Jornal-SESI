@@ -5,10 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="src/styles/root.css" />
     <link rel="stylesheet" href="src/styles/header.css" />
     <link rel="stylesheet" href="src/styles/footer.css" />
     <link rel="stylesheet" href="src/styles/postagem.css" />
-    <title>Jornal SESI | Postar Notícia</title>
+    <title>Jornal SESI | Publicar Texto</title>
 </head>
 
 <body>
@@ -19,7 +20,7 @@
             <span></span>
         </button>
         <div class="logo-header">
-            <img src="src/images/logo-revista.png" class="logo" />
+            <img src="src/images/logo-revista.png" class="logo" alt="Logo Revista SESI" />
         </div>
         <div class="links-header">
             <ul class="lista-links-header">
@@ -36,16 +37,13 @@
                 <button class="btn-pesquisa">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-
                 <div class="container-pesquisa">
                     <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
                 </div>
-
                 <div class="container-pesquisa-desktop">
                     <input type="text" class="input-pesquisa" placeholder="Pesquisar..." />
                 </div>
             </div>
-
             <a href="perfil.html" class="btn-perfil" title="Perfil" aria-label="Perfil">
                 <i class="fa-solid fa-user"></i>
             </a>
@@ -64,243 +62,150 @@
     </nav>
 
     <main class="main">
-        <button id="themeToggle" class="theme-btn">
-            🌙
-        </button>
+        <button id="themeToggle" class="theme-btn">🌙</button>
 
-        <div class="profile-header">
-            <div class="profile-barra">
-                <div class="profile-identidade">
-                    <div class="avatar">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="24" cy="18" r="9" fill="#aaa" />
-                            <ellipse cx="24" cy="38" rx="14" ry="8" fill="#aaa" />
-                        </svg>
-                    </div>
-                    <span class="profile-nome">Rafael Teixeira</span>
+        <section id="acesso-negado" class="acesso-negado hidden">
+            <div class="acesso-negado-card">
+                <i class="fa-solid fa-lock"></i>
+                <h1>Área exclusiva para autores</h1>
+                <p>Esta página é restrita a autores com e-mail cadastrado no banco de dados do jornal.</p>
+                <div class="acesso-negado-acoes">
+                    <a href="login.html" class="btn-acesso">Fazer login</a>
+                    <a href="cadastro.html" class="btn-acesso btn-acesso-outline">Criar conta</a>
                 </div>
-
-                <div class="profile-stats">
-                    <div class="stat">
-                        <svg class="stat-icon" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 1l1.8 3.6 4 .6-2.9 2.8.7 4L8 10l-3.6 1.9.7-4L2.2 5.2l4-.6L8 1z"
-                                stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
-                        </svg>
-                        <span>Nota: <strong>5</strong></span>
-                    </div>
-
-                    <div class="stat">
-                        <svg class="stat-icon" viewBox="0 0 16 16" fill="none">
-                            <circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" />
-                            <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.2"
-                                stroke-linecap="round" />
-                        </svg>
-                        <span>Seguidores: <strong>1.5'k</strong></span>
-                    </div>
-
-                    <div class="stat">
-                        <svg class="stat-icon" viewBox="0 0 16 16" fill="none">
-                            <rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor"
-                                stroke-width="1.2" />
-                            <path d="M5 3V2M11 3V2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
-                            <path d="M2 7h12" stroke="currentColor" stroke-width="1.2" />
-                        </svg>
-                        <span>Posts: <strong>35</strong></span>
-                    </div>
-                </div>
-                <button class="btn-editar-perfil">
-                    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.3 2.7a1.5 1.5 0 012.1 2.1L5.5 12.8 2 13.9l1.2-3.5 8.1-7.7z" stroke="currentColor"
-                            stroke-width="1.2" stroke-linejoin="round" />
-                    </svg>
-                    Editar perfil
-                </button>
             </div>
-        </div>
+        </section>
 
-        <section class="container">
-            <div >
-                <div class="tabs">
-                    <button class="tab" data-tab="post">Enviar Post</button>
-                    <button class="tab active" data-tab="video">
-                        <span class="tab-dot"></span>Enviar Vídeo
-                    </button>
-                </div>
-                <!-- FORM GRID -->
-                <div class="form-grid">
-                    <!-- LEFT COLUMN -->
-                    <div class="col-left">
-                        <!-- Título -->
-                        <div class="field-group">
-                            <label class="field-label">Título</label>
-                            <input type="text" class="field-input" placeholder="Digite o título do seu vídeo..." />
+        <div id="publicacao-app" class="hidden">
+            <div class="profile-header">
+                <div class="profile-barra">
+                    <div class="profile-identidade">
+                        <div class="avatar" id="autor-avatar">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="18" r="9" fill="#aaa" />
+                                <ellipse cx="24" cy="38" rx="14" ry="8" fill="#aaa" />
+                            </svg>
                         </div>
-                        <!-- Tags -->
+                        <div>
+                            <span class="profile-nome" id="autor-nome">Autor</span>
+                            <span class="profile-email" id="autor-email"></span>
+                        </div>
+                    </div>
+                    <a href="perfil.html" class="btn-editar-perfil">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.3 2.7a1.5 1.5 0 012.1 2.1L5.5 12.8 2 13.9l1.2-3.5 8.1-7.7z" stroke="currentColor"
+                                stroke-width="1.2" stroke-linejoin="round" />
+                        </svg>
+                        Editar perfil
+                    </a>
+                </div>
+            </div>
+
+            <section class="container publicar-container">
+                <div class="publicar-header">
+                    <h1 class="publicar-titulo-pagina">Publicar Texto</h1>
+                    <p class="publicar-subtitulo-pagina">Envie sua matéria com título, subtítulo, imagem e texto principal.</p>
+                </div>
+
+                <form id="form-publicacao" class="form-grid publicar-grid" novalidate>
+                    <div class="col-left">
                         <div class="field-group">
-                            <label class="field-label">Adicionar Tags</label>
-                            <div class="tag-input-wrapper">
-                                <input type="text" class="field-input tag-input"
-                                    placeholder="Adicione uma tag e pressione Enter..." id="tagInput" />
-                                <button class="btn-icon" id="addTagBtn" title="Adicionar tag">
-                                    <svg viewBox="0 0 16 16" fill="none">
-                                        <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                    </svg>
+                            <label class="field-label" for="titulo">Título</label>
+                            <input type="text" id="titulo" class="field-input" placeholder="Digite o título da matéria..." required />
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" for="subtitulo">Subtítulo</label>
+                            <input type="text" id="subtitulo" class="field-input" placeholder="Digite o subtítulo (opcional)..." />
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" for="conteudo">Texto principal</label>
+                            <textarea id="conteudo" class="field-textarea" rows="14"
+                                placeholder="Escreva o conteúdo completo da sua matéria aqui..." required></textarea>
+                        </div>
+
+                        <div class="field-group grid-dupla">
+                            <div>
+                                <label class="field-label" for="genero">Gênero do texto</label>
+                                <select id="genero" class="field-input" required>
+                                    <option value="">Selecione...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label" for="tema">Tema principal</label>
+                                <select id="tema" class="field-input" required>
+                                    <option value="">Selecione...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Tags (Categorias)</label>
+                            <div id="categorias-container" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; border: 1.5px solid var(--post-border); border-radius: var(--post-radius-sm); background: var(--post-card-bg);">
+                                <!-- Categorias renderizadas dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="field-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px; margin-bottom: 25px;">
+                            <input type="checkbox" id="destaque" name="destaque" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-color);" />
+                            <label class="field-label" for="destaque" style="margin-bottom: 0; cursor: pointer; font-size: 14px; color: var(--grey);">Definir como Matéria em Destaque</label>
+                        </div>
+                    </div>
+
+                    <div class="col-right">
+                        <div class="field-group">
+                            <label class="field-label">Imagem de destaque</label>
+                            <div class="imagem-destaque-zone" id="imagemDestaqueZone">
+                                <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                                    <rect x="4" y="8" width="40" height="32" rx="3" stroke="currentColor" stroke-width="2" />
+                                    <circle cx="16" cy="20" r="4" stroke="currentColor" stroke-width="2" />
+                                    <path d="M4 32l10-10 8 8 6-8 14 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                                </svg>
+                                <p>Arraste a imagem aqui ou</p>
+                                <label class="btn-select" for="imagemInput">
+                                    Selecionar imagem
+                                    <input type="file" id="imagemInput" accept="image/png,image/jpeg,image/jpg,image/webp" hidden />
+                                </label>
+                            </div>
+                            <div class="imagem-destaque-preview hidden" id="imagemDestaquePreview">
+                                <img id="imagemDestaqueImg" alt="Prévia da imagem de destaque" />
+                                <button type="button" class="btn-remove-imagem" id="btnRemoverImagem" title="Remover imagem">
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
-                            <div class="tags-list" id="tagsList"></div>
                         </div>
-                        <!-- Explicação -->
-                        <div class="field-group">
-                            <label class="field-label">Explicação</label>
-                            <div class="rich-editor">
-                                <div class="editor-toolbar">
-                                    <button class="toolbar-btn" title="Imagem">
-                                        <svg viewBox="0 0 16 16" fill="none">
-                                            <rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor"
-                                                stroke-width="1.2" />
-                                            <circle cx="5.5" cy="6.5" r="1" fill="currentColor" />
-                                            <path d="M2 11l3-3 2 2 3-4 4 5" stroke="currentColor" stroke-width="1.2"
-                                                stroke-linejoin="round" />
-                                        </svg>
-                                        Imagem
-                                    </button>
-                                    <button class="toolbar-btn" title="Cor">
-                                        <svg viewBox="0 0 16 16" fill="none">
-                                            <path d="M4 13c0-1 .5-2 2-3l4-5a2 2 0 113 3l-5 4c-1 1.5-2 2-4 1z"
-                                                stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
-                                        </svg>
-                                        Cor
-                                    </button>
-                                    <button class="toolbar-btn" title="Texto">
-                                        <svg viewBox="0 0 16 16" fill="none">
-                                            <path d="M3 4h10M8 4v9" stroke="currentColor" stroke-width="1.2"
-                                                stroke-linecap="round" />
-                                        </svg>
-                                        Texto
-                                    </button>
-                                    <button class="toolbar-btn" title="Alinhamento">
-                                        <svg viewBox="0 0 16 16" fill="none">
-                                            <path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.2"
-                                                stroke-linecap="round" />
-                                        </svg>
-                                        Alinhamento
-                                    </button>
-                                    <button class="toolbar-btn" title="Link">
-                                        <svg viewBox="0 0 16 16" fill="none">
-                                            <path
-                                                d="M6 10l4-4M5.5 7.5L4 9a2.8 2.8 0 104 4l1.5-1.5M10.5 8.5L12 7a2.8 2.8 0 10-4-4L6.5 4.5"
-                                                stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
-                                        </svg>
-                                        Link
-                                    </button>
-                                </div>
-                                <div class="editor-body" contenteditable="true" data-placeholder="Digite..."></div>
-                            </div>
-                        </div>
-                        <!-- Galeria de Imagens -->
-                        <div class="field-group">
-                            <label class="field-label">Galeria De Imagem</label>
-                            <div class="image-gallery">
-                                <div class="gallery-upload-zone" id="imgUploadZone">
-                                    <svg viewBox="0 0 48 48" fill="none">
-                                        <rect x="4" y="8" width="40" height="32" rx="3" stroke="currentColor"
-                                            stroke-width="2" />
-                                        <circle cx="16" cy="20" r="4" stroke="currentColor" stroke-width="2" />
-                                        <path d="M4 32l10-10 8 8 6-8 14 12" stroke="currentColor" stroke-width="2"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                    <p>Arraste E Solte A Imagem Aqui, Cole Ou</p>
-                                    <label class="btn-select" for="imgInput">
-                                        <svg viewBox="0 0 16 16" fill="none">
-                                            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5"
-                                                stroke-linecap="round" />
-                                        </svg>
-                                        Selecione
-                                        <input type="file" id="imgInput" accept="image/*" multiple hidden />
-                                    </label>
-                                </div>
-                                <div class="gallery-grid" id="galleryGrid">
-                                    <!-- Filled dynamically -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- RIGHT COLUMN -->
-                    <div class="col-right">
-                        <!-- CONTENT PREVIEW -->
+
                         <div class="content-preview-card" id="contentPreviewCard">
                             <div class="content-preview-header">
-                                <svg class="content-preview-icon" viewBox="0 0 16 16" fill="none">
-                                    <ellipse cx="8" cy="8" rx="6" ry="4" stroke="currentColor" stroke-width="1.2" />
-                                    <circle cx="8" cy="8" r="2" fill="currentColor" />
-                                </svg>
-                                <span>Prévia do Conteúdo</span>
+                                <i class="fa-regular fa-eye"></i>
+                                <span>Prévia da matéria</span>
                                 <span class="content-preview-badge" id="previewBadge">Vazio</span>
                             </div>
                             <div class="content-preview-body" id="contentPreviewBody">
-                                <p class="content-preview-empty" id="previewEmpty">Comece a digitar na área de explicação
-                                    para ver a prévia aqui...</p>
+                                <p class="content-preview-empty" id="previewEmpty">
+                                    Preencha título, subtítulo e texto para ver a prévia.
+                                </p>
                             </div>
                         </div>
-                        <div class="video-card">
-                            <label class="field-label">Adicionar Vídeo</label>
-                            <div class="video-upload-zone" id="videoUploadZone">
-                                <svg viewBox="0 0 48 48" fill="none">
-                                    <rect x="2" y="10" width="30" height="28" rx="3" stroke="currentColor"
-                                        stroke-width="2" />
-                                    <path d="M32 20l12-8v24l-12-8V20z" stroke="currentColor" stroke-width="2"
-                                        stroke-linejoin="round" />
-                                </svg>
-                                <p>Arraste E Solte O Vídeo Aqui, Cole Ou</p>
-                                <label class="btn-select" for="videoInput">
-                                    <svg viewBox="0 0 16 16" fill="none">
-                                        <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                    Selecione
-                                    <input type="file" id="videoInput" accept="video/*" hidden />
-                                </label>
-                            </div>
-                            <div class="video-preview hidden" id="videoPreview">
-                                <video id="videoPlayer" controls></video>
-                                <button class="btn-remove-video" id="removeVideo">
-                                    <svg viewBox="0 0 16 16" fill="none">
-                                        <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="action-btns">
-                                <button class="btn-action btn-draft">
-                                    <svg viewBox="0 0 16 16" fill="none">
-                                        <rect x="3" y="2" width="10" height="12" rx="1.5" stroke="currentColor"
-                                            stroke-width="1.2" />
-                                        <path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.2"
-                                            stroke-linecap="round" />
-                                    </svg>
-                                    Rascunho
-                                </button>
-                                <button class="btn-action btn-preview">
-                                    <svg viewBox="0 0 16 16" fill="none">
-                                        <ellipse cx="8" cy="8" rx="6" ry="4" stroke="currentColor" stroke-width="1.2" />
-                                        <circle cx="8" cy="8" r="2" fill="currentColor" />
-                                    </svg>
-                                    Prévia
-                                </button>
-                                <button class="btn-action btn-publish">
-                                    <svg viewBox="0 0 16 16" fill="none">
-                                        <path d="M13 8L6 4v8l7-4z" fill="currentColor" />
-                                    </svg>
-                                    Publicar
-                                </button>
-                            </div>
+
+                        <div class="action-btns publicar-acoes">
+                            <button type="button" class="btn-action btn-draft" id="btnLimpar">
+                                <i class="fa-regular fa-trash-can"></i>
+                                Limpar
+                            </button>
+                            <button type="submit" class="btn-action btn-publish" id="btnPublicar">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Publicar
+                            </button>
                         </div>
                     </div>
-                </div>
-        </section>
-
+                </form>
+            </section>
+        </div>
     </main>
+
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
     <footer class="footer">
         <div class="footer__top">
@@ -308,83 +213,20 @@
                 <div class="footer__brand">
                     <img src="src/images/logo-revista.png" class="footer__logo" alt="Logo Revista SESI" />
                     <p class="footer__tagline">Informação que conecta, inspira e transforma.</p>
-                    <div class="footer__socials">
-                        <a href="#" class="footer__social-btn" aria-label="Instagram">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                        <a href="#" class="footer__social-btn" aria-label="Twitter / X">
-                            <i class="fa-brands fa-x-twitter"></i>
-                        </a>
-                        <a href="#" class="footer__social-btn" aria-label="YouTube">
-                            <i class="fa-brands fa-youtube"></i>
-                        </a>
-                        <a href="#" class="footer__social-btn" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                        </a>
-                    </div>
                 </div>
-
-
                 <div class="footer__links">
                     <h4 class="footer__heading">Navegação</h4>
                     <ul class="footer__list">
                         <li><a href="index.html">Início</a></li>
                         <li><a href="noticias.html">Notícias</a></li>
                         <li><a href="esportes.html">Esportes</a></li>
-                        <li><a href="cultura.html">Cultura</a></li>
-                        <li><a href="ciencias.html">Ciências</a></li>
-                        <li><a href="opiniao.html">Opinião</a></li>
                     </ul>
                 </div>
-
-                <div class="footer__newsletter">
-                    <h4 class="footer__heading">Envie seus textos</h4>
-                    <p class="footer__newsletter-desc">
-                        Tem uma história para contar? Envie seu texto e faça parte da nossa revista!
-                    </p>
-                    <form class="footer__form" id="formEnvioTexto">
-                        <div class="footer__form-group">
-                            <label for="footerNome" class="footer__label">Seu nome</label>
-                            <input type="text" id="footerNome" class="footer__input" placeholder="Ex: João Silva"
-                                required />
-                        </div>
-                        <div class="footer__form-group">
-                            <label for="footerEmail" class="footer__label">Seu e-mail</label>
-                            <input type="email" id="footerEmail" class="footer__input" placeholder="email@exemplo.com"
-                                required />
-                        </div>
-                        <div class="footer__form-group">
-                            <label for="footerCategoria" class="footer__label">Categoria</label>
-                            <select id="footerCategoria" class="footer__input footer__select">
-                                <option value="">Selecione uma categoria…</option>
-                                <option value="noticias">Notícias</option>
-                                <option value="esportes">Esportes</option>
-                                <option value="cultura">Cultura</option>
-                                <option value="ciencias">Ciências</option>
-                                <option value="opiniao">Opinião</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="footer__btn">
-                            <i class="fa-solid fa-paper-plane"></i>
-                            Enviar texto
-                        </button>
-                        <p class="footer__success" id="footerSuccess">
-                            <i class="fa-solid fa-circle-check"></i>
-                            Recebemos seu texto! Entraremos em contato em breve.
-                        </p>
-                    </form>
-                </div>
-
             </div>
         </div>
-
         <div class="footer__bottom">
             <div class="container footer__bottom-inner">
                 <span>© 2026 Revista SESI · Todos os direitos reservados</span>
-                <span class="footer__bottom-links">
-                    <a href="#">Política de Privacidade</a>
-                    <a href="#">Termos de Uso</a>
-                </span>
             </div>
         </div>
     </footer>

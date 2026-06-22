@@ -13,9 +13,28 @@ const uploadMiddleware = (req, res, next) => {
   });
 };
 
+const verificarProprioUsuario = (req, res, next) => {
+  const usuarioId = req.headers['x-usuario-id'];
+  const { id } = req.params;
+
+  if (!usuarioId || String(usuarioId) !== String(id)) {
+    return res.status(403).json({
+      sucesso: false,
+      erro: 'Acesso negado. Apenas o próprio usuário pode ver ou alterar estas informações.',
+    });
+  }
+
+  next();
+};
+
 router.get("/", autorController.listarAutores);
-router.get("/:id", autorController.buscarAutor);
 router.post("/", autorController.cadastrarAutor);
+
+// Dados pessoais privados (CPF, telefone)
+router.get('/:id/dados-pessoais', verificarProprioUsuario, autorController.buscarDadosPessoais);
+router.put('/:id/dados-pessoais', verificarProprioUsuario, autorController.atualizarDadosPessoais);
+
+router.get("/:id", autorController.buscarAutor);
 router.put("/:id", autorController.atualizarAutor);
 router.delete("/:id", autorController.deletarAutor);
 

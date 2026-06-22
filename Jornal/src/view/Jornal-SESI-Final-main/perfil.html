@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="src/styles/root.css">
     <link rel="stylesheet" href="src/styles/perfil.css">
     <link rel="stylesheet" href="src/styles/footer.css">
     <link rel="stylesheet" href="src/styles/header.css">
@@ -207,6 +208,35 @@
 
                     </div>
 
+                    <!-- Informações Pessoais (privado) -->
+                    <section class="info-pessoal-section">
+                        <div class="info-pessoal-header">
+                            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                            <div>
+                                <h2 class="info-pessoal-titulo">Informações Pessoais</h2>
+                                <p class="info-pessoal-descricao">Visível apenas para você. Não aparece no seu perfil público.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="flex flex-col space-y-3">
+                                <label class="text-white text-xs font-bold uppercase tracking-widest" for="cpf">
+                                    CPF
+                                </label>
+                                <input class="custom-input w-full px-6 py-4 rounded-xl text-base font-medium shadow-sm"
+                                    id="cpf" placeholder="000.000.000-00" type="text" maxlength="14" inputmode="numeric">
+                            </div>
+
+                            <div class="flex flex-col space-y-3">
+                                <label class="text-white text-xs font-bold uppercase tracking-widest" for="tel">
+                                    Telefone
+                                </label>
+                                <input class="custom-input w-full px-6 py-4 rounded-xl text-base font-medium shadow-sm"
+                                    id="tel" placeholder="(11) 99999-9999" type="tel" inputmode="numeric" maxlength="15">
+                            </div>
+                        </div>
+                    </section>
+
                     <!-- Bio Textarea -->
                     <div class="flex flex-col space-y-3">
                         <label class="text-white text-xs font-bold uppercase tracking-widest" for="bio">
@@ -245,8 +275,16 @@
                     </div>
 
                     <!-- Actions Buttons -->
+                    <div class="pt-2">
+                        <a href="postagem.html"
+                            class="inline-flex items-center gap-2 text-white/90 text-sm font-semibold uppercase tracking-widest hover:text-white transition-colors">
+                            <i class="fa-solid fa-pen-nib"></i>
+                            Publicar texto
+                        </a>
+                    </div>
+
                     <div class="pt-4 flex flex-col sm:flex-row justify-end items-center gap-4">
-                        <button id="btn-sair-perfil" onclick="window.location.href='login.html'"
+                        <button id="btn-sair-perfil"
                             class="btn-sair-perfil w-full sm:w-auto min-w-[200px] py-5 px-10 flex items-center justify-center space-x-3 active:scale-[0.98]"
                             type="button">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
