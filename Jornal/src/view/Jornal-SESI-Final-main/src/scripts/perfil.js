@@ -49,13 +49,13 @@ function iniciarUploadAvatar() {
         if (!file) return
 
         if (!/^image\/(jpeg|jpg|png)$/.test(file.type)) {
-            showToast('Apenas imagens JPG ou PNG são permitidas.', 'error')
+            alert('Apenas imagens JPG ou PNG são permitidas.')
             input.value = ''
             return
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            showToast('A imagem deve ter no máximo 5MB.', 'error')
+            alert('A imagem deve ter no máximo 5MB.')
             input.value = ''
             return
         }
@@ -150,12 +150,12 @@ function validarDadosPessoais() {
     const tel = document.getElementById('tel').value.trim()
 
     if (cpf && !/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf)) {
-        showToast('CPF incompleto. Digite os 11 números.', 'warning')
+        alert('CPF incompleto. Digite os 11 números.')
         return false
     }
 
     if (tel && !/^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(tel)) {
-        showToast('Telefone incompleto. Digite os 11 números.', 'warning')
+        alert('Telefone incompleto. Digite os 11 números.')
         return false
     }
 
@@ -173,7 +173,7 @@ function configurarFormulario(autorId) {
         const email = document.getElementById('email').value.trim()
 
         if (!nome || !email) {
-            showToast('Preencha nome e e-mail.', 'warning')
+            alert('Preencha nome e e-mail.')
             return
         }
 
@@ -231,9 +231,9 @@ function configurarFormulario(autorId) {
                 email: dados.email,
             }))
 
-            showToast('Perfil atualizado com sucesso!', 'success')
+            alert('Perfil atualizado com sucesso!')
         } catch (err) {
-            showToast(err.message || 'Erro ao salvar alterações.', 'error')
+            alert(err.message || 'Erro ao salvar alterações.')
         } finally {
             btn.disabled = false
             btn.innerHTML = textoOriginal
