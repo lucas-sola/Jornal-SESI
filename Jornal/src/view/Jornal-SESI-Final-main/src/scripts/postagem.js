@@ -328,7 +328,7 @@ async function publicarTexto() {
 
         setTimeout(() => {
             window.location.href = `materia.html?id=${json.id}`
-        }, 1200)
+        }, 1400)
     } catch (err) {
         showToast(err.message || 'Erro ao publicar.', 'error')
     } finally {
@@ -344,7 +344,7 @@ function limparFormulario() {
     document.getElementById('imagemDestaquePreview').classList.add('hidden')
     document.getElementById('imagemDestaqueZone').classList.remove('hidden')
     atualizarPreview()
-    showToast('Formulário limpo.')
+    showToast('Formulário limpo.', 'info')
 }
 
 function setupDragDrop(zone, callback) {
@@ -364,19 +364,4 @@ function setupDragDrop(zone, callback) {
             callback([...event.dataTransfer.files])
         }
     })
-}
-
-let toastTimer = null
-
-function showToast(message, type = '') {
-    const toast = document.getElementById('toast')
-    toast.textContent = message
-    toast.className = 'toast' + (type ? ` ${type}` : '')
-    toast.classList.remove('hidden')
-
-    if (toastTimer) clearTimeout(toastTimer)
-
-    toastTimer = setTimeout(() => {
-        toast.classList.add('hidden')
-    }, 3200)
 }
