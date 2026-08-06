@@ -86,6 +86,7 @@ CREATE TABLE publicacao (
     visualizacoes INT DEFAULT 0,
     destaque BOOLEAN DEFAULT FALSE,
     tags VARCHAR(255) DEFAULT NULL,
+    editado BOOLEAN DEFAULT FALSE,
 
     autor_id INT NOT NULL,
     edicao_id INT,

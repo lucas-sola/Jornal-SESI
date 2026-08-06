@@ -103,7 +103,16 @@ function preencherMateria(noticia) {
         autorEl.textContent = noticia.autor_nome || 'Equipe SESI';
     }
     if (dataEl) {
-        dataEl.textContent = formatarData(noticia.data_publicacao || noticia.data_criacao);
+        const dataTexto = formatarData(noticia.data_publicacao || noticia.data_criacao);
+        dataEl.innerHTML = noticia.editado ? `${dataTexto} <span class="materia-editada-label">(editado)</span>` : dataTexto;
+    }
+
+    const usuarioLogado = obterUsuarioLogado();
+    const botoesAutor = document.getElementById('materia-botoes-autor');
+    if (botoesAutor) {
+        const eAutor = usuarioLogado && usuarioLogado.id === noticia.autor_id;
+        botoesAutor.classList.toggle('active', Boolean(eAutor));
+        if (eAutor) configurarBotoesAutor(noticia);
     }
 
     // Imagem
@@ -357,5 +366,100 @@ function exibirErro(mensagem) {
                 <a href="index.html" class="footer__btn" style="display: inline-block; margin-top: 20px; text-decoration: none;">Voltar para o Início</a>
             </div>
         `;
+    }
+}
+
+function obterUsuarioLogado() {
+    try {
+        return JSON.parse(localStorage.getItem('sesiUsuario'));
+    } catch {
+        return null;
+    }
+}
+
+function configurarBotoesAutor(noticia) {
+    const modalEditar = document.getElementById('modal-editar');
+    const formEditar = document.getElementById('form-editar-publicacao');
+    const btnEditar = document.getElementById('btn-editar');
+    const btnDeletar = document.getElementById('btn-deletar');
+    const btnFechar = document.getElementById('btn-fechar-modal');
+    const btnCancelar = document.getElementById('btn-cancelar-edicao');
+
+    const toggleModal = (abrir) => modalEditar?.classList.toggle('active', abrir);
+
+    if (btnEditar) {
+        btnEditar.addEventListener('click', () => {
+            document.getElementById('edit-titulo').value = noticia.titulo || '';
+            document.getElementById('edit-subtitulo').value = noticia.subtitulo || '';
+            document.getElementById('edit-resumo').value = noticia.resumo || '';
+            document.getElementById('edit-conteudo').value = noticia.conteudo || '';
+            toggleModal(true);
+        });
+    }
+
+    if (btnFechar) btnFechar.addEventListener('click', () => toggleModal(false));
+    if (btnCancelar) btnCancelar.addEventListener('click', () => toggleModal(false));
+
+    if (formEditar) {
+        formEditar.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const usuario = obterUsuarioLogado();
+            if (!usuario?.id) return;
+
+            const payload = {
+                titulo: document.getElementById('edit-titulo').value.trim(),
+                subtitulo: document.getElementById('edit-subtitulo').value.trim(),
+                resumo: document.getElementById('edit-resumo').value.trim(),
+                conteudo: document.getElementById('edit-conteudo').value.trim()
+            };
+
+            try {
+                const response = await fetch(`/api/publicacoes/${noticia.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Usuario-Id': String(usuario.id)
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const json = await response.json();
+
+                if (response.ok && json.sucesso) {
+                    alert('Matéria atualizada com sucesso!');
+                    window.location.reload();
+                } else {
+                    alert(json.erro || 'Erro ao atualizar a matéria.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao atualizar publicação.');
+            }
+        });
+    }
+
+    if (btnDeletar) {
+        btnDeletar.addEventListener('click', async () => {
+            if (!confirm('Deseja realmente excluir esta matéria permanentemente?')) return;
+            const usuario = obterUsuarioLogado();
+            if (!usuario?.id) return;
+
+            try {
+                const response = await fetch(`/api/publicacoes/${noticia.id}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Usuario-Id': String(usuario.id) }
+                });
+                const json = await response.json();
+
+                if (response.ok && json.sucesso) {
+                    alert('Matéria excluída com sucesso!');
+                    window.location.href = 'index.html';
+                } else {
+                    alert(json.erro || 'Erro ao excluir a matéria.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao excluir publicação.');
+            }
+        });
     }
 }

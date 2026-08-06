@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const router = express.Router();
 const publicacaoController = require("../controller/PublicacaoController.js");
 const verificarAutor = require("../middlewares/verificarAutor.js");
@@ -22,7 +22,7 @@ router.post(
 );
 router.get("/:id", publicacaoController.buscarPublicacao);
 router.post("/", publicacaoController.cadastrarPublicacao);
-router.put("/:id", publicacaoController.atualizarPublicacao);
-router.delete("/:id", publicacaoController.deletarPublicacao);
+router.put("/:id", verificarAutor, publicacaoController.atualizarPublicacao);
+router.delete("/:id", verificarAutor, publicacaoController.deletarPublicacao);
 
 module.exports = router;

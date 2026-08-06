@@ -5,8 +5,7 @@ const fs = require("fs");
 const armazenamento = multer.diskStorage({
   destination: (req, file, callback) => {
     try {
-      // Pega o caminho absoluto e normaliza para o Windows
-      const pastaBase = path.resolve(process.cwd(), 'uploads');
+      const pastaBase = path.join(__dirname, "..", "..", "uploads");
       const pastaFinal = path.join(pastaBase, req.params.id);
       
       // Cria a pasta base se não existir

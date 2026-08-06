@@ -702,3 +702,155 @@ body.dark-theme .materia-tag-item {
 .materia-hero.hero-cat-opiniao {
     background: linear-gradient(135deg, #9A3412 0%, #EA580C 100%);
 }
+
+/* ─── Botões do Autor e Rótulo (Editado) ─── */
+.materia-editada-label {
+    font-size: 0.85em;
+    opacity: 0.6;
+    font-style: italic;
+    margin-left: 6px;
+}
+
+.materia-botoes-autor {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-left: 15px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    padding-left: 15px;
+}
+
+.materia-botoes-autor.active {
+    display: flex;
+}
+
+.btn-editar {
+    color: #ffca28;
+}
+
+.btn-deletar {
+    color: #ef5350;
+}
+
+/* ─── Modal de Edição (Clean Design) ─── */
+.modal-editar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-editar-overlay.active {
+    display: flex;
+}
+
+.modal-editar-content {
+    background: var(--post-bg, #1a202c);
+    border: 1px solid var(--post-border, #2d3748);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 650px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--post-border, #2d3748);
+    padding-bottom: 10px;
+}
+
+.modal-title {
+    margin: 0;
+    color: var(--text-color, #e2e8f0);
+    font-size: 1.4rem;
+}
+
+.btn-fechar-modal {
+    background: none;
+    border: none;
+    color: var(--text-color, #e2e8f0);
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.btn-fechar-modal:hover {
+    opacity: 1;
+}
+
+.form-editar-publicacao {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-label {
+    color: var(--text-color, #e2e8f0);
+    font-weight: 500;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--post-border, #2d3748);
+    background: var(--main-bg, #0d1117);
+    color: var(--text-color, #e2e8f0);
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-textarea {
+    resize: vertical;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-cancelar {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--post-border, #2d3748);
+    background: transparent;
+    color: var(--text-color, #e2e8f0);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-salvar {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    background: #008080;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

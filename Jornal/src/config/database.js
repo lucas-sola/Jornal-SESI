@@ -1,4 +1,6 @@
 const mysql = require('mysql2/promise');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env') });
 require('dotenv').config();
 
 const pool = mysql.createPool({
@@ -10,7 +12,10 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10, 
     queueLimit: 0,
-    ssl: { minVersion: 'TLSv1.2' }
+    ssl: { 
+        minVersion: 'TLSv1.2',
+        rejectUnauthorized: false
+    }
 });
 
 module.exports = pool;

@@ -101,6 +101,7 @@ class PublicacaoService {
       if (dados.tema_principal_id !== undefined) {
         atualizado.tema_principal_id = Number(dados.tema_principal_id);
       }
+      if (dados.editado !== undefined) atualizado.editado = Boolean(dados.editado);
       if (Object.keys(atualizado).length === 0) {
         throw criarErro("Nenhuma alteração fornecida", 400);
       }

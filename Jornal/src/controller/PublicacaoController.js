@@ -76,7 +76,13 @@ class PublicacaoController {
 
   async atualizarPublicacao(req, res) {
     try {
-      const result = await publicacaoService.atualizarPublicacao(req.body, req.params.id);
+      const pub = await publicacaoService.buscarPublicacao(req.params.id);
+      if (pub.dados.autor_id !== req.autorId) {
+        return res.status(403).json({ sucesso: false, erro: "Você não tem permissão para alterar esta publicação." });
+      }
+      
+      const dadosAtualizacao = { ...req.body, editado: true };
+      const result = await publicacaoService.atualizarPublicacao(dadosAtualizacao, req.params.id);
       res.json(result);
     } catch (error) {
       erroCatch(req, res, error);
@@ -85,6 +91,10 @@ class PublicacaoController {
 
   async deletarPublicacao(req, res) {
     try {
+      const pub = await publicacaoService.buscarPublicacao(req.params.id);
+      if (pub.dados.autor_id !== req.autorId) {
+        return res.status(403).json({ sucesso: false, erro: "Você não tem permissão para excluir esta publicação." });
+      }
       const result = await publicacaoService.deletarPublicacao(req.params.id);
       res.json(result);
     } catch (error) {

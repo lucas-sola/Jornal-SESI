@@ -100,6 +100,14 @@
                         <button class="materia-action-btn" id="btn-compartilhar" title="Compartilhar">
                             <i class="fa-solid fa-share-nodes"></i>
                         </button>
+                        <div id="materia-botoes-autor" class="materia-botoes-autor">
+                            <button class="materia-action-btn btn-editar" id="btn-editar" title="Editar">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="materia-action-btn btn-deletar" id="btn-deletar" title="Excluir">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -227,6 +235,37 @@
                 </span>
             </div>
         </div>
+    <!-- Modal de Edição -->
+    <div id="modal-editar" class="modal-editar-overlay">
+        <div class="modal-editar-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-pen-to-square btn-editar" style="margin-right: 8px;"></i>Editar Publicação</h3>
+                <button id="btn-fechar-modal" class="btn-fechar-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-editar-publicacao" class="form-editar-publicacao">
+                <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input type="text" id="edit-titulo" class="form-input" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subtítulo</label>
+                    <input type="text" id="edit-subtitulo" class="form-input" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Resumo</label>
+                    <textarea id="edit-resumo" class="form-textarea" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Conteúdo</label>
+                    <textarea id="edit-conteudo" class="form-textarea" rows="8" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="btn-cancelar-edicao" class="btn-cancelar">Cancelar</button>
+                    <button type="submit" class="btn-salvar"><i class="fa-solid fa-floppy-disk"></i>Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
     </footer>
 
     <script src="src/scripts/global.js"></script>

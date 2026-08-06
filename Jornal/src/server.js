@@ -1,7 +1,9 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
+require('dotenv').config();
+
 const app = require('./app');
 const pool = require('./config/database');
-
-const PORT = 3001;
 
 async function inicializarEsportes() {
     try {
@@ -68,6 +70,16 @@ async function start() {
     try {
         const connection = await pool.getConnection();
         console.log('Conectado ao MySQL com sucesso! 🎉');
+        
+        try {
+            await pool.query("ALTER TABLE publicacao ADD COLUMN editado BOOLEAN DEFAULT FALSE");
+            console.log("Coluna 'editado' adicionada com sucesso! 📝");
+        } catch (err) {
+            if (err.code !== 'ER_DUP_COLUMN_NAME' && err.errno !== 1060 && !err.message.includes('Duplicate column')) {
+                console.error("Erro ao adicionar coluna 'editado':", err.message);
+            }
+        }
+        
         connection.release();
 
         await inicializarEsportes();
@@ -76,8 +88,9 @@ async function start() {
         process.exit(1);
     }
 
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-        console.log(`Servidor rodando na porta ${PORT}`);
+        console.log(`Servidor rodando na porta ${PORT} 🚀`);
     });
 }
 

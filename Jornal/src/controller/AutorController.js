@@ -145,8 +145,7 @@ class AutorController {
       }
 
       if (usuario.dados.foto) {
-        // Resolve o caminho a partir da raiz do projeto para evitar erros no Windows
-        const caminhoAbsoluto = path.resolve(process.cwd(), usuario.dados.foto);
+        const caminhoAbsoluto = path.join(__dirname, "..", "..", usuario.dados.foto);
         
         console.log("Tentando carregar foto de:", caminhoAbsoluto);
 

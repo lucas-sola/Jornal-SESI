@@ -6,7 +6,7 @@ const armazenamento = multer.diskStorage({
   destination: (req, file, callback) => {
     try {
       const autorId = req.headers["x-usuario-id"] || "geral";
-      const pastaBase = path.resolve(process.cwd(), "uploads", "publicacoes", String(autorId));
+      const pastaBase = path.join(__dirname, "..", "..", "uploads", "publicacoes", String(autorId));
 
       if (!fs.existsSync(pastaBase)) {
         fs.mkdirSync(pastaBase, { recursive: true });
