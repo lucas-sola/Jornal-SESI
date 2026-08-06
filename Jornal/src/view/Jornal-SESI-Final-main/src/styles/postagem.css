@@ -572,8 +572,17 @@ section.container{
 }
 
 .content-preview-text {
-  white-space: pre-wrap;
   word-break: break-word;
+}
+
+.content-preview-paragrafo {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  color: var(--text-color);
+}
+
+.content-preview-paragrafo:last-child {
+  margin-bottom: 0;
 }
 
 .content-preview-body::-webkit-scrollbar {

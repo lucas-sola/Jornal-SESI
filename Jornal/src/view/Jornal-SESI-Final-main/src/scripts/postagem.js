@@ -254,7 +254,7 @@ function atualizarPreview() {
     if (conteudo) {
         const div = document.createElement('div')
         div.className = 'content-preview-text'
-        div.textContent = conteudo
+        renderizarParagrafos(div, conteudo, 'content-preview-paragrafo')
         previewBody.appendChild(div)
     }
 

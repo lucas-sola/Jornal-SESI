@@ -148,19 +148,7 @@ function preencherMateria(noticia) {
     }
 
     if (corpoEl) {
-        corpoEl.innerHTML = '';
-        if (noticia.conteudo) {
-            // Dividir em parágrafos e adicionar
-            const paragrafos = noticia.conteudo.split('\n').filter(p => p.trim() !== '');
-            paragrafos.forEach(pTexto => {
-                const p = document.createElement('p');
-                p.className = 'materia-paragrafo';
-                p.textContent = pTexto;
-                corpoEl.appendChild(p);
-            });
-        } else {
-            corpoEl.innerHTML = '<p class="materia-paragrafo">Conteúdo indisponível.</p>';
-        }
+        renderizarParagrafos(corpoEl, noticia.conteudo, 'materia-paragrafo');
     }
 
     // Tags inferiores
