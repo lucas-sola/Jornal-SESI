@@ -55,9 +55,19 @@ function preencherDadosAutor(autor) {
     document.getElementById('autor-email').textContent = autor.email
 
     const avatarEl = document.getElementById('autor-avatar')
-    if (autor.foto) {
+    if (autor.foto && avatarEl) {
         const fotoUrl = autor.foto.startsWith('http') ? autor.foto : `/${autor.foto}`
-        avatarEl.innerHTML = `<img src="${fotoUrl}" alt="${autor.nome}" class="avatar-img" />`
+        const placeholderHtml = avatarEl.innerHTML
+        const img = document.createElement('img')
+        img.src = fotoUrl
+        img.alt = autor.nome
+        img.className = 'avatar-img'
+        // Se a foto não carregar (arquivo removido do servidor), mantém o ícone padrão
+        img.addEventListener('error', () => {
+            avatarEl.innerHTML = placeholderHtml
+        })
+        avatarEl.innerHTML = ''
+        avatarEl.appendChild(img)
     }
 }
 

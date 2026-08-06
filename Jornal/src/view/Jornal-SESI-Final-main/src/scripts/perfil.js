@@ -78,6 +78,13 @@ function mostrarAvatar(url) {
         if (img) {
             img.src = url
             img.classList.remove('hidden')
+            // Se a foto não carregar (arquivo removido do servidor), volta a mostrar o ícone padrão
+            img.onerror = () => {
+                img.classList.add('hidden')
+                const placeholderId = id.replace('avatar-image-', 'avatar-placeholder-')
+                const placeholder = document.getElementById(placeholderId)
+                if (placeholder) placeholder.classList.remove('hidden')
+            }
         }
     })
 
