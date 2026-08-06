@@ -1080,7 +1080,7 @@ body.dark-theme .content-preview-header{
 }
 
 body.dark-theme .content-preview-badge{
-  background-color: var(--grey);
+  background-color: var(--weather-surface2);
   color: var(--white);
 }
 

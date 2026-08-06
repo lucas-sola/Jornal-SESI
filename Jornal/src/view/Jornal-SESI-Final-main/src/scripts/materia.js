@@ -121,17 +121,17 @@ function preencherMateria(noticia) {
     const imgWrap = document.getElementById('materia-imagem-wrap');
 
     if (imgEl) {
+        const imgMateriaPadrao = 'src/images/foto-sesi.jpg';
         if (noticia.imagem_destaque) {
-            imgEl.src = noticia.imagem_destaque.startsWith('http') || noticia.imagem_destaque.startsWith('src/') 
-                ? noticia.imagem_destaque 
-                : `/uploads/${noticia.imagem_destaque}`;
+            imgEl.src = resolverImagemPublicacao(noticia.imagem_destaque, imgMateriaPadrao);
             imgEl.alt = noticia.titulo;
+            aplicarFallbackImagem(imgEl, imgMateriaPadrao);
             if (legendaEl) {
                 legendaEl.textContent = noticia.subtitulo || '';
             }
         } else {
             // Se não tiver imagem, podemos ocultar o wrap ou usar uma padrão
-            imgEl.src = 'src/images/foto-sesi.jpg';
+            imgEl.src = imgMateriaPadrao;
             imgEl.alt = noticia.titulo;
             if (legendaEl) {
                 legendaEl.textContent = noticia.subtitulo || '';
@@ -322,12 +322,8 @@ function criarCardRelacionada(noticia) {
     const card = document.createElement('article');
     card.className = 'post-card';
 
-    let imgSrc = 'src/images/foto-sesi.jpg';
-    if (noticia.imagem_destaque) {
-        imgSrc = noticia.imagem_destaque.startsWith('http') || noticia.imagem_destaque.startsWith('src/')
-            ? noticia.imagem_destaque 
-            : `/uploads/${noticia.imagem_destaque}`;
-    }
+    const imgPadraoRelacionada = 'src/images/foto-sesi.jpg';
+    const imgSrc = resolverImagemPublicacao(noticia.imagem_destaque, imgPadraoRelacionada);
 
     const categoriaInfo = obterCategoriaInfo(noticia);
     const tag = noticia.tema_principal_nome || noticia.genero_nome || categoriaInfo.nome;
@@ -351,6 +347,8 @@ function criarCardRelacionada(noticia) {
             </div>
         </div>
     `;
+
+    aplicarFallbackImagem(card.querySelector('.post-card-img'), imgPadraoRelacionada);
 
     return card;
 }

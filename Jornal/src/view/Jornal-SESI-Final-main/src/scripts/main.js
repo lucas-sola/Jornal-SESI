@@ -46,10 +46,19 @@ async function carregarPublicacoes() {
                 if (tagHero) tagHero.textContent = ultima.genero_nome || ultima.tema_principal_nome || 'Destaque';
 
                 if (heroSec && ultima.imagem_destaque) {
-                    const heroImgSrc = ultima.imagem_destaque.startsWith('http') || ultima.imagem_destaque.startsWith('src/')
-                        ? ultima.imagem_destaque
-                        : `/uploads/${ultima.imagem_destaque}`;
-                    heroSec.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('${heroImgSrc}')`;
+                    const heroImgPadrao = 'src/images/noticias/noticia-1.png';
+                    const heroImgSrc = resolverImagemPublicacao(ultima.imagem_destaque, heroImgPadrao);
+
+                    // Como é background-image (não <img>), testamos o carregamento manualmente
+                    // antes de aplicar, para não deixar o hero sem imagem se o upload sumiu.
+                    const testeImg = new Image();
+                    testeImg.onload = () => {
+                        heroSec.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('${heroImgSrc}')`;
+                    };
+                    testeImg.onerror = () => {
+                        heroSec.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('${heroImgPadrao}')`;
+                    };
+                    testeImg.src = heroImgSrc;
                 }
             }
 
@@ -75,13 +84,9 @@ async function carregarPublicacoes() {
                     if (dataDestaque) dataDestaque.textContent = formatarData(destaque.data_publicacao || destaque.data_criacao);
 
                     if (imgEl) {
-                        if (destaque.imagem_destaque) {
-                            imgEl.src = destaque.imagem_destaque.startsWith('http') || destaque.imagem_destaque.startsWith('src/')
-                                ? destaque.imagem_destaque 
-                                : `/uploads/${destaque.imagem_destaque}`;
-                        } else {
-                            imgEl.src = 'src/images/noticias/noticia-1.png';
-                        }
+                        const imgDestaquePadrao = 'src/images/noticias/noticia-1.png';
+                        imgEl.src = resolverImagemPublicacao(destaque.imagem_destaque, imgDestaquePadrao);
+                        aplicarFallbackImagem(imgEl, imgDestaquePadrao);
                     }
 
                     const tagDestaque = secDestaque.querySelector('.tag');
@@ -115,13 +120,9 @@ async function carregarPublicacoes() {
                         }
 
                         if (imgSidebar) {
-                            if (noticia.imagem_destaque) {
-                                imgSidebar.src = noticia.imagem_destaque.startsWith('http') || noticia.imagem_destaque.startsWith('src/')
-                                    ? noticia.imagem_destaque 
-                                    : `/uploads/${noticia.imagem_destaque}`;
-                            } else {
-                                imgSidebar.src = 'src/images/noticias/noticia-2.jpg';
-                            }
+                            const imgSidebarPadrao = 'src/images/noticias/noticia-2.jpg';
+                            imgSidebar.src = resolverImagemPublicacao(noticia.imagem_destaque, imgSidebarPadrao);
+                            aplicarFallbackImagem(imgSidebar, imgSidebarPadrao);
                         }
                     }
                 });

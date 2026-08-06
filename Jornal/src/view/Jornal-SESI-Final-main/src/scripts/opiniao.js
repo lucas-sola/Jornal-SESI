@@ -64,13 +64,9 @@ function criarCardElement(noticia) {
     const article = document.createElement('article');
     article.className = 'post-card';
 
-    // Determinar imagem
-    let imgSrc = 'src/images/imagens-links/jornal-vintage.webp';
-    if (noticia.imagem_destaque) {
-        imgSrc = noticia.imagem_destaque.startsWith('http') || noticia.imagem_destaque.startsWith('src/')
-            ? noticia.imagem_destaque 
-            : `/uploads/${noticia.imagem_destaque}`;
-    }
+    // Determinar imagem (com fallback aplicado depois via onerror)
+    const imgPadrao = 'src/images/imagens-links/jornal-vintage.webp';
+    const imgSrc = resolverImagemPublicacao(noticia.imagem_destaque, imgPadrao);
 
     const tag = noticia.genero_nome || 'Opinião';
     const titulo = noticia.titulo;
@@ -92,6 +88,9 @@ function criarCardElement(noticia) {
             </div>
         </div>
     `;
+
+    // Aplica fallback automático caso a imagem do upload não exista mais no servidor
+    aplicarFallbackImagem(article.querySelector('.post-card-img'), imgPadrao);
 
     article.dataset.postId = noticia.id;
     return article;

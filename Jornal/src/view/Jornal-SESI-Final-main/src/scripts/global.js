@@ -125,3 +125,44 @@ function iniciarPesquisa() {
 
     window.addEventListener('resize', fecharTudo)
 }
+
+/**
+ * Resolve a URL correta para a imagem de destaque de uma publicação.
+ * - Se já for uma URL absoluta (http/https) ou um caminho local do front (src/...), usa como está.
+ * - Caso contrário, assume que é um caminho relativo salvo pelo backend (multer) e prefixa com /uploads/.
+ * - Se não houver imagem_destaque, cai no caminho padrão informado.
+ *
+ * @param {string|null|undefined} imagemDestaque - valor de noticia.imagem_destaque vindo da API
+ * @param {string} [padrao] - imagem padrão a usar quando não há imagem_destaque
+ * @returns {string} URL pronta para usar em um atributo src
+ */
+function resolverImagemPublicacao(imagemDestaque, padrao = 'src/images/foto-sesi.jpg') {
+    if (!imagemDestaque) return padrao;
+
+    if (imagemDestaque.startsWith('http://') || imagemDestaque.startsWith('https://') || imagemDestaque.startsWith('src/')) {
+        return imagemDestaque;
+    }
+
+    // Remove uma eventual barra inicial duplicada antes de prefixar
+    const caminhoLimpo = imagemDestaque.replace(/^\/+/, '');
+    return `/uploads/${caminhoLimpo}`;
+}
+
+/**
+ * Aplica um fallback automático em uma tag <img> caso a imagem configurada
+ * não carregue (arquivo removido do servidor, deploy sem disco persistente, etc).
+ * Evita que o card fique com espaço em branco quando o upload não existe mais.
+ *
+ * @param {HTMLImageElement} imgEl
+ * @param {string} [padrao] - imagem padrão a usar em caso de erro
+ */
+function aplicarFallbackImagem(imgEl, padrao = 'src/images/foto-sesi.jpg') {
+    if (!imgEl) return;
+    imgEl.addEventListener('error', function onErro() {
+        // Evita loop infinito caso o próprio padrão falhe
+        imgEl.removeEventListener('error', onErro);
+        if (imgEl.src.indexOf(padrao) === -1) {
+            imgEl.src = padrao;
+        }
+    });
+}
