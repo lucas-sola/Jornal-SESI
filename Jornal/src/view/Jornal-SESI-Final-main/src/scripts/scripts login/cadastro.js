@@ -23,13 +23,13 @@ function iniciarUploadFoto() {
         if (!file) return
 
         if (!/^image\/(jpeg|jpg|png)$/.test(file.type)) {
-            alert('Apenas imagens JPG ou PNG são permitidas.')
+            showToast('Apenas imagens JPG ou PNG são permitidas.', 'error')
             input.value = ''
             return
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('A imagem deve ter no máximo 5MB.')
+            showToast('A imagem deve ter no máximo 5MB.', 'error')
             input.value = ''
             return
         }
@@ -196,7 +196,7 @@ function cadastroEfetuado(){
                 window.location.href = 'index.html'
             }, 1500)
         } catch (err) {
-            alert(err.message || 'Erro ao registrar. Tente novamente.')
+            showToast(err.message || 'Erro ao registrar. Tente novamente.', 'error')
             btnRegistro.disabled = false
             btnRegistro.innerHTML = textoOriginal
         }
