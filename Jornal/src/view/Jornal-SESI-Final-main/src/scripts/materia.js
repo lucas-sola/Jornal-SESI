@@ -1,3 +1,58 @@
+/**
+ * Divide um texto corrido em parágrafos para exibição, mesmo quando o
+ * autor não usou quebras de linha manuais ao digitar ou colar o conteúdo.
+ *
+ * Estratégia, em ordem de prioridade:
+ * 1. Se o texto já tem linhas em branco entre blocos (\n\n, padrão Word/Docs),
+ *    respeita essas quebras.
+ * 2. Se tem quebras de linha simples (\n), usa cada linha como um parágrafo.
+ * 3. Se não tem nenhuma quebra de linha (texto colado como bloco único),
+ *    quebra automaticamente em frases, agrupando-as em parágrafos de
+ *    tamanho parecido com o de um jornal (~350-450 caracteres por parágrafo).
+ *
+ * @param {string} texto
+ * @returns {string[]} lista de parágrafos, sem entradas vazias
+ */
+function dividirEmParagrafos(texto) {
+    const textoLimpo = texto.replace(/\r\n/g, '\n').trim();
+
+    // 1. Parágrafos já separados por linha em branco
+    if (textoLimpo.includes('\n\n')) {
+        return textoLimpo.split(/\n\s*\n/).map(p => p.trim()).filter(p => p !== '');
+    }
+
+    // 2. Quebras de linha simples já presentes
+    const porLinha = textoLimpo.split('\n').map(p => p.trim()).filter(p => p !== '');
+    if (porLinha.length > 1) {
+        return porLinha;
+    }
+
+    // 3. Texto colado como bloco único: divide por frases e agrupa
+    const TAMANHO_ALVO = 400;
+    const frases = textoLimpo.match(/[^.!?]+[.!?]+(\s+|$)|[^.!?]+$/g) || [textoLimpo];
+
+    const paragrafos = [];
+    let paragrafoAtual = '';
+
+    frases.forEach(frase => {
+        const fraseTrim = frase.trim();
+        if (fraseTrim === '') return;
+
+        if (paragrafoAtual && (paragrafoAtual.length + fraseTrim.length) > TAMANHO_ALVO) {
+            paragrafos.push(paragrafoAtual.trim());
+            paragrafoAtual = fraseTrim;
+        } else {
+            paragrafoAtual = paragrafoAtual ? `${paragrafoAtual} ${fraseTrim}` : fraseTrim;
+        }
+    });
+
+    if (paragrafoAtual.trim() !== '') {
+        paragrafos.push(paragrafoAtual.trim());
+    }
+
+    return paragrafos.length > 0 ? paragrafos : [textoLimpo];
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('id');
@@ -150,8 +205,7 @@ function preencherMateria(noticia) {
     if (corpoEl) {
         corpoEl.innerHTML = '';
         if (noticia.conteudo) {
-            // Dividir em parágrafos e adicionar
-            const paragrafos = noticia.conteudo.split('\n').filter(p => p.trim() !== '');
+            const paragrafos = dividirEmParagrafos(noticia.conteudo);
             paragrafos.forEach(pTexto => {
                 const p = document.createElement('p');
                 p.className = 'materia-paragrafo';
