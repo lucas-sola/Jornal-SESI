@@ -148,8 +148,19 @@ function preencherMateria(noticia) {
     }
 
     if (corpoEl) {
-        renderizarParagrafos(corpoEl, noticia.conteudo, 'materia-paragrafo');
-        animarEntrada(corpoEl.querySelectorAll('.materia-paragrafo'), { delay: 55 });
+        corpoEl.innerHTML = '';
+        if (noticia.conteudo) {
+            // Dividir em parágrafos e adicionar
+            const paragrafos = noticia.conteudo.split('\n').filter(p => p.trim() !== '');
+            paragrafos.forEach(pTexto => {
+                const p = document.createElement('p');
+                p.className = 'materia-paragrafo';
+                p.textContent = pTexto;
+                corpoEl.appendChild(p);
+            });
+        } else {
+            corpoEl.innerHTML = '<p class="materia-paragrafo">Conteúdo indisponível.</p>';
+        }
     }
 
     // Tags inferiores
@@ -163,14 +174,6 @@ function preencherMateria(noticia) {
             tagsContainer.appendChild(span);
         });
     }
-
-    animarSecoes([
-        document.getElementById('materia-hero'),
-        document.getElementById('materia-imagem-wrap'),
-        document.getElementById('materia-resumo'),
-        corpoEl,
-        tagsContainer,
-    ].filter(Boolean));
 
     // Personalizar cor do hero de acordo com a categoria
     const heroSec = document.getElementById('materia-hero');
@@ -240,7 +243,7 @@ function configurarCompartilhar(noticia) {
                 });
             } else {
                 await navigator.clipboard.writeText(url);
-                mostrarToast('Link copiado para a área de transferência!');
+                mostrarToast('Link copiado para a área de transferência! 🔗');
             }
         } catch (err) {
             console.error('Erro ao compartilhar:', err);
@@ -248,8 +251,34 @@ function configurarCompartilhar(noticia) {
     });
 }
 
-function mostrarToast(mensagem, type = 'success') {
-    showToast(mensagem, type);
+function mostrarToast(mensagem) {
+    let toast = document.getElementById('materia-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'materia-toast';
+        toast.style.position = 'fixed';
+        toast.style.bottom = '20px';
+        toast.style.right = '20px';
+        toast.style.background = 'var(--text-color)';
+        toast.style.color = 'var(--bg-color)';
+        toast.style.padding = '12px 24px';
+        toast.style.borderRadius = '8px';
+        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        toast.style.zIndex = '9999';
+        toast.style.transition = 'all 0.3s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+    }, 3000);
 }
 
 async function carregarRelacionadas(materiaAtual) {
@@ -283,8 +312,6 @@ async function carregarRelacionadas(materiaAtual) {
             const card = criarCardRelacionada(noticia);
             grid.appendChild(card);
         });
-
-        animarEntrada(grid.querySelectorAll('.post-card'), { delay: 100 });
 
     } catch (err) {
         console.error('Erro ao carregar matérias relacionadas:', err);
@@ -396,25 +423,21 @@ function configurarBotoesAutor(noticia) {
                 const json = await response.json();
 
                 if (response.ok && json.sucesso) {
-                    showToast('Matéria atualizada com sucesso!', 'success');
-                    setTimeout(() => window.location.reload(), 1400);
+                    alert('Matéria atualizada com sucesso!');
+                    window.location.reload();
                 } else {
-                    showToast(json.erro || 'Erro ao atualizar a matéria.', 'error');
+                    alert(json.erro || 'Erro ao atualizar a matéria.');
                 }
             } catch (err) {
                 console.error(err);
-                showToast('Erro ao atualizar publicação.', 'error');
+                alert('Erro ao atualizar publicação.');
             }
         });
     }
 
     if (btnDeletar) {
         btnDeletar.addEventListener('click', async () => {
-            const confirmado = await showConfirm(
-                'Deseja realmente excluir esta matéria permanentemente?',
-                { title: 'Excluir matéria', confirmText: 'Excluir', danger: true }
-            );
-            if (!confirmado) return;
+            if (!confirm('Deseja realmente excluir esta matéria permanentemente?')) return;
             const usuario = obterUsuarioLogado();
             if (!usuario?.id) return;
 
@@ -426,14 +449,14 @@ function configurarBotoesAutor(noticia) {
                 const json = await response.json();
 
                 if (response.ok && json.sucesso) {
-                    showToast('Matéria excluída com sucesso!', 'success');
-                    setTimeout(() => { window.location.href = 'index.html'; }, 1400);
+                    alert('Matéria excluída com sucesso!');
+                    window.location.href = 'index.html';
                 } else {
-                    showToast(json.erro || 'Erro ao excluir a matéria.', 'error');
+                    alert(json.erro || 'Erro ao excluir a matéria.');
                 }
             } catch (err) {
                 console.error(err);
-                showToast('Erro ao excluir publicação.', 'error');
+                alert('Erro ao excluir publicação.');
             }
         });
     }

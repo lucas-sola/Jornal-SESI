@@ -254,7 +254,7 @@ function atualizarPreview() {
     if (conteudo) {
         const div = document.createElement('div')
         div.className = 'content-preview-text'
-        renderizarParagrafos(div, conteudo, 'content-preview-paragrafo')
+        div.textContent = conteudo
         previewBody.appendChild(div)
     }
 
@@ -328,7 +328,7 @@ async function publicarTexto() {
 
         setTimeout(() => {
             window.location.href = `materia.html?id=${json.id}`
-        }, 1400)
+        }, 1200)
     } catch (err) {
         showToast(err.message || 'Erro ao publicar.', 'error')
     } finally {
@@ -344,7 +344,7 @@ function limparFormulario() {
     document.getElementById('imagemDestaquePreview').classList.add('hidden')
     document.getElementById('imagemDestaqueZone').classList.remove('hidden')
     atualizarPreview()
-    showToast('Formulário limpo.', 'info')
+    showToast('Formulário limpo.')
 }
 
 function setupDragDrop(zone, callback) {
@@ -364,4 +364,19 @@ function setupDragDrop(zone, callback) {
             callback([...event.dataTransfer.files])
         }
     })
+}
+
+let toastTimer = null
+
+function showToast(message, type = '') {
+    const toast = document.getElementById('toast')
+    toast.textContent = message
+    toast.className = 'toast' + (type ? ` ${type}` : '')
+    toast.classList.remove('hidden')
+
+    if (toastTimer) clearTimeout(toastTimer)
+
+    toastTimer = setTimeout(() => {
+        toast.classList.add('hidden')
+    }, 3200)
 }

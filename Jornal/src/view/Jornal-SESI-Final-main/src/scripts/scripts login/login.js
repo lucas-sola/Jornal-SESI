@@ -27,7 +27,7 @@ function realizarLogin() {
         const senhaValor = senha.value.trim()
 
         if (nomeValor === '' || senhaValor === '') {
-            showToast('Preencha todos os campos', 'warning')
+            alert('Preencha todos os campos')
             return
         }
 
@@ -52,7 +52,7 @@ function realizarLogin() {
 
             window.location.href = 'index.html'
         } catch (err) {
-            showToast('Erro ao fazer login. Tente novamente.', 'error')
+            alert('Erro ao fazer login. Tente novamente.')
             btn.disabled = false
             btn.textContent = textoOriginal
         }
