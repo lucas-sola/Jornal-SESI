@@ -60,20 +60,25 @@ class AutorController {
       const usuario = await autorService.buscarAutor(id);
 
       if (!usuario) {
-        if (req.file.path) fs.unlinkSync(req.file.path);
+        if (req.file.path && !req.file.path.startsWith("http") && fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
         return res.status(404).json({ error: "Usuário não encontrado!" });
       }
 
-      // Deleta a imagem antiga se existir
-      if (usuario.dados && usuario.dados.foto) {
+      // Deleta a imagem antiga local se não for URL externa
+      if (usuario.dados && usuario.dados.foto && !usuario.dados.foto.startsWith("http")) {
         const caminhoAntigo = path.join(__dirname, "../../", usuario.dados.foto);
         if (fs.existsSync(caminhoAntigo)) {
           fs.unlinkSync(caminhoAntigo);
         }
       }
 
-      // Salva o novo caminho no banco de dados e busca o autor atualizado
-      const novoCaminho = `uploads/${id}/${req.file.filename}`;
+      // Salva o caminho (URL do Cloudinary ou caminho relativo local)
+      const novoCaminho = req.file.path.startsWith("http")
+        ? req.file.path
+        : `uploads/${id}/${req.file.filename}`;
+
       await autorService.atualizarAutor({ foto: novoCaminho }, id);
       const usuarioAtualizado = await autorService.buscarAutor(id);
 
@@ -85,7 +90,9 @@ class AutorController {
       });
 
     } catch (error) {
-      if (req.file && req.file.path) fs.unlinkSync(req.file.path);
+      if (req.file && req.file.path && !req.file.path.startsWith("http") && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
       erroCatch(req, res, error);
     }
   }
@@ -99,13 +106,14 @@ class AutorController {
         return res.status(404).json({ error: "Usuário não encontrado!" });
       }
 
-      if (usuario.dados.foto) { // O service retorna { sucesso: true, dados: autor }
-        const caminhoAntigo = path.join(__dirname, "../../", usuario.dados.foto);
-        if (fs.existsSync(caminhoAntigo)) {
-          fs.unlinkSync(caminhoAntigo);
+      if (usuario.dados.foto) {
+        if (!usuario.dados.foto.startsWith("http")) {
+          const caminhoAntigo = path.join(__dirname, "../../", usuario.dados.foto);
+          if (fs.existsSync(caminhoAntigo)) {
+            fs.unlinkSync(caminhoAntigo);
+          }
         }
         
-        // Atualiza no banco removendo a foto (setando como null)
         await autorService.atualizarAutor({ foto: null }, id);
         return res.status(200).json({ message: "Foto de perfil deletada com sucesso!" });
       }
@@ -145,14 +153,13 @@ class AutorController {
       }
 
       if (usuario.dados.foto) {
-        const caminhoAbsoluto = path.join(__dirname, "..", "..", usuario.dados.foto);
-        
-        console.log("Tentando carregar foto de:", caminhoAbsoluto);
+        if (usuario.dados.foto.startsWith("http")) {
+          return res.redirect(usuario.dados.foto);
+        }
 
+        const caminhoAbsoluto = path.join(__dirname, "..", "..", usuario.dados.foto);
         if (fs.existsSync(caminhoAbsoluto)) {
           return res.sendFile(caminhoAbsoluto);
-        } else {
-          console.log("ARQUIVO NÃO LOCALIZADO NO DISCO:", caminhoAbsoluto);
         }
       }
 

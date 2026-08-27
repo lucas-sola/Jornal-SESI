@@ -1,18 +1,9 @@
 const STORAGE_KEY = 'sesiUsuario'
+const TOKEN_KEY = 'sesiToken'
 
 document.addEventListener('DOMContentLoaded', function() {
     realizarLogin()
 })
-
-async function buscarAutorPorIdentificador(identificador) {
-    const response = await fetch('/api/autores')
-    const json = await response.json()
-    const autores = json.dados || []
-    const valor = identificador.toLowerCase()
-    return autores.find((autor) =>
-        autor.nome.toLowerCase() === valor || autor.email.toLowerCase() === valor
-    )
-}
 
 function realizarLogin() {
     const formulario = document.querySelector('#formulario')
@@ -23,11 +14,11 @@ function realizarLogin() {
     formulario.addEventListener('submit', async (event) => {
         event.preventDefault()
 
-        const nomeValor = nome.value.trim()
+        const identificadorValor = nome.value.trim()
         const senhaValor = senha.value.trim()
 
-        if (nomeValor === '' || senhaValor === '') {
-            alert('Preencha todos os campos')
+        if (identificadorValor === '' || senhaValor === '') {
+            showToast('Preencha todos os campos.', 'warning')
             return
         }
 
@@ -36,23 +27,34 @@ function realizarLogin() {
         btn.textContent = 'Entrando...'
 
         try {
-            const autor = await buscarAutorPorIdentificador(nomeValor)
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    identificador: identificadorValor,
+                    senha: senhaValor,
+                }),
+            })
 
-            if (autor) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    id: autor.id,
-                    nome: autor.nome,
-                    email: autor.email,
-                }))
-            } else {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    nome: nomeValor,
-                }))
+            const json = await response.json()
+
+            if (!response.ok || !json.sucesso) {
+                throw new Error(json.erro || json.mensagem || 'Credenciais inválidas.')
             }
 
-            window.location.href = 'index.html'
+            // Salva token JWT e perfil do usuário autenticado
+            localStorage.setItem(TOKEN_KEY, json.token)
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(json.usuario))
+
+            showToast('Login realizado com sucesso!', 'success')
+
+            setTimeout(() => {
+                window.location.href = 'index.html'
+            }, 800)
         } catch (err) {
-            alert('Erro ao fazer login. Tente novamente.')
+            showToast(err.message || 'Erro ao fazer login. Tente novamente.', 'error')
             btn.disabled = false
             btn.textContent = textoOriginal
         }

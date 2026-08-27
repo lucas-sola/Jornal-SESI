@@ -4,7 +4,7 @@ const { criarErro } = require("../utils/errorJornal.js");
 class AutorRepository {
   async listarAutores() {
     try {
-      const [rows] = await pool.query("SELECT * FROM autor");
+      const [rows] = await pool.query("SELECT * FROM autor ORDER BY nome ASC");
       return rows;
     } catch (error) {
       throw criarErro("Erro ao listar autores", 500);
@@ -17,6 +17,27 @@ class AutorRepository {
       return rows[0];
     } catch (error) {
       throw criarErro("Erro ao buscar autor", 500);
+    }
+  }
+
+  async buscarPorEmail(email) {
+    try {
+      const [rows] = await pool.query("SELECT * FROM autor WHERE LOWER(email) = LOWER(?)", [email]);
+      return rows[0] || null;
+    } catch (error) {
+      throw criarErro("Erro ao buscar autor por e-mail", 500);
+    }
+  }
+
+  async buscarPorIdentificador(identificador) {
+    try {
+      const [rows] = await pool.query(
+        "SELECT * FROM autor WHERE LOWER(email) = LOWER(?) OR LOWER(nome) = LOWER(?)",
+        [identificador, identificador]
+      );
+      return rows[0] || null;
+    } catch (error) {
+      throw criarErro("Erro ao buscar autor por identificador", 500);
     }
   }
 

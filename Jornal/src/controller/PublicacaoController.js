@@ -1,5 +1,6 @@
 const publicacaoService = require("../services/PublicacaoService.js");
 const { erroCatch } = require("../utils/errorJornal.js");
+const fs = require("fs");
 
 class PublicacaoController {
   async listarPublicacoes(req, res) {
@@ -46,7 +47,9 @@ class PublicacaoController {
 
       let imagem_destaque = null;
       if (req.file) {
-        imagem_destaque = `publicacoes/${req.autorId}/${req.file.filename}`;
+        imagem_destaque = req.file.path.startsWith("http")
+          ? req.file.path
+          : `publicacoes/${req.autorId}/${req.file.filename}`;
       }
 
       const result = await publicacaoService.cadastrarPublicacao({
@@ -61,13 +64,12 @@ class PublicacaoController {
         genero_id,
         tema_principal_id,
         tags: tags || null,
-        destaque: destaque === 'true' || destaque === true ? true : false,
+        destaque: destaque === "true" || destaque === true,
       });
 
       res.status(201).json(result);
     } catch (error) {
-      if (req.file?.path) {
-        const fs = require("fs");
+      if (req.file?.path && !req.file.path.startsWith("http")) {
         if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
       }
       erroCatch(req, res, error);
@@ -77,10 +79,15 @@ class PublicacaoController {
   async atualizarPublicacao(req, res) {
     try {
       const pub = await publicacaoService.buscarPublicacao(req.params.id);
-      if (pub.dados.autor_id !== req.autorId) {
-        return res.status(403).json({ sucesso: false, erro: "Você não tem permissão para alterar esta publicação." });
+      const ehAdmin = req.usuario?.cargo === "admin";
+
+      if (pub.dados.autor_id !== req.autorId && !ehAdmin) {
+        return res.status(403).json({
+          sucesso: false,
+          erro: "Você não tem permissão para alterar esta publicação.",
+        });
       }
-      
+
       const dadosAtualizacao = { ...req.body, editado: true };
       const result = await publicacaoService.atualizarPublicacao(dadosAtualizacao, req.params.id);
       res.json(result);
@@ -92,8 +99,13 @@ class PublicacaoController {
   async deletarPublicacao(req, res) {
     try {
       const pub = await publicacaoService.buscarPublicacao(req.params.id);
-      if (pub.dados.autor_id !== req.autorId) {
-        return res.status(403).json({ sucesso: false, erro: "Você não tem permissão para excluir esta publicação." });
+      const ehAdmin = req.usuario?.cargo === "admin";
+
+      if (pub.dados.autor_id !== req.autorId && !ehAdmin) {
+        return res.status(403).json({
+          sucesso: false,
+          erro: "Você não tem permissão para excluir esta publicação.",
+        });
       }
       const result = await publicacaoService.deletarPublicacao(req.params.id);
       res.json(result);

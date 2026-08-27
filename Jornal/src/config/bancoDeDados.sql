@@ -1,5 +1,3 @@
-
-
 DROP DATABASE IF EXISTS db_jornal_sesi;
 
 CREATE DATABASE db_jornal_sesi
@@ -54,6 +52,8 @@ CREATE TABLE autor (
     serie_escolar VARCHAR(20) NOT NULL,
     descricao VARCHAR(500),
     email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255),
+    cargo VARCHAR(20) NOT NULL DEFAULT 'autor',
     area_interesse VARCHAR(100),
     foto VARCHAR(255),
     cpf VARCHAR(14),
@@ -86,7 +86,6 @@ CREATE TABLE publicacao (
     visualizacoes INT DEFAULT 0,
     destaque BOOLEAN DEFAULT FALSE,
     tags VARCHAR(255) DEFAULT NULL,
-    editado BOOLEAN DEFAULT FALSE,
 
     autor_id INT NOT NULL,
     edicao_id INT,
@@ -257,33 +256,39 @@ LIMIT 10;
 -- CADASTRO DE AUTORES (todos do 3ºB)
 -- ============================================================================
 
-INSERT INTO autor (id, nome, serie_escolar, email) VALUES
-(1,  'Adrian Clarck',      '3ºB', 'adrian.clarck@portalsesisp.org.br'),
-(2,  'Andrew Clarck',      '3ºB', 'andrew.clarck@portalsesisp.org.br'),
-(3,  'Eduardo Chaves',     '3ºB', 'eduardo.chaves4@portalsesisp.org.br'),
-(4,  'Enzo Araujo',        '3ºB', 'enzo.araujo4@portalsesisp.org.br'),
-(5,  'Felipe Paiva',       '3ºB', 'felipe.paiva@portalsesisp.org.br'),
-(6,  'Fernando Santos',    '3ºB', 'fernando.santos127@senaisp.edu.br'),
-(7,  'Giovana Fonseca',    '3ºB', 'giovana.fonseca2@portalsesisp.org.br'),
-(8,  'Gustavo Francisco',  '3ºB', 'gustavo.francisco6@portalsesisp.org.br'),
-(9,  'Heloisa Paixao',     '3ºB', 'heloisa.paixao@portalsesisp.org.br'),
-(10, 'Joao Goncalves',     '3ºB', 'joao.goncalves28@portalsesisp.org.br'),
-(11, 'Jose Armelin',       '3ºB', 'jose.armelin@portalsesisp.org.br'),
-(12, 'Laisla Tararan',     '3ºB', 'laisla.tararan@portalsesisp.org.br'),
-(13, 'Leticia Caristo',    '3ºB', 'leticia.caristo@portalsesisp.org.br'),
-(14, 'Leticia Souto',      '3ºB', 'leticia.souto3@portalsesisp.org.br'),
-(15, 'Luiz Gaspar',        '3ºB', 'luiz.gaspar@portalsesisp.org.br'),
-(16, 'Maria Quidiquimo',   '3ºB', 'maria.quidiquimo@portalsesisp.org.br'),
-(17, 'Matheus Felippe',    '3ºB', 'matheus.felippe3@portalsesisp.org.br'),
-(18, 'Miguel Oliveira',    '3ºB', 'miguel.oliveira10@portalsesisp.org.br'),
-(19, 'Monica Manfrinato',  '3ºB', 'monica.manfrinato@portalsesisp.org.br'),
-(20, 'Monique Fonseca',    '3ºB', 'monique.fonseca@portalsesisp.org.br'),
-(21, 'Paula Gianotto',     '3ºB', 'paula.gianotto@portalsesisp.org.br'),
-(22, 'Pedro Jimenez',      '3ºB', 'pedro.jimenez@portalsesisp.org.br'),
-(23, 'Pedro Silva',        '3ºB', 'pedro.silva342@portalsesisp.org.br'),
-(24, 'Rafael Silva',       '3ºB', 'rafael.silva158@portalsesisp.org.br'),
-(25, 'Ricardo Cruz',       '3ºB', 'ricardo.cruz@portalsesisp.org.br'),
-(26, 'Sarah Antonio',      '3ºB', 'sarah.antonio@portalsesisp.org.br');
+INSERT INTO autor (id, nome, serie_escolar, email, cargo, senha) VALUES
+(1,  'Adrian Clarck',      '3ºB', 'adrian.clarck@portalsesisp.org.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(2,  'Andrew Clarck',      '3ºB', 'andrew.clarck@portalsesisp.org.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(3,  'Eduardo Chaves',     '3ºB', 'eduardo.chaves4@portalsesisp.org.br',    'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(4,  'Enzo Araujo',        '3ºB', 'enzo.araujo4@portalsesisp.org.br',       'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(5,  'Felipe Paiva',       '3ºB', 'felipe.paiva@portalsesisp.org.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(6,  'Fernando Santos',    '3ºB', 'fernando.santos127@senaisp.edu.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(7,  'Giovana Fonseca',    '3ºB', 'giovana.fonseca2@portalsesisp.org.br',   'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(8,  'Gustavo Francisco',  '3ºB', 'gustavo.francisco6@portalsesisp.org.br', 'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(9,  'Heloisa Paixao',     '3ºB', 'heloisa.paixao@portalsesisp.org.br',    'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(10, 'Joao Goncalves',     '3ºB', 'joao.goncalves28@portalsesisp.org.br',   'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),      
+(11, 'Jose Armelin',       '3ºB', 'jose.armelin@portalsesisp.org.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(12, 'Laisla Tararan',     '3ºB', 'laisla.tararan@portalsesisp.org.br',    'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(13, 'Leticia Caristo',    '3ºB', 'leticia.caristo@portalsesisp.org.br',   'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(14, 'Leticia Souto',      '3ºB', 'leticia.souto3@portalsesisp.org.br',     'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(15, 'Luiz Gaspar',        '3ºB', 'luiz.gaspar@portalsesisp.org.br',       'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(16, 'Maria Quidiquimo',   '3ºB', 'maria.quidiquimo@portalsesisp.org.br',  'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(17, 'Matheus Felippe',    '3ºB', 'matheus.felippe3@portalsesisp.org.br',   'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(18, 'Miguel Oliveira',    '3ºB', 'miguel.oliveira10@portalsesisp.org.br',  'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(19, 'Monica Manfrinato',  '3ºB', 'monica.manfrinato@portalsesisp.org.br', 'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(20, 'Monique Fonseca',    '3ºB', 'monique.fonseca@portalsesisp.org.br',   'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(21, 'Paula Gianotto',     '3ºB', 'paula.gianotto@portalsesisp.org.br',    'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(22, 'Pedro Jimenez',      '3ºB', 'pedro.jimenez@portalsesisp.org.br',     'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(23, 'Pedro Silva',        '3ºB', 'pedro.silva342@portalsesisp.org.br',     'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(24, 'Rafael Silva',       '3ºB', 'rafael.silva158@portalsesisp.org.br',    'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(25, 'Ricardo Cruz',       '3ºB', 'ricardo.cruz@portalsesisp.org.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(26, 'Sarah Antonio',      '3ºB', 'sarah.antonio@portalsesisp.org.br',     'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+-- Administradores do Portal
+(27, 'Lucas Sola',         '3ºB', 'lucas.sola@portalsesisp.org.br',        'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(28, 'Enzo Antonio',       '3ºB', 'enzo.antonio@portalsesisp.org.br',     'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(29, 'Rafael Teixeira',    '3ºB', 'rafael.teixeira@portalsesisp.org.br',    'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(30, 'Rafael Ferreira',    '3ºB', 'rafael.ferreira@portalsesisp.org.br',    'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(31, 'Vinicius Monteiro',  '3ºB', 'vinicius.monteiro@portalsesisp.org.br',  'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye');
 
 -- ============================================================================
 -- PUBLICAÇÕES

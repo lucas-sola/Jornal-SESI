@@ -25,10 +25,15 @@ function obterUsuarioLogado() {
 }
 
 function headersPrivados(autorId) {
-    return {
+    const token = localStorage.getItem('sesiToken')
+    const headers = {
         'Content-Type': 'application/json',
         'X-Usuario-Id': String(autorId),
     }
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+    }
+    return headers
 }
 
 function iniciarUploadAvatar() {
@@ -49,13 +54,13 @@ function iniciarUploadAvatar() {
         if (!file) return
 
         if (!/^image\/(jpeg|jpg|png)$/.test(file.type)) {
-            alert('Apenas imagens JPG ou PNG são permitidas.')
+            showToast('Apenas imagens JPG ou PNG são permitidas.', 'warning')
             input.value = ''
             return
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('A imagem deve ter no máximo 5MB.')
+            showToast('A imagem deve ter no máximo 5MB.', 'warning')
             input.value = ''
             return
         }
@@ -124,6 +129,12 @@ async function carregarPerfil(autorId) {
                 mostrarAvatar(`/api/autores/${autorId}/profile-image?t=${Date.now()}`)
             }
         }
+
+        const linkPublicar = document.getElementById('link-publicar-container')
+        if (linkPublicar) {
+            const ehAdmin = autor.cargo === 'admin' || usuario?.cargo === 'admin'
+            linkPublicar.classList.toggle('hidden', !ehAdmin)
+        }
     } catch (err) {
         console.error('Erro ao carregar perfil:', err)
     }
@@ -150,12 +161,12 @@ function validarDadosPessoais() {
     const tel = document.getElementById('tel').value.trim()
 
     if (cpf && !/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf)) {
-        alert('CPF incompleto. Digite os 11 números.')
+        showToast('CPF incompleto. Digite os 11 números.', 'warning')
         return false
     }
 
     if (tel && !/^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(tel)) {
-        alert('Telefone incompleto. Digite os 11 números.')
+        showToast('Telefone incompleto. Digite os 11 números.', 'warning')
         return false
     }
 
@@ -173,7 +184,7 @@ function configurarFormulario(autorId) {
         const email = document.getElementById('email').value.trim()
 
         if (!nome || !email) {
-            alert('Preencha nome e e-mail.')
+            showToast('Preencha nome e e-mail.', 'warning')
             return
         }
 
@@ -192,7 +203,7 @@ function configurarFormulario(autorId) {
 
             const response = await fetch(`/api/autores/${autorId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: headersPrivados(autorId),
                 body: JSON.stringify(dados),
             })
 
@@ -231,9 +242,9 @@ function configurarFormulario(autorId) {
                 email: dados.email,
             }))
 
-            alert('Perfil atualizado com sucesso!')
+            showToast('Perfil atualizado com sucesso!', 'success')
         } catch (err) {
-            alert(err.message || 'Erro ao salvar alterações.')
+            showToast(err.message || 'Erro ao salvar alterações.', 'error')
         } finally {
             btn.disabled = false
             btn.innerHTML = textoOriginal
@@ -245,8 +256,14 @@ async function enviarFotoPerfil(autorId, file) {
     const formData = new FormData()
     formData.append('profileImage', file)
 
+    const token = localStorage.getItem('sesiToken')
+    const headers = {}
+    if (token) headers['Authorization'] = `Bearer ${token}`
+    if (autorId) headers['X-Usuario-Id'] = String(autorId)
+
     const response = await fetch(`/api/autores/${autorId}/profile-image`, {
         method: 'POST',
+        headers,
         body: formData,
     })
 

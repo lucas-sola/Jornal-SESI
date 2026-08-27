@@ -165,9 +165,12 @@ function preencherMateria(noticia) {
     const usuarioLogado = obterUsuarioLogado();
     const botoesAutor = document.getElementById('materia-botoes-autor');
     if (botoesAutor) {
-        const eAutor = usuarioLogado && usuarioLogado.id === noticia.autor_id;
-        botoesAutor.classList.toggle('active', Boolean(eAutor));
-        if (eAutor) configurarBotoesAutor(noticia);
+        const eAdmin = usuarioLogado?.cargo === 'admin';
+        const eAutorDaMateria = usuarioLogado?.id != null &&
+            Number(usuarioLogado.id) === Number(noticia.autor_id);
+        const podeGerenciar = Boolean(eAdmin || eAutorDaMateria);
+        botoesAutor.classList.toggle('active', podeGerenciar);
+        if (podeGerenciar) configurarBotoesAutor(noticia);
     }
 
     // Imagem
@@ -297,7 +300,7 @@ function configurarCompartilhar(noticia) {
                 });
             } else {
                 await navigator.clipboard.writeText(url);
-                mostrarToast('Link copiado para a área de transferência! 🔗');
+                showToast('Link copiado para a área de transferência! 🔗', 'success');
             }
         } catch (err) {
             console.error('Erro ao compartilhar:', err);
@@ -305,34 +308,11 @@ function configurarCompartilhar(noticia) {
     });
 }
 
-function mostrarToast(mensagem) {
-    let toast = document.getElementById('materia-toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'materia-toast';
-        toast.style.position = 'fixed';
-        toast.style.bottom = '20px';
-        toast.style.right = '20px';
-        toast.style.background = 'var(--text-color)';
-        toast.style.color = 'var(--bg-color)';
-        toast.style.padding = '12px 24px';
-        toast.style.borderRadius = '8px';
-        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-        toast.style.zIndex = '9999';
-        toast.style.transition = 'all 0.3s ease';
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(20px)';
-        document.body.appendChild(toast);
+// mostrarToast agora delega ao sistema global de animations.js
+function mostrarToast(mensagem, tipo = 'info') {
+    if (typeof showToast === 'function') {
+        showToast(mensagem, tipo);
     }
-
-    toast.textContent = mensagem;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateY(0)';
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(20px)';
-    }, 3000);
 }
 
 async function carregarRelacionadas(materiaAtual) {
@@ -466,51 +446,67 @@ function configurarBotoesAutor(noticia) {
             };
 
             try {
+                const token = localStorage.getItem('sesiToken');
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'X-Usuario-Id': String(usuario.id)
+                };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
                 const response = await fetch(`/api/publicacoes/${noticia.id}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Usuario-Id': String(usuario.id)
-                    },
+                    headers,
                     body: JSON.stringify(payload)
                 });
                 const json = await response.json();
 
                 if (response.ok && json.sucesso) {
-                    alert('Matéria atualizada com sucesso!');
-                    window.location.reload();
+                    showToast('Matéria atualizada com sucesso!', 'success');
+                    setTimeout(() => window.location.reload(), 1200);
                 } else {
-                    alert(json.erro || 'Erro ao atualizar a matéria.');
+                    showToast(json.erro || 'Erro ao atualizar a matéria.', 'error');
                 }
             } catch (err) {
                 console.error(err);
-                alert('Erro ao atualizar publicação.');
+                showToast('Erro ao atualizar publicação.', 'error');
             }
         });
     }
 
     if (btnDeletar) {
         btnDeletar.addEventListener('click', async () => {
-            if (!confirm('Deseja realmente excluir esta matéria permanentemente?')) return;
+            const confirmado = await showConfirm({
+                titulo: 'Excluir matéria',
+                mensagem: 'Deseja realmente excluir esta matéria permanentemente? Essa ação não pode ser desfeita.',
+                textoBotaoConfirmar: 'Excluir',
+                textoBotaoCancelar: 'Cancelar',
+                tipo: 'danger',
+            });
+            if (!confirmado) return;
+
             const usuario = obterUsuarioLogado();
             if (!usuario?.id) return;
 
             try {
+                const token = localStorage.getItem('sesiToken');
+                const headers = { 'X-Usuario-Id': String(usuario.id) };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
                 const response = await fetch(`/api/publicacoes/${noticia.id}`, {
                     method: 'DELETE',
-                    headers: { 'X-Usuario-Id': String(usuario.id) }
+                    headers
                 });
                 const json = await response.json();
 
                 if (response.ok && json.sucesso) {
-                    alert('Matéria excluída com sucesso!');
-                    window.location.href = 'index.html';
+                    showToast('Matéria excluída com sucesso!', 'success');
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
                 } else {
-                    alert(json.erro || 'Erro ao excluir a matéria.');
+                    showToast(json.erro || 'Erro ao excluir a matéria.', 'error');
                 }
             } catch (err) {
                 console.error(err);
-                alert('Erro ao excluir publicação.');
+                showToast('Erro ao excluir publicação.', 'error');
             }
         });
     }

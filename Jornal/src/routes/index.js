@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const authRoutes = require("./AuthRoutes.js");
 const autorRoutes = require("./AutorRoutes.js");
 const generoRoutes = require("./GeneroRoutes.js");
 const temaPrincipalRoutes = require("./TemaPrincipalRoutes.js");
@@ -11,6 +12,7 @@ const publicacaoRoutes = require("./PublicacaoRoutes.js");
 const comentarioRoutes = require("./ComentarioRoutes.js");
 const publicacaoCategoriaRoutes = require("./PublicacaoCategoriaRoutes.js");
 
+router.use("/auth", authRoutes);
 router.use("/autores", autorRoutes);
 router.use("/generos", generoRoutes);
 router.use("/temas-principais", temaPrincipalRoutes);

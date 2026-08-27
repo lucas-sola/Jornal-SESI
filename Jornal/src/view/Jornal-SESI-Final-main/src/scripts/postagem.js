@@ -16,7 +16,12 @@ function obterUsuarioLogado() {
 }
 
 function headersAutor(autorId) {
-    return { 'X-Usuario-Id': String(autorId) }
+    const token = localStorage.getItem('sesiToken')
+    const headers = { 'X-Usuario-Id': String(autorId) }
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+    }
+    return headers
 }
 
 async function verificarAcessoAutor() {
@@ -24,7 +29,7 @@ async function verificarAcessoAutor() {
     const acessoNegado = document.getElementById('acesso-negado')
     const publicacaoApp = document.getElementById('publicacao-app')
 
-    if (!usuario?.id) {
+    if (!usuario?.id || usuario.cargo !== 'admin') {
         acessoNegado.classList.remove('hidden')
         return
     }
@@ -33,7 +38,7 @@ async function verificarAcessoAutor() {
         const response = await fetch(`/api/autores/${usuario.id}`)
         const json = await response.json()
 
-        if (!response.ok || !json.sucesso || !json.dados?.email) {
+        if (!response.ok || !json.sucesso || !json.dados?.email || json.dados.cargo !== 'admin') {
             acessoNegado.classList.remove('hidden')
             return
         }
@@ -369,7 +374,16 @@ function setupDragDrop(zone, callback) {
 let toastTimer = null
 
 function showToast(message, type = '') {
+    // Usa o sistema premium de animations.js se disponível
+    if (window._sesiToastSystem) {
+        const tipo = type === 'error' ? 'error' : type === 'success' ? 'success' : type || 'default';
+        window._sesiToastSystem(message, tipo);
+        return;
+    }
+
+    // Fallback: toast simples do HTML se o sistema premium ainda não carregou
     const toast = document.getElementById('toast')
+    if (!toast) return;
     toast.textContent = message
     toast.className = 'toast' + (type ? ` ${type}` : '')
     toast.classList.remove('hidden')

@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const app = require('./app');
 const pool = require('./config/database');
+const { inicializarAutenticacaoEAdmins } = require('./config/setupAdmin');
 
 async function inicializarEsportes() {
     try {
@@ -82,6 +83,7 @@ async function start() {
         
         connection.release();
 
+        await inicializarAutenticacaoEAdmins();
         await inicializarEsportes();
     } catch (err) {
         console.error('Erro ao conectar no banco:', err);

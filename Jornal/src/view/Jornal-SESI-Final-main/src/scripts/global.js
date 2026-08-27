@@ -4,6 +4,36 @@ document.addEventListener('DOMContentLoaded', () =>{
     iniciarPesquisa()
 })
 
+/* ─── Funções Globais de Autenticação JWT ────────────────────────────────── */
+const SESI_STORAGE_USER = 'sesiUsuario'
+const SESI_STORAGE_TOKEN = 'sesiToken'
+
+function obterTokenAuth() {
+    return localStorage.getItem(SESI_STORAGE_TOKEN) || ''
+}
+
+function obterUsuarioLogadoGlobal() {
+    try {
+        return JSON.parse(localStorage.getItem(SESI_STORAGE_USER))
+    } catch {
+        return null
+    }
+}
+
+function headersAuth(extra = {}) {
+    const token = obterTokenAuth()
+    const usuario = obterUsuarioLogadoGlobal()
+    const headers = { ...extra }
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+    }
+    if (usuario?.id) {
+        headers['X-Usuario-Id'] = String(usuario.id)
+    }
+    return headers
+}
+
+
 /* ─── JavaScript Main ───────────────────────────────────────────────────── */
 function iniciarTema(){
     const temaBtn = document.querySelector('#themeToggle')

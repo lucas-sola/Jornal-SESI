@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'sesiUsuario'
+const TOKEN_KEY = 'sesiToken'
 
 document.addEventListener('DOMContentLoaded', function () {
     mascararCPF('#cpf')
@@ -23,13 +24,13 @@ function iniciarUploadFoto() {
         if (!file) return
 
         if (!/^image\/(jpeg|jpg|png)$/.test(file.type)) {
-            alert('Apenas imagens JPG ou PNG são permitidas.')
+            showToast('Apenas imagens JPG ou PNG são permitidas.', 'warning')
             input.value = ''
             return
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('A imagem deve ter no máximo 5MB.')
+            showToast('A imagem deve ter no máximo 5MB.', 'warning')
             input.value = ''
             return
         }
@@ -58,14 +59,16 @@ async function registrarUsuario() {
     const cpf = document.querySelector('#cpf').value.trim()
     const email = document.querySelector('#email').value.trim()
     const tel = document.querySelector('#tel').value.trim()
+    const senha = document.querySelector('#senha').value.trim()
     const fotoInput = document.querySelector('#foto-perfil')
 
-    const response = await fetch('/api/autores', {
+    const response = await fetch('/api/auth/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             nome,
             email,
+            senha,
             serie_escolar: 'Não informado',
             cpf,
             telefone: tel,
@@ -78,14 +81,29 @@ async function registrarUsuario() {
         throw new Error(json.mensagem || json.erro || 'Erro ao criar conta. Verifique se o e-mail já está cadastrado.')
     }
 
-    const autorId = json.id
+    const autorId = json.usuario?.id || json.id
+    const token = json.token
 
-    if (fotoInput?.files?.[0]) {
+    if (token) {
+        localStorage.setItem(TOKEN_KEY, token)
+    }
+
+    if (json.usuario) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(json.usuario))
+    } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ id: autorId, nome, email }))
+    }
+
+    if (fotoInput?.files?.[0] && autorId) {
         const formData = new FormData()
         formData.append('profileImage', fotoInput.files[0])
 
+        const headers = {}
+        if (token) headers['Authorization'] = `Bearer ${token}`
+
         const fotoRes = await fetch(`/api/autores/${autorId}/profile-image`, {
             method: 'POST',
+            headers,
             body: formData,
         })
 
@@ -94,8 +112,6 @@ async function registrarUsuario() {
             console.warn('Foto não enviada:', fotoJson.mensagem || fotoJson.erro)
         }
     }
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ id: autorId, nome, email }))
 }
 
 function verificarCampos(){
@@ -103,6 +119,7 @@ function verificarCampos(){
     const cpf = document.querySelector('#cpf')
     const email = document.querySelector('#email')
     const tel = document.querySelector('#tel')
+    const senha = document.querySelector('#senha')
 
     const campos = [
         { 
@@ -115,7 +132,7 @@ function verificarCampos(){
             input: cpf, 
             mensagemVazio: 'Preencha o CPF.', 
             mensagemInvalido: 'CPF incompleto. Digite os 11 números.',
-            validar: (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v) // 000.000.000-00 = 14 caracteres com máscara
+            validar: (v) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v)
         },
         { 
             input: email, 
@@ -127,13 +144,20 @@ function verificarCampos(){
             input: tel, 
             mensagemVazio: 'Preencha o telefone.', 
             mensagemInvalido: 'Telefone incompleto. Digite os 11 números.',
-            validar: (v) => /^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(v) // (00) 00000-0000 = 15 caracteres com máscara
+            validar: (v) => /^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(v)
+        },
+        {
+            input: senha,
+            mensagemVazio: 'Preencha a senha.',
+            mensagemInvalido: 'A senha deve ter pelo menos 6 caracteres.',
+            validar: (v) => v.length >= 6
         }
     ]
 
     let valido = true
 
     campos.forEach(({ input, mensagemVazio, mensagemInvalido, validar }) => {
+        if (!input) return
         const field = input.closest('.field')
         const erroExistente = field.querySelector('.erro-msg')
         if (erroExistente) erroExistente.remove()
@@ -161,6 +185,7 @@ function verificarCampos(){
 
     // Limpar erro ao digitar
     campos.forEach(({ input }) => {
+        if (!input) return
         input.addEventListener('input', () => {
             const field = input.closest('.field')
             const erro = field.querySelector('.erro-msg')
@@ -196,16 +221,16 @@ function cadastroEfetuado(){
                 window.location.href = 'index.html'
             }, 1500)
         } catch (err) {
-            alert(err.message || 'Erro ao registrar. Tente novamente.')
+            showToast(err.message || 'Erro ao registrar. Tente novamente.', 'error')
             btnRegistro.disabled = false
             btnRegistro.innerHTML = textoOriginal
         }
     })
-
 }
 
 function mascararCPF(seletor) {
     const input = document.querySelector(seletor)
+    if (!input) return
 
     input.addEventListener('input', () => {
         let valor = input.value.replace(/\D/g, '').slice(0, 11)
@@ -233,6 +258,7 @@ function mascararCPF(seletor) {
 
 function mascararTelefone(seletor) {
     const input = document.querySelector(seletor)
+    if (!input) return
 
     input.addEventListener('input', () => {
         let valor = input.value.replace(/\D/g, '').slice(0, 11)
