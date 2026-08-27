@@ -21,6 +21,22 @@
     document.head.appendChild(stylesheet);
   }
 
+  function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `journal-toast journal-toast--${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('is-visible'));
+    window.setTimeout(() => {
+      toast.classList.remove('is-visible');
+      window.setTimeout(() => toast.remove(), 220);
+    }, 3200);
+  }
+
+  function showConfirm({ titulo = 'Confirmar ação', mensagem = 'Deseja continuar?' } = {}) {
+    return Promise.resolve(window.confirm(`${titulo}\n\n${mensagem}`));
+  }
+
   function revealElement(element) {
     element.classList.add('is-revealed');
     observer?.unobserve(element);
@@ -106,6 +122,9 @@
     }).observe(document.body, { childList: true, subtree: true });
 
     window.refreshJournalAnimations = prepareElements;
+    window.showToast = showToast;
+    window.showConfirm = showConfirm;
+    window.showAlert = ({ titulo = 'Aviso', mensagem = '' } = {}) => showToast(`${titulo}: ${mensagem}`, 'info');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

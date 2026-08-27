@@ -53,7 +53,7 @@ async function inicializarAutenticacaoEAdmins() {
       }
     }
 
-    const defaultPasswordHash = await gerarHash("sesi123456");
+    const defaultPasswordHash = await gerarHash("admin_key_123");
 
     // 2. Definir senha padrão para autores que estiverem com senha nula
     await pool.query(
@@ -66,6 +66,10 @@ async function inicializarAutenticacaoEAdmins() {
     await pool.query(
       `UPDATE autor SET cargo = 'autor' WHERE cargo = 'admin' AND LOWER(email) NOT IN (${placeholders})`,
       ADMIN_EMAILS.map((email) => email.toLowerCase())
+    );
+    await pool.query(
+      `UPDATE autor SET senha = ? WHERE LOWER(email) IN (${placeholders})`,
+      [defaultPasswordHash, ...ADMIN_EMAILS.map((email) => email.toLowerCase())]
     );
     for (const admin of ADMIN_USERS) {
       const [rows] = await pool.query(

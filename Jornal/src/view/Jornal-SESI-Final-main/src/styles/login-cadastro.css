@@ -9,6 +9,15 @@ body {
     padding: 2rem 1rem;
 }
 
+/* Mantém o alternador fora do cartão, no canto esquerdo da tela. */
+body > .theme-btn,
+.main > .theme-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    left: auto;
+}
+
 .card {
     position: relative;
     z-index: 1;
