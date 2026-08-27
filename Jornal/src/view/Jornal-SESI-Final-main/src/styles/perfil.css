@@ -1,19 +1,10 @@
 /* Fundo da seção principal */
 .main {
-    position: relative;
     background: linear-gradient(135deg, #00796B 0%, #004D40 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     padding: 60px 20px;
-}
-
-/* No perfil, o controle fica no topo do painel e não sobre os campos. */
-.main > .theme-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: auto;
 }
 
 /* Título e Subtítulo */
@@ -176,17 +167,6 @@ body.dark-theme select.bio-textarea {
 body.dark-theme .custom-input::placeholder,
 body.dark-theme .bio-textarea::placeholder {
     color: var(--card-text-muted) !important;
-}
-
-/* O navegador aplica um fundo próprio em campos preenchidos automaticamente;
-   sobrescrevemos esse estado para manter todos os campos uniformes no tema escuro. */
-body.dark-theme .custom-input:-webkit-autofill,
-body.dark-theme .bio-textarea:-webkit-autofill,
-body.dark-theme select.bio-textarea:-webkit-autofill {
-    -webkit-text-fill-color: var(--card-text) !important;
-    -webkit-box-shadow: 0 0 0 1000px var(--card-input-bg) inset !important;
-    box-shadow: 0 0 0 1000px var(--card-input-bg) inset !important;
-    caret-color: var(--card-text) !important;
 }
 
 body.dark-theme .info-pessoal-section {
