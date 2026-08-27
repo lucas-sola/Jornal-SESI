@@ -284,10 +284,10 @@ INSERT INTO autor (id, nome, serie_escolar, email, cargo, senha) VALUES
 (25, 'Ricardo Cruz',       '3ºB', 'ricardo.cruz@portalsesisp.org.br',      'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
 (26, 'Sarah Antonio',      '3ºB', 'sarah.antonio@portalsesisp.org.br',     'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
 -- Administradores do Portal
-(27, 'Lucas Sola',         '3ºB', 'lucas.sola@portalsesisp.org.br',        'admin', '$2b$10$LiQPQOh4UYU.WS2SPPywjuhxyQOLYbGntp4v8jEELLms8bwhr/foW'),
-(28, 'Enzo Antonio',       '3ºB', 'enzo.antonio@portalsesisp.org.br',     'admin', '$2b$10$LiQPQOh4UYU.WS2SPPywjuhxyQOLYbGntp4v8jEELLms8bwhr/foW'),
-(29, 'Rafael Teixeira',    '3ºB', 'rafael.teixeira@portalsesisp.org.br',    'admin', '$2b$10$LiQPQOh4UYU.WS2SPPywjuhxyQOLYbGntp4v8jEELLms8bwhr/foW'),
-(30, 'Rafael Ferreira',    '3ºB', 'rafael.ferreira@portalsesisp.org.br',    'admin', '$2b$10$LiQPQOh4UYU.WS2SPPywjuhxyQOLYbGntp4v8jEELLms8bwhr/foW'),
+(27, 'Lucas Sola',         '3ºB', 'lucas.sola@portalsesisp.org.br',        'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(28, 'Enzo Antonio',       '3ºB', 'enzo.antonio@portalsesisp.org.br',     'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(29, 'Rafael Teixeira',    '3ºB', 'rafael.teixeira@portalsesisp.org.br',    'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
+(30, 'Rafael Ferreira',    '3ºB', 'rafael.ferreira@portalsesisp.org.br',    'admin', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye'),
 (31, 'Vinicius Monteiro',  '3ºB', 'vinicius.monteiro@portalsesisp.org.br',  'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye');
 
 -- ============================================================================
