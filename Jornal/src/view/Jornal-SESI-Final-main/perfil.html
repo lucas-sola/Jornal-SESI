@@ -305,6 +305,33 @@
                     </div>
 
                 </form>
+
+                <section class="senha-section" aria-labelledby="titulo-alterar-senha">
+                    <div class="info-pessoal-header">
+                        <i class="fa-solid fa-key" aria-hidden="true"></i>
+                        <div>
+                            <h2 id="titulo-alterar-senha" class="info-pessoal-titulo">Alterar senha</h2>
+                            <p class="info-pessoal-descricao">Confirme sua senha atual para definir uma nova senha de acesso.</p>
+                        </div>
+                    </div>
+                    <form id="form-alterar-senha" class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div class="flex flex-col space-y-3">
+                                <label for="senha-atual">Senha atual</label>
+                                <input id="senha-atual" class="custom-input" type="password" autocomplete="current-password" required>
+                            </div>
+                            <div class="flex flex-col space-y-3">
+                                <label for="nova-senha">Nova senha</label>
+                                <input id="nova-senha" class="custom-input" type="password" minlength="6" autocomplete="new-password" required>
+                            </div>
+                            <div class="flex flex-col space-y-3">
+                                <label for="confirmar-senha">Confirmar nova senha</label>
+                                <input id="confirmar-senha" class="custom-input" type="password" minlength="6" autocomplete="new-password" required>
+                            </div>
+                        </div>
+                        <button id="btn-alterar-senha" class="btn-alterar-senha" type="submit">Alterar senha</button>
+                    </form>
+                </section>
             </div>
             <!-- /Right Column -->
 

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await carregarPerfil(usuario.id)
     await carregarDadosPessoais(usuario.id)
     configurarFormulario(usuario.id)
+    configurarAlteracaoSenha()
     configurarSair()
 })
 
@@ -325,5 +326,49 @@ function mascararTelefone(seletor) {
         }
 
         input.value = valor
+    })
+}
+
+function configurarAlteracaoSenha() {
+    const form = document.getElementById('form-alterar-senha')
+    if (!form) return
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault()
+
+        const senhaAtual = document.getElementById('senha-atual').value
+        const novaSenha = document.getElementById('nova-senha').value
+        const confirmarSenha = document.getElementById('confirmar-senha').value
+
+        if (novaSenha !== confirmarSenha) {
+            showToast('A confirmação da nova senha não confere.', 'warning')
+            return
+        }
+
+        const btn = document.getElementById('btn-alterar-senha')
+        const textoOriginal = btn.textContent
+        btn.disabled = true
+        btn.textContent = 'Alterando...'
+
+        try {
+            const response = await fetch('/api/auth/alterar-senha', {
+                method: 'POST',
+                headers: headersPrivados(),
+                body: JSON.stringify({ senhaAtual, novaSenha, confirmarSenha }),
+            })
+            const json = await response.json()
+
+            if (!response.ok || !json.sucesso) {
+                throw new Error(json.erro || json.mensagem || 'Não foi possível alterar a senha')
+            }
+
+            form.reset()
+            showToast('Senha alterada com sucesso!', 'success')
+        } catch (err) {
+            showToast(err.message || 'Erro ao alterar a senha.', 'error')
+        } finally {
+            btn.disabled = false
+            btn.textContent = textoOriginal
+        }
     })
 }

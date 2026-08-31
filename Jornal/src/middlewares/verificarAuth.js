@@ -66,7 +66,37 @@ function verificarAdmin(req, res, next) {
   next();
 }
 
+// Para operações sensíveis, como troca de senha, não aceita o cabeçalho
+// legado X-Usuario-Id: é obrigatório apresentar um JWT válido.
+function verificarTokenJWTObrigatorio(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : null;
+
+  if (!token) {
+    return res.status(401).json({
+      sucesso: false,
+      erro: "Acesso não autorizado. Faça login novamente.",
+    });
+  }
+
+  const decoded = verificarTokenJWT(token);
+  if (!decoded) {
+    return res.status(401).json({
+      sucesso: false,
+      erro: "Token JWT inválido ou expirado. Faça login novamente.",
+    });
+  }
+
+  req.usuario = decoded;
+  req.autorId = Number(decoded.id);
+  req.autor = decoded;
+  next();
+}
+
 module.exports = {
   verificarAuth,
+  verificarTokenJWTObrigatorio,
   verificarAdmin,
 };

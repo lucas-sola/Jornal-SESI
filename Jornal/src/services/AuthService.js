@@ -109,6 +109,36 @@ class AuthService {
       throw error;
     }
   }
+
+  async alterarSenha(id, dados) {
+    const senhaAtual = typeof dados.senhaAtual === "string" ? dados.senhaAtual : "";
+    const novaSenha = typeof dados.novaSenha === "string" ? dados.novaSenha : "";
+    const confirmarSenha = typeof dados.confirmarSenha === "string" ? dados.confirmarSenha : "";
+
+    if (!senhaAtual || !novaSenha || !confirmarSenha) {
+      throw criarErro("Preencha a senha atual, a nova senha e a confirmação", 400);
+    }
+    if (novaSenha.length < 6) {
+      throw criarErro("A nova senha deve ter ao menos 6 caracteres", 400);
+    }
+    if (novaSenha !== confirmarSenha) {
+      throw criarErro("A confirmação da nova senha não confere", 400);
+    }
+    if (senhaAtual === novaSenha) {
+      throw criarErro("A nova senha deve ser diferente da senha atual", 400);
+    }
+
+    const autor = await autorRepository.buscarAutor(id);
+    if (!autor) {
+      throw criarErro("Usuário não encontrado", 404);
+    }
+    if (!autor.senha || !(await compararHash(senhaAtual, autor.senha))) {
+      throw criarErro("A senha atual está incorreta", 401);
+    }
+
+    await autorRepository.atualizarAutor({ senha: await gerarHash(novaSenha) }, autor.id);
+    return { sucesso: true, mensagem: "Senha alterada com sucesso!" };
+  }
 }
 
 module.exports = new AuthService();

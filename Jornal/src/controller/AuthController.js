@@ -31,6 +31,15 @@ class AuthController {
       erroCatch(req, res, error);
     }
   }
+
+  async alterarSenha(req, res) {
+    try {
+      const result = await authService.alterarSenha(req.usuario.id, req.body);
+      res.status(200).json(result);
+    } catch (error) {
+      erroCatch(req, res, error);
+    }
+  }
 }
 
 module.exports = new AuthController();
