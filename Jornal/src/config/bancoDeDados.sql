@@ -291,7 +291,7 @@ INSERT INTO autor (id, nome, serie_escolar, email, cargo, senha) VALUES
 (31, 'Vinicius Monteiro',  '3ºB', 'vinicius.monteiro@portalsesisp.org.br',  'autor', '$2a$10$7Z25QjQ6eQvK4WjY9j6Gke5D7n47eKxL0fX8uJ5tQ0PqB3E8Sg7ye');
 
 -- ============================================================================
--- PUBLICAÇÕES
+-- PUBLICAÇÕES ss
 -- ============================================================================
 
 INSERT INTO publicacao (titulo, conteudo, resumo, data_criacao, data_publicacao, autor_id, genero_id, tema_principal_id) VALUES
