@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const publicacaoController = require("../controller/PublicacaoController.js");
-const { verificarAuth, verificarAdmin } = require("../middlewares/verificarAuth.js");
+const { verificarAuth, verificarAdmin, verificarPodePublicar } = require("../middlewares/verificarAuth.js");
 const uploadPublicacao = require("../middlewares/uploadPublicacao.js");
 
 const uploadImagemMiddleware = (req, res, next) => {
@@ -16,11 +16,11 @@ const uploadImagemMiddleware = (req, res, next) => {
 router.get("/", publicacaoController.listarPublicacoes);
 router.get("/:id", publicacaoController.buscarPublicacao);
 
-// Rotas restritas exclusivamente para administradores
+// Apenas autores oficiais do jornal (e-mail institucional) e admins podem publicar
 router.post(
   "/autor",
   verificarAuth,
-  verificarAdmin,
+  verificarPodePublicar,
   uploadImagemMiddleware,
   publicacaoController.cadastrarPublicacaoAutor
 );

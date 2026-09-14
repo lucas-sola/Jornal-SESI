@@ -1,7 +1,7 @@
 const autorRepository = require("../repositories/AutorRepository.js");
 const autorService = require("./AutorService.js");
 const { criarErro } = require("../utils/errorJornal.js");
-const { compararHash, gerarHash, gerarTokenJWT, isAdminEmail } = require("../utils/authHelper.js");
+const { compararHash, gerarHash, gerarTokenJWT, isAdminEmail, podePublicarPorEmail } = require("../utils/authHelper.js");
 
 class AuthService {
   async login(identificador, senha) {
@@ -36,11 +36,19 @@ class AuthService {
         await autorRepository.atualizarAutor({ cargo: "admin" }, autor.id);
       }
 
+      // Autores oficiais (e-mail institucional) podem publicar; contas externas, só interagir
+      const podePublicar =
+        cargo === "admin" ||
+        autor.pode_publicar === 1 ||
+        autor.pode_publicar === true ||
+        (!autor.pode_publicar && podePublicarPorEmail(autor.email));
+
       const payload = {
         id: autor.id,
         nome: autor.nome,
         email: autor.email,
         cargo,
+        pode_publicar: podePublicar,
         serie_escolar: autor.serie_escolar,
       };
 
@@ -55,6 +63,7 @@ class AuthService {
           nome: autor.nome,
           email: autor.email,
           cargo,
+          pode_publicar: podePublicar,
           serie_escolar: autor.serie_escolar,
           descricao: autor.descricao,
           area_interesse: autor.area_interesse,
@@ -71,11 +80,18 @@ class AuthService {
       const resultado = await autorService.cadastrarAutor(dados);
       const autor = await autorRepository.buscarAutor(resultado.id);
 
+      const podePublicar =
+        autor.cargo === "admin" ||
+        autor.pode_publicar === 1 ||
+        autor.pode_publicar === true ||
+        podePublicarPorEmail(autor.email);
+
       const payload = {
         id: autor.id,
         nome: autor.nome,
         email: autor.email,
         cargo: autor.cargo,
+        pode_publicar: podePublicar,
         serie_escolar: autor.serie_escolar,
       };
 
@@ -90,6 +106,7 @@ class AuthService {
           nome: autor.nome,
           email: autor.email,
           cargo: autor.cargo,
+          pode_publicar: podePublicar,
           serie_escolar: autor.serie_escolar,
           descricao: autor.descricao,
           area_interesse: autor.area_interesse,

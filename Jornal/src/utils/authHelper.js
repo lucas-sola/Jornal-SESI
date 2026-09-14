@@ -46,9 +46,29 @@ function verificarTokenJWT(token) {
   }
 }
 
+// Domínios dos e-mails oficiais pré-cadastrados no banco (autores do jornal).
+// Contas criadas com e-mails fora desses domínios podem interagir (curtir,
+// comentar), mas não podem publicar nem alterar publicações.
+const DOMINIOS_OFICIAIS = [
+  "@portalsesisp.org.br",
+  "@senaisp.edu.br"
+];
+
 function isAdminEmail(email) {
   if (!email) return false;
   return ADMIN_EMAILS.some((adminEmail) => adminEmail.toLowerCase() === email.trim().toLowerCase());
+}
+
+/**
+ * Verifica se o e-mail pertence a um autor oficial do jornal
+ * (domínio institucional pré-cadastrado no banco de dados).
+ * @param {string} email
+ * @returns {boolean}
+ */
+function podePublicarPorEmail(email) {
+  if (!email) return false;
+  const emailLimpo = String(email).trim().toLowerCase();
+  return DOMINIOS_OFICIAIS.some((dominio) => emailLimpo.endsWith(dominio));
 }
 
 module.exports = {
@@ -57,5 +77,6 @@ module.exports = {
   gerarTokenJWT,
   verificarTokenJWT,
   isAdminEmail,
+  podePublicarPorEmail,
   ADMIN_EMAILS,
 };

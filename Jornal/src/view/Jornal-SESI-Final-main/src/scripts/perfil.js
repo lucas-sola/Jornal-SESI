@@ -133,8 +133,13 @@ async function carregarPerfil(autorId) {
 
         const linkPublicar = document.getElementById('link-publicar-container')
         if (linkPublicar) {
-            const ehAdmin = autor.cargo === 'admin' || usuario?.cargo === 'admin'
-            linkPublicar.classList.toggle('hidden', !ehAdmin)
+            // Autores oficiais do jornal e admins podem publicar; contas externas, não
+            const podePublicar =
+                autor.pode_publicar === true ||
+                autor.pode_publicar === 1 ||
+                autor.cargo === 'admin' ||
+                usuario?.cargo === 'admin'
+            linkPublicar.classList.toggle('hidden', !podePublicar)
         }
     } catch (err) {
         console.error('Erro ao carregar perfil:', err)

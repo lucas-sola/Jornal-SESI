@@ -1,12 +1,12 @@
-/* ─── Toast global (mensagens do sistema) ───────────────────────────
-   Fixado no canto inferior esquerdo. Padrão: fundo vermelho e texto
-   branco (erros). Variantes: sucesso (verde) e aviso (laranja).     */
+/* ─── Toast global (mensagens do sistema) ──────────────────────────────
+   Fixado no canto inferior esquerdo. Erros: fundo vermelho e texto
+   branco. Variantes: neutro (cinza), sucesso (verde), aviso (laranja). */
 
 .toast-global {
   position: fixed;
   bottom: 24px;
   left: 24px;
-  background: #e53935;
+  background: #323232;
   color: #ffffff;
   padding: 12px 20px;
   border-radius: 8px;
@@ -19,6 +19,10 @@
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.toast-global.toast-erro {
+  background: #e53935;
 }
 
 .toast-global.toast-success {

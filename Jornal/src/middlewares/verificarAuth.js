@@ -66,6 +66,29 @@ function verificarAdmin(req, res, next) {
   next();
 }
 
+/**
+ * Permite publicar apenas para autores oficiais do jornal (e-mail com domínio
+ * institucional pré-cadastrado no banco) e administradores. Contas criadas com
+ * e-mails externos podem interagir (curtir, comentar), mas não publicar.
+ */
+function verificarPodePublicar(req, res, next) {
+  if (!req.usuario) {
+    return res.status(401).json({
+      sucesso: false,
+      erro: "Acesso não autorizado. Faça login para publicar.",
+    });
+  }
+
+  if (req.usuario.cargo === "admin" || req.usuario.pode_publicar === 1 || req.usuario.pode_publicar === true) {
+    return next();
+  }
+
+  return res.status(403).json({
+    sucesso: false,
+    erro: "Apenas autores oficiais do jornal podem publicar matérias.",
+  });
+}
+
 // Para operações sensíveis, como troca de senha, não aceita o cabeçalho
 // legado X-Usuario-Id: é obrigatório apresentar um JWT válido.
 function verificarTokenJWTObrigatorio(req, res, next) {
@@ -99,4 +122,5 @@ module.exports = {
   verificarAuth,
   verificarTokenJWTObrigatorio,
   verificarAdmin,
+  verificarPodePublicar,
 };

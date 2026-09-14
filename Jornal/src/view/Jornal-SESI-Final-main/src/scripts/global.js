@@ -61,9 +61,10 @@ function showToast(mensagem, tipo = 'error') {
         document.body.appendChild(toast)
     }
 
-    // Reinicia animação caso já esteja visível (padrão é vermelho = erro)
-    toast.classList.remove('toast-visivel', 'toast-success', 'toast-warning')
+    // Reinicia animação caso já esteja visível (vermelho = erro, padrão)
+    toast.classList.remove('toast-visivel', 'toast-erro', 'toast-success', 'toast-warning')
 
+    if (tipo === 'error') toast.classList.add('toast-erro')
     if (tipo === 'success') toast.classList.add('toast-success')
     if (tipo === 'warning') toast.classList.add('toast-warning')
 

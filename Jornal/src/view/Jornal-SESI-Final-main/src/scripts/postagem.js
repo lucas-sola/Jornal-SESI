@@ -29,29 +29,55 @@ async function verificarAcessoAutor() {
     const acessoNegado = document.getElementById('acesso-negado')
     const publicacaoApp = document.getElementById('publicacao-app')
 
-    if (!usuario?.id || usuario.cargo !== 'admin') {
+    if (!usuario?.id) {
         acessoNegado.classList.remove('hidden')
+        showToast('Você precisa estar logado para publicar. Faça login para continuar.', 'warning')
         return
     }
 
+    // Apenas autores oficiais do jornal (e-mail institucional cadastrado no
+    // banco) e administradores podem publicar. Contas externas só interagem.
+    if (usuario.pode_publicar === false || usuario.pode_publicar === 0) {
+        acessoNegado.classList.remove('hidden')
+        showToast('Apenas autores oficiais do jornal podem publicar matérias.', 'warning')
+        return
+    }
+
+    // Libera o formulário na hora com os dados salvos no navegador,
+    // sem depender de chamada à API (funciona mesmo se a API estiver fora do ar)
+    autorLogado = usuario
+    publicacaoApp.classList.remove('hidden')
+    preencherDadosAutor(autorLogado)
+
+    try {
+        iniciarFormulario()
+        iniciarImagemDestaque()
+        iniciarPreview()
+        await carregarOpcoesFormulario()
+    } catch {
+        showToast('Não foi possível carregar gêneros/temas. Verifique se o servidor está rodando.', 'warning')
+    }
+
+    // Atualiza o perfil em segundo plano (opcional; nunca bloqueia o formulário)
     try {
         const response = await fetch(`/api/autores/${usuario.id}`)
         const json = await response.json()
 
-        if (!response.ok || !json.sucesso || !json.dados?.email || json.dados.cargo !== 'admin') {
-            acessoNegado.classList.remove('hidden')
-            return
-        }
+        if (response.ok && json.sucesso && json.dados?.email) {
+            autorLogado = { ...json.dados, cargo: json.dados.cargo || usuario.cargo }
+            preencherDadosAutor(autorLogado)
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(autorLogado))
 
-        autorLogado = json.dados
-        publicacaoApp.classList.remove('hidden')
-        preencherDadosAutor(autorLogado)
-        await carregarOpcoesFormulario()
-        iniciarFormulario()
-        iniciarImagemDestaque()
-        iniciarPreview()
+            // Sessões antigas (antes da flag pode_publicar): se a API disser que
+            // o usuário não pode publicar, esconde o formulário na hora
+            if (autorLogado.pode_publicar === 0 || autorLogado.pode_publicar === false) {
+                publicacaoApp.classList.add('hidden')
+                acessoNegado.classList.remove('hidden')
+                showToast('Apenas autores oficiais do jornal podem publicar matérias.', 'warning')
+            }
+        }
     } catch {
-        acessoNegado.classList.remove('hidden')
+        // Segue com os dados locais; o backend valida a permissão ao publicar
     }
 }
 
@@ -371,5 +397,4 @@ function setupDragDrop(zone, callback) {
     })
 }
 
-// showToast agora é global (definido em global.js) e reutilizado nesta página
-const showToast = window.showToast || function () {}
+// showToast é global (definido em global.js), carregado antes deste arquivo

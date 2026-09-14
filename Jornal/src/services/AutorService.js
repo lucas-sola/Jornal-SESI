@@ -1,6 +1,6 @@
 const autorRepository = require("../repositories/AutorRepository.js");
 const { criarErro } = require("../utils/errorJornal.js");
-const { gerarHash, isAdminEmail } = require("../utils/authHelper.js");
+const { gerarHash, isAdminEmail, podePublicarPorEmail } = require("../utils/authHelper.js");
 
 function validarNumero(id) {
   return id && !isNaN(id) && Number(id) > 0;
@@ -72,6 +72,8 @@ class AutorService {
       const senhaPlana = senha || "Sesi@125";
       const senhaHash = await gerarHash(senhaPlana);
       const ehAdmin = isAdminEmail(emailTrim) || cargo === "admin";
+      // Autores oficiais (e-mail institucional) podem publicar; contas externas, só interagir
+      const podePublicar = ehAdmin || podePublicarPorEmail(emailTrim);
 
       const novoAutor = {
         nome: nome.trim(),
@@ -79,6 +81,7 @@ class AutorService {
         email: emailTrim,
         senha: senhaHash,
         cargo: ehAdmin ? "admin" : "autor",
+        pode_publicar: podePublicar ? 1 : 0,
         descricao: descricao ? descricao.trim() : null,
         area_interesse: area_interesse ? area_interesse.trim() : null,
         cpf: cpf ? cpf.trim() : null,
