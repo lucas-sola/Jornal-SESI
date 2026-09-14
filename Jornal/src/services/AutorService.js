@@ -69,7 +69,7 @@ class AutorService {
         throw criarErro("Este e-mail já está cadastrado", 409);
       }
 
-      const senhaPlana = senha || "123456";
+      const senhaPlana = senha || "Sesi@125";
       const senhaHash = await gerarHash(senhaPlana);
       const ehAdmin = isAdminEmail(emailTrim) || cargo === "admin";
 

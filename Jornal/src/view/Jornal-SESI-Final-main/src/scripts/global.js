@@ -34,6 +34,51 @@ function headersAuth(extra = {}) {
 }
 
 
+/* ─── Toast Global (mensagens de erro/sucesso/aviso) ──────────────────────
+   Exibe uma mensagem fixada no canto inferior esquerdo.
+   Tipos: 'error' (fundo vermelho), 'success' (verde), 'warning' (laranja).
+   Também exposto como window.showToast para uso em qualquer página.       */
+let toastTimerGlobal = null
+
+function showToast(mensagem, tipo = 'error') {
+    // Garante que o estilo do toast esteja presente na página
+    if (!document.getElementById('toast-global-css')) {
+        const link = document.createElement('link')
+        link.id = 'toast-global-css'
+        link.rel = 'stylesheet'
+        link.href = 'src/styles/toast.css'
+        document.head.appendChild(link)
+    }
+
+    // Cria o elemento do toast na primeira exibição
+    let toast = document.getElementById('toast-global')
+    if (!toast) {
+        toast = document.createElement('div')
+        toast.id = 'toast-global'
+        toast.className = 'toast-global'
+        toast.setAttribute('role', 'status')
+        toast.setAttribute('aria-live', 'polite')
+        document.body.appendChild(toast)
+    }
+
+    // Reinicia animação caso já esteja visível (padrão é vermelho = erro)
+    toast.classList.remove('toast-visivel', 'toast-success', 'toast-warning')
+
+    if (tipo === 'success') toast.classList.add('toast-success')
+    if (tipo === 'warning') toast.classList.add('toast-warning')
+
+    toast.textContent = mensagem
+    void toast.offsetWidth // força reflow para a animação reiniciar
+    toast.classList.add('toast-visivel')
+
+    if (toastTimerGlobal) clearTimeout(toastTimerGlobal)
+    toastTimerGlobal = setTimeout(() => {
+        toast.classList.remove('toast-visivel')
+    }, 4000)
+}
+
+window.showToast = showToast
+
 /* ─── JavaScript Main ───────────────────────────────────────────────────── */
 function iniciarTema(){
     const temaBtn = document.querySelector('#themeToggle')

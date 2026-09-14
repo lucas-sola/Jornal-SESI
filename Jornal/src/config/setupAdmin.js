@@ -53,12 +53,19 @@ async function inicializarAutenticacaoEAdmins() {
       }
     }
 
-    const defaultPasswordHash = await gerarHash("sesi123456");
+    const defaultPasswordHash = await gerarHash("Sesi@125");
+    const adminPasswordHash = await gerarHash("admin_key_123");
 
-    // 2. Definir senha padrão para autores que estiverem com senha nula
+    // 2. Definir senha padrão para autores (não-admins) que estiverem com senha nula
     await pool.query(
-      "UPDATE autor SET senha = ? WHERE senha IS NULL OR senha = ''",
+      "UPDATE autor SET senha = ? WHERE (senha IS NULL OR senha = '') AND cargo != 'admin'",
       [defaultPasswordHash]
+    );
+
+    // Definir senha padrão para admins que estiverem com senha nula
+    await pool.query(
+      "UPDATE autor SET senha = ? WHERE (senha IS NULL OR senha = '') AND cargo = 'admin'",
+      [adminPasswordHash]
     );
 
     // 3. Cadastrar ou atualizar os administradores solicitados
@@ -76,7 +83,7 @@ async function inicializarAutenticacaoEAdmins() {
       if (rows.length === 0) {
         await pool.query(
           "INSERT INTO autor (nome, email, serie_escolar, descricao, senha, cargo, ativo) VALUES (?, ?, ?, ?, ?, 'admin', 1)",
-          [admin.nome, admin.email, admin.serie_escolar, admin.descricao, defaultPasswordHash]
+          [admin.nome, admin.email, admin.serie_escolar, admin.descricao, adminPasswordHash]
         );
         console.log(`Administrador inserido: ${admin.nome} (${admin.email})`);
       } else {

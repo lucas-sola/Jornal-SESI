@@ -371,26 +371,5 @@ function setupDragDrop(zone, callback) {
     })
 }
 
-let toastTimer = null
-
-function showToast(message, type = '') {
-    // Usa o sistema premium de animations.js se disponível
-    if (window._sesiToastSystem) {
-        const tipo = type === 'error' ? 'error' : type === 'success' ? 'success' : type || 'default';
-        window._sesiToastSystem(message, tipo);
-        return;
-    }
-
-    // Fallback: toast simples do HTML se o sistema premium ainda não carregou
-    const toast = document.getElementById('toast')
-    if (!toast) return;
-    toast.textContent = message
-    toast.className = 'toast' + (type ? ` ${type}` : '')
-    toast.classList.remove('hidden')
-
-    if (toastTimer) clearTimeout(toastTimer)
-
-    toastTimer = setTimeout(() => {
-        toast.classList.add('hidden')
-    }, 3200)
-}
+// showToast agora é global (definido em global.js) e reutilizado nesta página
+const showToast = window.showToast || function () {}

@@ -282,10 +282,10 @@ input:focus {
     text-decoration: underline;
 }
 
-@media screen and (max-width: 540px) {
+@media screen and (max-width: 640px) {
     body {
         align-items: flex-start;
-        padding: 1.5rem 1rem;
+        padding: 1.5rem 1rem 1.5rem 4.5rem;
     }
 
     .card {

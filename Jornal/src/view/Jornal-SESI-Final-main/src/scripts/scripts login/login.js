@@ -38,10 +38,15 @@ function realizarLogin() {
                 }),
             })
 
-            const json = await response.json()
+            const json = await response.json().catch(() => ({}))
+            const mensagemApi = json.erro || json.mensagem || ''
 
             if (!response.ok || !json.sucesso) {
-                throw new Error(json.erro || json.mensagem || 'Credenciais inválidas.')
+                // 401/403: e-mail ou senha incorretos; demais status: falha do servidor/banco
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error(mensagemApi || 'Credenciais inválidas. Verifique seu e-mail/usuário e senha.')
+                }
+                throw new Error(mensagemApi || 'Erro do servidor. Tente novamente mais tarde.')
             }
 
             // Salva token JWT e perfil do usuário autenticado
@@ -54,7 +59,12 @@ function realizarLogin() {
                 window.location.href = 'index.html'
             }, 800)
         } catch (err) {
-            showToast(err.message || 'Erro ao fazer login. Tente novamente.', 'error')
+            // Falhas de rede/servidor fora do ar (fetch rejeita) também recebem mensagem amigável
+            const ehErroRede = err instanceof TypeError
+            showToast(
+                ehErroRede ? 'Erro do servidor. Tente novamente mais tarde.' : err.message,
+                'error'
+            )
             btn.disabled = false
             btn.textContent = textoOriginal
         }
